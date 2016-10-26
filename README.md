@@ -5,7 +5,7 @@ Zaiqiuchang is a mobile app developed using React Native (RN for short), both iO
 There is also a series of articles to explain the technology detail, [React Native跨平台移动应用开发实战](https://blog.zaiqiuchang.com/react-native-cross-platform-mobile-app-develop/) . Yes, these articles are wrote in chinese, limitted by the writter's english skill:).
 
 ### Screenshot
-![Nearby](http://zqc.cdn.zaiqiuchang.com/screenshot/screenshot-nearby.jpg)
+![Nearby](http://zqc.oss-cn-shanghai.aliyuncs.com/screenshot/ios/screenshot-nearby-720.png)
 
 ### How to run
 
