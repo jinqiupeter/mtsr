@@ -15,12 +15,18 @@ export const SCREEN_HEIGHT = height;
 export const NAV_BAR_HEIGHT = Platform.OS == 'ios' ? 64 : 54;
 export const TAB_BAR_HEIGHT = 50;
 
-export let SCHEME = 'https';
-export let DOMAIN_API = 'api.zaiqiuchang.com';
+export let SCHEME = 'http';
+export let DOMAIN_API = '139.224.64.6:9080/CRM/app';
 export let API_ORIGIN = `${SCHEME}://${DOMAIN_API}`;
 
+export const BUTTON ={
+    borderRadius: 10,
+    margin: 15,
+    padding: 10
+};
+
 export const COLOR = {
-  theme: '#006633',
+  theme: '#70BA42',
   textPrompt: '#929292',
   textNormal: '#5E5E5E',
   textEmpha: '#212121',
@@ -31,7 +37,7 @@ export const COLOR = {
   backgroundLighter: '#FFFFFF',
   backgroundDarkLighter: '#212121',
   backgroundDarkNormal: '#000000',
-  backgroundNotice: '#FFFB00',
+  backgroundNotice: '#E9BB28',
   linePrompt: '#EBEBEB',
   lineNormal: '#A9A9A9',
   lineEmpha: '#929292',

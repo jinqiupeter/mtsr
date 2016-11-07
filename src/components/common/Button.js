@@ -9,6 +9,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {COLOR} from '../../config';
+import {BUTTON} from '../../config';
 
 export default ({text, onPress, containerStyle, textStyle}) => {
   return (
@@ -20,13 +21,13 @@ export default ({text, onPress, containerStyle, textStyle}) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
-    padding: 10,
+    margin: BUTTON.margin,
+    padding: BUTTON.padding,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: COLOR.theme,
-    borderRadius: 5
+    borderRadius: BUTTON.borderRadius
   },
   text: {
     color: COLOR.theme,
