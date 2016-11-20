@@ -14,18 +14,20 @@ import * as utils from '../../utils';
 import * as components from '../';
 import * as actions from '../../actions';
 import * as helpers from '../helpers';
+import logger from '../../logger'
 
 export default class EditProfileAvatar extends Component {
   componentDidMount() {
     let {sceneKey, object, account, saveInput} = this.props;
-    let {avatarType, avatarName, avatarFile} = helpers.userFromCache(object, account.userId);
-    saveInput(sceneKey, {avatarType, avatarName, avatarUri: (avatarFile ? avatarFile.url : '')});
+    let {profileImageUrl} = helpers.userFromCache(object, account.userId);
+    saveInput(sceneKey, {profileImageUrl});
   }
 
   render() {
     let {sceneKey, loading, processing, error, input, saveInput} = this.props;
     let {selectCustomAvatar, submit} = this.props;
-    
+    let source = helpers.userAvatarSource(input[sceneKey], 'middle');
+    logger.debug("editting avator: ", source, input, sceneKey);
     return (
       <components.Layout 
         sceneKey={sceneKey} 

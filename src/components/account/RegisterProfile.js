@@ -10,9 +10,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {COLOR} from '../../config';
 import * as components from '../';
+import logger from '../../logger';
 
 export default class RegisterProfile extends Component {
   render() {
+    logger.debug("RegisterProfile props: ", this.props);
     let {sceneKey, loading, processing, error, submit, ...otherProps} = this.props;
     return (
       <components.Layout 
@@ -23,7 +25,7 @@ export default class RegisterProfile extends Component {
         renderTitle={() => components.NavBarTitle({title: '完善资料'})}
       >
         <ScrollView>
-          <components.TextNotice>帐号注册成功，请完善资料。</components.TextNotice>
+          <components.TextNotice>帐号注册成功，请完善小朋友资料。</components.TextNotice>
           <components.Profile
             sceneKey={sceneKey}
             error={error}

@@ -12,6 +12,8 @@ import dismissKeyboard from 'dismissKeyboard';
 import {COLOR} from '../../config';
 import * as components from '../';
 
+// test account: 13915508284/20111010
+
 export default class Login extends Component {
   componentDidMount() {
     let {sceneKey, input, submit, autoLogin, cbOk} = this.props;

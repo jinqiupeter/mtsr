@@ -18,6 +18,8 @@ export default class EditProfileNickname extends Component {
     let {sceneKey, loading, processing, error, input, sceneState, object, 
       account, saveInput, setSceneState, submitGender} = this.props;
     let user = helpers.userFromCache(object, account.userId);
+
+    logger.debug("got user, object, sceneKey from cache: ", user, object, sceneKey);
     return (
       <View>
         <components.TextNotice>基本资料</components.TextNotice>

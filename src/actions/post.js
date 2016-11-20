@@ -12,7 +12,7 @@ import * as actions from './';
 
 export const RESET_POST = 'reset_post';
 export const SET_POSTS_OF_CITY = 'set_posts_of_city';
-export const APPEND_POSTS_OF_CITY = 'append_posts_of_city';
+export const APPEND_POSTS_OF_CITY = 'append_posts_of_city'
 
 export const POST_STATUS_NORMAL = 1;
 export const POST_STATUS_DELETED = 2;

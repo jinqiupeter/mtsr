@@ -17,6 +17,8 @@ export const TAB_BAR_HEIGHT = 50;
 
 export let SCHEME = 'http';
 export let DOMAIN_API = '139.224.64.6:9080/CRM/app';
+export let CRM_API = '139.224.64.6:9080/CRM';
+export let CRM_ORIGIN = `${SCHEME}://${CRM_API}`;
 export let API_ORIGIN = `${SCHEME}://${DOMAIN_API}`;
 
 export const BUTTON ={
