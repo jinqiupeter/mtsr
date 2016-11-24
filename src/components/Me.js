@@ -66,12 +66,12 @@ export default class Me extends Component {
                 <View style={{flexDirection: 'row'}}>
                   <components.TextWithIcon 
                     iconName='thumbs-o-up' 
-                    text={helpers.numberText(user.stat.liked)}
+
                     containerStyle={{marginRight: 5}}
                   />
                   <components.TextWithIcon 
                     iconName='plus-square-o' 
-                    text={helpers.numberText(user.stat.post)}
+
                   />
                 </View>
               </View>

@@ -148,7 +148,8 @@ function login(dispatch, getState) {
         );
     };
     logger.debug("who state at login: ", account, object);
-    apis.isLoggedin({username: object.users[account.userId].user})
+    let username = object.users[account.userId] ? object.users[account.userId].user : '';
+    apis.isLoggedin({username: username})
         .then((response) => {
             logger.debug("isLoggedIn response: ", response);
             let {data: {user}} = response;
@@ -157,7 +158,7 @@ function login(dispatch, getState) {
                     user,
                     cbOk: () => {
                         if (user.nickname && user.profileImageUrl && user.gender) {
-                            Actions.Nearby();
+                            Actions.Classes();
                         } else {
                             Actions.RegisterProfile();
                         }

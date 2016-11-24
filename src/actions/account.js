@@ -64,7 +64,7 @@ export function registerProfileSubmit(sceneKey) {
         logger.debug("object and account:", object, account);
         let user = object.users[account.userId];
         if (user.nickname && user.profileImageUrl && user.gender) {
-            Actions.Nearby();
+            Actions.Classes();
         } else {
             dispatch(actions.errorFlash("请填写完基本资料。"));
         }
@@ -78,7 +78,7 @@ export function loginSubmit(sceneKey, cbOk) {
             if (!cbOk) {
                 cbOk = (user) => {
                     if (user.nickname && user.profileImageUrl && user.gender) {
-                        Actions.Nearby();
+                        Actions.Classes();
                     } else {
                         Actions.RegisterProfile();
                     }

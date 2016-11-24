@@ -141,7 +141,7 @@ declare namespace __React {
     }
 
     //
-    // Class Interfaces
+    // Classes Interfaces
     // ----------------------------------------------------------------------
 
     interface StatelessComponent<P> {

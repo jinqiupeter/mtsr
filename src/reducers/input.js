@@ -11,7 +11,6 @@ const initialState = {
         account: '',
         password: '',
     },
-
     RegisterMobile: {
         mobile: '',
         password: '',
@@ -32,6 +31,9 @@ const initialState = {
     EditProfileAvatar: {
         profileImageUrl: '',
     },
+    Classes: {
+        selectedClassType: 0,
+    }
 };
 
 export default (state = initialState, action) => {

@@ -24,28 +24,28 @@ export function userFromCache(object, userId) {
     return Object.assign({}, user);
 }
 
-export function postFromCache(object, postId) {
-    let post = object.posts[postId];
-    if (!post) {
-        console.warn(`post ${postId} not in cache`);
+export function attendClassFromCache(object, classId) {
+    let attendedClass = object.attendedClasses[classId];
+    if (!attendedClass) {
+        console.warn(`attendedClass ${classId} not in cache`);
         return null;
     }
-    let creator = userFromCache(object, post.creatorId);
-    if (!creator) {
-        return null;
-    }
-    let court = courtFromCache(object, post.courtId);
-    if (!court) {
-        return null;
-    }
-    let imageFiles = post.imageIds
-        .map((v) => fileFromCache(object, v))
-        .filter((v) => v !== null);
-    let stat = postStatFromCache(object, post.id);
-    if (!stat) {
-        return null;
-    }
-    return Object.assign({}, post, {creator, court, imageFiles, stat});
+    // let creator = userFromCache(object, classes.creatorId);
+    // if (!creator) {
+    //     return null;
+    // }
+    // let court = courtFromCache(object, classes.courtId);
+    // if (!court) {
+    //     return null;
+    // }
+    // let imageFiles = classes.imageIds
+    //     .map((v) => fileFromCache(object, v))
+    //     .filter((v) => v !== null);
+    // let stat = postStatFromCache(object, classes.id);
+    // if (!stat) {
+    //     return null;
+    // }
+    return Object.assign({}, attendedClass);
 }
 
 export function courtFromCache(object, courtId) {

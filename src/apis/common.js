@@ -16,7 +16,6 @@ import * as helpers from '../components/helpers';
 
 export function getApi(url, query={}, {method='GET', headers={}, timeout=5000}={}) {
     let {account, object} = store.getState();
-    logger.debug("object: ", object, account);
     if (account.userId) {
         let user = helpers.userFromCache(object, account.userId);
         headers["session"] = user.session;
@@ -70,7 +69,7 @@ export async function fetchApi(request, timeout=5000) {
         }
 
         responseJson = await response.json();
-        logger.debug(responseJson);
+        logger.debug("in fetchApi, responseJson", responseJson);
         let {code, message, data} = responseJson;
         if (code != 0) {
             throw new ResultError(code, message, data);

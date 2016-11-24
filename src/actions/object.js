@@ -16,7 +16,7 @@ export function resetObjectCache() {
     };
 }
 
-function cacheObjects({users, userIds, posts, postIds, courts, courtIds,
+function cacheObjects({users, userIds, attendedClasses, attendedClassIds, courts, courtIds,
     files, fileIds, userStats, postStats, courtStats}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
@@ -39,8 +39,8 @@ function cacheObjects({users, userIds, posts, postIds, courts, courtIds,
     if (users !== undefined) {
         action.users = aToO(users, userIds);
     }
-    if (posts !== undefined) {
-        action.posts = aToO(posts, postIds);
+    if (attendedClasses !== undefined) {
+        action.attendedClasses = aToO(attendedClasses, attendedClassIds);
     }
     if (courts !== undefined) {
         action.courts = aToO(courts, courtIds);
@@ -79,8 +79,6 @@ function mergeCacheObjectsActions(actions) {
             } else {
                 result = action;
             }
-
-            logger.debug("returning actions: ", result);
             return result;
         },
         {
@@ -145,68 +143,68 @@ export async function cacheUserByIds(object, userIds, update=false) {
     }
 }
 
-export function cachePosts(object, posts, postIds) {
-    let ps = [cacheObjects({posts, postIds})];
+export function cacheAttendedClasses(object, attendedClasses, classIds) {
+    let ps = [cacheObjects({attendedClasses, classIds})];
 
-    let creatorIds = [];
-    let creators = [];
-    posts.filter((v) => v !== null).forEach((post) => {
-        creatorIds.push(post.creatorId);
-        if (post.creator) {
-            creators.push(post.creator);
-            delete post.creator;
-        }
-    })
-    if (creators.length > 0) {
-        ps.push(cacheUsers(object, creators, creatorIds));
-    } else {
-        ps.push(cacheUserByIds(object, creatorIds));
-    }
-
-    let courtIds = [];
-    let courts = [];
-    posts.filter((v) => v !== null).forEach((post) => {
-        courtIds.push(post.courtId);
-        if (post.court) {
-            courts.push(post.court);
-            delete post.court;
-        }
-    })
-    if (courts.length > 0) {
-        ps.push(cacheCourts(object, courts, courtIds));
-    } else {
-        ps.push(cacheCourtByIds(object, courtIds));
-    }
-
-    let imageIds = [];
-    let imageFiles = [];
-    posts.filter((v) => v !== null).forEach((post) => {
-        imageIds = imageIds.concat(post.imageIds);
-        if (post.imageFiles) {
-            imageFiles = imageFiles.concat(post.imageFiles);
-            delete post.imageFiles;
-        }
-    })
-    if (imageFiles.length > 0) {
-        ps.push(cacheFiles(imageFiles, imageIds));
-    } else {
-        ps.push(cacheFileByIds(object, imageIds));
-    }
-
-    postIds = [];
-    let stats = [];
-    posts.filter((v) => v !== null).forEach((post) => {
-        postIds.push(post.id);
-        if (post.stat) {
-            stats[post.id] = post.stat;
-            delete post.stat;
-        }
-    })
-    if (Object.keys(stats).length > 0) {
-        ps.push(cachePostStats(stats));
-    } else {
-        ps.push(cachePostStatByIds(object, postIds));
-    }
+    // let creatorIds = [];
+    // let creators = [];
+    // posts.filter((v) => v !== null).forEach((classes) => {
+    //     creatorIds.push(classes.creatorId);
+    //     if (classes.creator) {
+    //         creators.push(classes.creator);
+    //         delete classes.creator;
+    //     }
+    // })
+    // if (creators.length > 0) {
+    //     ps.push(cacheUsers(object, creators, creatorIds));
+    // } else {
+    //     ps.push(cacheUserByIds(object, creatorIds));
+    // }
+    //
+    // let courtIds = [];
+    // let courts = [];
+    // posts.filter((v) => v !== null).forEach((classes) => {
+    //     courtIds.push(classes.courtId);
+    //     if (classes.court) {
+    //         courts.push(classes.court);
+    //         delete classes.court;
+    //     }
+    // })
+    // if (courts.length > 0) {
+    //     ps.push(cacheCourts(object, courts, courtIds));
+    // } else {
+    //     ps.push(cacheCourtByIds(object, courtIds));
+    // }
+    //
+    // let imageIds = [];
+    // let imageFiles = [];
+    // posts.filter((v) => v !== null).forEach((classes) => {
+    //     imageIds = imageIds.concat(classes.imageIds);
+    //     if (classes.imageFiles) {
+    //         imageFiles = imageFiles.concat(classes.imageFiles);
+    //         delete classes.imageFiles;
+    //     }
+    // })
+    // if (imageFiles.length > 0) {
+    //     ps.push(cacheFiles(imageFiles, imageIds));
+    // } else {
+    //     ps.push(cacheFileByIds(object, imageIds));
+    // }
+    //
+    // postIds = [];
+    // let stats = [];
+    // posts.filter((v) => v !== null).forEach((classes) => {
+    //     postIds.push(classes.id);
+    //     if (classes.stat) {
+    //         stats[classes.id] = classes.stat;
+    //         delete classes.stat;
+    //     }
+    // })
+    // if (Object.keys(stats).length > 0) {
+    //     ps.push(cachePostStats(stats));
+    // } else {
+    //     ps.push(cachePostStatByIds(object, postIds));
+    // }
 
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }

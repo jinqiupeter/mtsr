@@ -9,7 +9,7 @@ export * from './httpStatus';
 export * from './account';
 export * from './file';
 export * from './user';
-export * from './post';
+export * from './class';
 export * from './court';
 export * from './security';
 export * from './stat';

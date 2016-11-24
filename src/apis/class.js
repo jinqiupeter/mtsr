@@ -14,6 +14,6 @@ export function postInfos(ids) {
   return getApi(`${API_ORIGIN}/post/infos`, {ids: ids.join(',')});
 }
 
-export function postsOfCity({cityCode, sportCode='', limit=10, offset=''}) {
-  return getApi(`${API_ORIGIN}/post/byCity`, {cityCode, sportCode, limit, offset});
+export function attendedClasses({xpybh, limit=20, offset=0}) {
+  return getApi(`${API_ORIGIN}/attendedClass`, {xpybh, limit, offset});
 }

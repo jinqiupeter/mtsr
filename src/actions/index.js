@@ -16,6 +16,6 @@ export * from './keyboard';
 export * from './network';
 export * from './bootstrap';
 export * from './account';
-export * from './post';
+export * from './classes';
 export * from './user';
 export * from './security';

@@ -46,3 +46,4 @@ android/keystores/debug.keystore
 
 # visual studio code
 .tmp/
+.vscode/
