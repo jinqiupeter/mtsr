@@ -26,12 +26,12 @@ export default class About extends Component {
       >
         <ScrollView>
           <components.Image
-            source={require('zaiqiuchang/res/img/zqc-icon-middle.png')}
+            source={require('zaiqiuchang/res/img/mtsr_icon_middle.png')}
             style={styles.logo}
           />
           <components.Block>
             <components.BlockItem
-              leftText='在球场Demo版'
+              leftText='皇家蒙特梭利'
               rightText={VERSION}
               containerStyle={{borderTopWidth: 0}}
             />
@@ -43,8 +43,7 @@ export default class About extends Component {
             null
             }
           </components.Block>
-          <components.TextNotice>在球场Demo版仅限于学习使用，严禁用于商业目的。</components.TextNotice>
-          <components.TextNotice>Copyright © 在球场 zaiqiuchang.com All Rights Reserved.</components.TextNotice>
+          <components.TextNotice>Copyright © 苏州蒙特索利教育咨询有限公司 All Rights Reserved.</components.TextNotice>
         </ScrollView>
       </components.Layout>
     );

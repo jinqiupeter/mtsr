@@ -29,8 +29,8 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
             offset,
         }).then((response) => {
             let {data} = response;
-            logger.debug("got AttendedClasses: ", data);
-            attendedClasses = data.attendedClasses;
+            attendedClasses = data.attendedClasses.filter((v) => {return !!v.id});
+            logger.debug("got AttendedClasses: ", attendedClasses);
             return actions.cacheAttendedClasses(object, attendedClasses);
         })
             .then((action) => {

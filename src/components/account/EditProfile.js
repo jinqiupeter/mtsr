@@ -23,7 +23,6 @@ export default class EditProfile extends Component {
         renderTitle={() => components.NavBarTitle({title: '编辑资料'})}
       >
         <ScrollView>
-          <components.TextNotice>完善的资料有助于结交到更多球友。</components.TextNotice>
           <components.Profile
             sceneKey={sceneKey}
             error={error}

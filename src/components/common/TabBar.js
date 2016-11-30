@@ -47,7 +47,7 @@ export default ({currentTab, refresh}) => {
         },
         {
             icon: 'user',
-            title: '我',
+            title: '更多',
             onPress: () => {
                 if (currentTab == 3 && refresh) {
                     refresh();

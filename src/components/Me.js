@@ -36,7 +36,7 @@ export default class Me extends Component {
         processing={processing} 
         error={error}
         hideTabBar={false}
-        currentTab={2}
+        currentTab={3}
         renderTitle={() => components.NavBarTitle({title: '我'})}
         renderBackButton={() => null}
         refresh={() => this._refresh()}

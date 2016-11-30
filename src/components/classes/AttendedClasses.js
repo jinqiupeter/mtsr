@@ -24,7 +24,6 @@ export default class AttendedClasses extends Component {
         props = props || this.props;
         let {object} = props;
         let {attendedClasses} = props;
-        logger.debug("props in _getRowsAttendedClass: ", props);
         let rows = attendedClasses.map((v) => helpers.attendClassFromCache(object, v))
                 .filter((v) => v !== null);
 

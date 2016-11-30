@@ -23,7 +23,7 @@ export default class RegisterMobile extends Component {
         error={error}
         renderTitle={() => components.NavBarTitle({title: '手机号注册'})}
       >
-        <components.TextNotice>在球场Demo版注册的帐号与正式版通用。Demo版仅包含基本功能，完整功能请到官网 zaiqiuchang.com 下载安装正式版体验。</components.TextNotice>
+        <components.TextNotice>注册帐号后，您可以预约试听和体验我们的课程及活动</components.TextNotice>
         <components.Form>
           <components.FormItem iconName='mobile-phone' containerStyle={{borderTopWidth: 0}}>
             <components.TextInput
