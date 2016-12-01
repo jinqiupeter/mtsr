@@ -5,33 +5,35 @@
 import React , {Component} from 'react';
 import {StyleSheet, View, Platform, ListView, ScrollView, RefreshControl, InteractionManager} from 'react-native';
 
-import AttendedClass from './AttendedClass';
+import UnattendedClass from './UnattendedClass';
 import {TextNotice} from '../common';
 import * as helpers from '../helpers';
 import logger from '../../logger';
 import * as utils from '../../utils';
 
-export default class AttendedClasses extends Component {
+export default class UnattendedClasses extends Component {
     componentWillMount() {
         this.refreshing = false;
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
             r1.id != r2.id
-        }).cloneWithRows(this._getRowsAttendedClass());
+        }).cloneWithRows(this._getRowsUnattendedClass());
     }
 
-    _getRowsAttendedClass(props) {
+    _getRowsUnattendedClass(props) {
         props = props || this.props;
         let {object} = props;
-        let {attendedClasses} = props;
-        let rows = attendedClasses.map((v) => helpers.attendClassFromCache(object, v))
+        let {unattendedClasses} = props;
+        logger.debug("props in components/UnattendedClasses: ", props, object);
+        let rows = unattendedClasses.map((v) => helpers.unattendClassFromCache(object, v))
                 .filter((v) => v !== null);
 
+        logger.debug("unattended classes found:", rows);
         return rows;
     }
 
     componentWillReceiveProps(nextProps) {
-        this.ds = this.ds.cloneWithRows(this._getRowsAttendedClass(nextProps));
+        this.ds = this.ds.cloneWithRows(this._getRowsUnattendedClass(nextProps));
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -45,12 +47,12 @@ export default class AttendedClasses extends Component {
     _refresh({props, cbFinish}={}) {
         props = props || this.props;
         let {sceneKey, setSceneLastRefreshTime} = props;
-        let {getAttendedClasses} = props;
+        let {getUnattendedClasses} = props;
 
         setSceneLastRefreshTime({sceneKey});
 
             let finished = 0;
-            getAttendedClasses({
+        getUnattendedClasses({
                 cbFinish: () => finished++,
             });
         utils.waitingFor({
@@ -60,10 +62,10 @@ export default class AttendedClasses extends Component {
     }
 
     render () {
-        let {account, attendedClasses, network, enableLoading, disableLoading, errorFlash, getAttendedClasses} = this.props;
+        let {account, unattendedClasses, network, enableLoading, disableLoading, errorFlash, getUnattendedClasses} = this.props;
 
-        logger.debug("props in AttendedClasses: ", this.props, this.ds);
-        if (attendedClasses.length > 0) {
+        logger.debug("props in unattendedClasses: ", this.props, this.ds);
+        if (unattendedClasses.length > 0) {
             return (
                 <ListView
                     dataSource={this.ds}
@@ -71,7 +73,7 @@ export default class AttendedClasses extends Component {
                     initialListSize={5}
                     pageSize={5}
                     renderRow={(aClass) =>
-                        <AttendedClass
+                        <UnattendedClass
                             account={account}
                             aClass={aClass}
                             errorFlash={errorFlash}
@@ -99,9 +101,9 @@ export default class AttendedClasses extends Component {
                         />
                     }
                     onEndReached={() => {
-                        if (network.isConnected && attendedClasses.length > 0) {
-                            getAttendedClasses({
-                                offset: attendedClasses.length - 1,
+                        if (network.isConnected && unattendedClasses.length > 0) {
+                            getUnattendedClasses({
+                                offset: unattendedClasses.length - 1,
                             });
                         }
                     }}
@@ -110,7 +112,7 @@ export default class AttendedClasses extends Component {
         } else {
             return (
                 <TextNotice>
-                    小朋友还没有上过课哦！
+                    小朋友还没有选课哦！
                 </TextNotice>
             )
         }

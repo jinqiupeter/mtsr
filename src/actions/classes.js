@@ -11,8 +11,10 @@ import * as apis from '../apis';
 import * as actions from './';
 
 export const RESET_CLASS = 'reset_class';
-export const SET_CLASSES = 'set_classes';
-export const APPEND_CLASSES = 'append_classes'
+export const SET_ATTENDED_CLASSES = 'set_attended_classes';
+export const APPEND_ATTENDED_CLASSES = 'append_attended_classes';
+export const SET_UNATTENDED_CLASSES = 'set_unattended_classes';
+export const APPEND_UNATTENDED_CLASSES = 'append_unattended_classes';
 
 export function resetClass() {
     return {
@@ -37,9 +39,52 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
                 dispatch(action);
                 let classIds = attendedClasses.map((v) => v.id);
                 if (offset == 0) {
-                    dispatch({type: SET_CLASSES, classIds});
+                    dispatch({type: SET_ATTENDED_CLASSES, classIds});
                 } else {
-                    dispatch({type: APPEND_CLASSES, classIds});
+                    dispatch({type: APPEND_ATTENDED_CLASSES, classIds});
+                }
+                if (cbOk) {
+                    cbOk();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
+    return (dispatch, getState) => {
+        let {object} = getState();
+        let unattendedClasses;
+        apis.unattendedClasses({
+            xpybh,
+            offset,
+        }).then((response) => {
+            let {data} = response;
+            unattendedClasses = data.unattendedClasses.filter((v) => {return !!v.id});
+            logger.debug("got UnattendedClasses: ", unattendedClasses);
+            return actions.cacheUnattendedClasses(object, unattendedClasses);
+        })
+            .then((action) => {
+                let {object} = getState();
+                logger.debug("object after cached: ", object);
+                dispatch(action);
+                let classIds = unattendedClasses.map((v) => v.id);
+                logger.debug("calling SET_UNATTENDED_CLASSES with: ", classIds);
+                if (offset == 0) {
+                    dispatch({type: SET_UNATTENDED_CLASSES, classIds});
+                } else {
+                    dispatch({type: APPEND_UNATTENDED_CLASSES, classIds});
                 }
                 if (cbOk) {
                     cbOk();

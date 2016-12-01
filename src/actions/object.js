@@ -16,7 +16,7 @@ export function resetObjectCache() {
     };
 }
 
-function cacheObjects({users, userIds, attendedClasses, attendedClassIds, courts, courtIds,
+function cacheObjects({users, userIds, attendedClasses, attendedClassIds, unattendedClasses, unattendedClassIds, courts, courtIds,
     files, fileIds, userStats, postStats, courtStats}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
@@ -42,6 +42,9 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds, courts
     if (attendedClasses !== undefined) {
         action.attendedClasses = aToO(attendedClasses, attendedClassIds);
     }
+    if (unattendedClasses !== undefined) {
+        action.unattendedClasses = aToO(unattendedClasses, unattendedClassIds);
+    }
     if (courts !== undefined) {
         action.courts = aToO(courts, courtIds);
     }
@@ -58,7 +61,6 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds, courts
         action.courtStats = courtStats;
     }
 
-    logger.debug("action cached: ", action);
     return action;
 }
 
@@ -79,6 +81,8 @@ function mergeCacheObjectsActions(actions) {
             } else {
                 result = action;
             }
+
+            logger.debug("returning merged cache object: ", result);
             return result;
         },
         {
@@ -205,6 +209,12 @@ export function cacheAttendedClasses(object, attendedClasses, classIds) {
     // } else {
     //     ps.push(cachePostStatByIds(object, postIds));
     // }
+
+    return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
+}
+
+export function cacheUnattendedClasses(object, unattendedClasses, classIds) {
+    let ps = [cacheObjects({unattendedClasses, classIds})];
 
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }

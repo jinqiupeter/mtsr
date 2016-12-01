@@ -9,6 +9,7 @@ import * as actions from '../actions';
 const initialState = {
     users: {},
     attendedClasses: {},
+    unattendedClasses: {},
     courts: {},
     files: {},
     userStats: {},

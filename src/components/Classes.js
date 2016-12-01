@@ -25,8 +25,6 @@ export default class Classes extends Component {
             return null;
         }
 
-        logger.debug("showing input: ", input);
-
         return (
             <components.Layout
                 sceneKey={sceneKey}
@@ -70,7 +68,7 @@ export default class Classes extends Component {
 
                 {input[sceneKey].selectedClassType == 1 ?
                     <containers.AttendedClasses/>
-                    : <View/>
+                    : <containers.UnattendedClasses/>
                 }
             </components.Layout>
         );

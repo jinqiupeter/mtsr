@@ -30,22 +30,18 @@ export function attendClassFromCache(object, classId) {
         console.warn(`attendedClass ${classId} not in cache`);
         return null;
     }
-    // let creator = userFromCache(object, classes.creatorId);
-    // if (!creator) {
-    //     return null;
-    // }
-    // let court = courtFromCache(object, classes.courtId);
-    // if (!court) {
-    //     return null;
-    // }
-    // let imageFiles = classes.imageIds
-    //     .map((v) => fileFromCache(object, v))
-    //     .filter((v) => v !== null);
-    // let stat = postStatFromCache(object, classes.id);
-    // if (!stat) {
-    //     return null;
-    // }
+
     return Object.assign({}, attendedClass);
+}
+
+export function unattendClassFromCache(object, classId) {
+    let unattendedClass = object.unattendedClasses[classId];
+    if (!unattendedClass) {
+        console.warn(`unattendedClass ${classId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, unattendedClass);
 }
 
 export function courtFromCache(object, courtId) {
