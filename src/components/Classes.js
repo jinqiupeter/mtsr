@@ -20,7 +20,7 @@ import addDays from 'date-fns/add_days'
 export default class Classes extends Component {
     render() {
         let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
-        let {account, setSceneState, sceneState} = this.props;
+        let {account, setSceneState, moreClass} = this.props;
 
         logger.debug("props in Classes: ", this.props);
 
@@ -76,6 +76,7 @@ export default class Classes extends Component {
                             text='今天'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: new Date()});
+                                moreClass({});
                                 submitDay(sceneKey);
                             }}
                             containerStyle={{margin: 5, padding: 0}}
@@ -85,6 +86,7 @@ export default class Classes extends Component {
                             text='下周'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: addDays(startDate, 7)});
+                                moreClass({});
                                 submitDay(sceneKey);
                             }}
                             containerStyle={{margin: 5, padding: 0}}
@@ -93,7 +95,8 @@ export default class Classes extends Component {
                         <components.Button
                             text='下个月'
                             onPress={() => {
-                                saveInput(sceneKey, {startDate: addDays(startDate, 30)})
+                                saveInput(sceneKey, {startDate: addDays(startDate, 30)});
+                                moreClass({});
                                 submitDay(sceneKey);
                             }}
                             containerStyle={{margin: 5, padding: 0}}

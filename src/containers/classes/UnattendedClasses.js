@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
         setSceneState: actions.setSceneState,
         getUnattendedClasses: actions.unattendedClasses,
         saveInput: actions.saveInput,
-
+        moreClass: actions.moreUnattendedClassesFromCache,
     }, dispatch);
 }
 

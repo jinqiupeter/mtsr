@@ -113,9 +113,9 @@ let constraints = {
         message: '请输入昵称。',
       },
       length: {
-        minimum: 3,
-        maximum: 20,
-        message: '昵称长度须在3到20之间。'
+        minimum: 2,
+        maximum: 6,
+        message: '昵称长度须在2到6个字符之间。'
       },
     },
   },

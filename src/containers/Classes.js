@@ -29,6 +29,7 @@ function mapDispatchToProps(dispatch) {
         saveInput: actions.saveInput,
         submitDay: actions.changeStartDay,
         setSceneState: actions.setSceneState,
+        moreClass: actions.moreUnattendedClassesFromCache,
     }, dispatch);
 }
 

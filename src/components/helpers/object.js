@@ -3,6 +3,7 @@
  * zaiqiuchang.com
  */
 import logger from '../../logger';
+import parse from 'date-fns/parse';
 
 export function userFromCache(object, userId) {
     let user = object.users[userId];
@@ -35,6 +36,7 @@ export function attendClassFromCache(object, classId) {
 
 export function unattendClassFromCache(object, classId) {
     let unattendedClass = object.unattendedClasses[classId];
+    unattendedClass.date = parse(unattendedClass.date);
     if (!unattendedClass) {
         console.warn(`unattendedClass ${classId} not in cache`);
         return null;

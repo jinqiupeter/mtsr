@@ -10,6 +10,13 @@ import logger from '../logger';
 import * as apis from '../apis';
 import * as actions from './';
 
+import parse from 'date-fns/parse';
+import isAfter from 'date-fns/is_after';
+import eachDay from 'date-fns/each_day'
+import isSameDay from 'date-fns/is_same_day';
+
+import * as helpers from '../components/helpers';
+
 export const RESET_CLASS = 'reset_class';
 export const SET_ATTENDED_CLASSES = 'set_attended_classes';
 export const APPEND_ATTENDED_CLASSES = 'append_attended_classes';
@@ -63,6 +70,73 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     };
 }
 
+function expandUnattendedClasses(packedUnattendedClasses, startDate = new Date()) {
+    let expanded =  packedUnattendedClasses.reduce((accumulated, packedUnattendedClass) => {
+        if (packedUnattendedClass.type == 1) {
+            // regular class
+            let endDate = parse(packedUnattendedClass.enddate);
+            if (isAfter(endDate, accumulated.endDate)) {
+                // extend end range
+                let newDays = eachDay(accumulated.endDate, endDate).map((v) => {
+                    return {hasClass: false, date: v, classes: []};
+                });
+
+                accumulated.days = accumulated.days.concat(newDays);
+                accumulated.endDate = endDate;
+            }
+
+            accumulated.days = accumulated.days.map((v) => {
+                if (v.date.getDay() == packedUnattendedClass.kcxq) {
+                    let classes = v.classes || [];
+                    classes.push({...packedUnattendedClass});
+                    return {hasClass: true, date: v.date, classes: classes}
+                } else {
+                    return v;
+                }
+            });
+        }
+        else if (packedUnattendedClass.type == 2) {
+            // makeup class
+            let found = false;
+            packedUnattendedClass.date = parse(packedUnattendedClass.date);
+
+            accumulated.days = accumulated.days.map((v) => {
+                if (isSameDay(v.date, packedUnattendedClass.date)) {
+                    let classes = v.classes || [];
+                    classes.push({...packedUnattendedClass});
+                    found = true;
+                    return {hasClass: true, date: v.date, classes: classes}
+                } else {
+                    return v;
+                }
+            });
+
+            if (!found) {
+                // this makeup class is not in the range of regular classes
+                accumulated.days.push({hasClass: true,
+                    date: packedUnattendedClass.date,
+                    classes: [packedUnattendedClass]})
+            }
+        }
+
+        return accumulated;
+    }, {days: [], endDate: startDate});
+
+    return expanded.days.map((v, index) => {
+       return {...v, id:index};
+    });
+}
+
+export function moreUnattendedClassesFromCache({offset = 0}) {
+    return (dispatch, getState) => {
+        let {object} = getState();
+        let length = Math.min(offset + 20, Object.keys(object.unattendedClasses).length);
+        let classIds = Array.apply(null, {length: length}).map(Number.call, Number);
+
+        logger.debug("loading more ids: ", classIds);
+        dispatch({type: SET_UNATTENDED_CLASSES, classIds});
+    }
+}
 
 export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
@@ -73,37 +147,35 @@ export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
             offset,
         }).then((response) => {
             let {data} = response;
-            unattendedClasses = data.unattendedClasses.filter((v) => {return !!v.id});
-            logger.debug("got UnattendedClasses: ", unattendedClasses);
+            let classes = data.unattendedClasses.filter((v) => {return !!v.id});
+            logger.debug("got UnattendedClasses: ", classes);
+            unattendedClasses = expandUnattendedClasses(classes);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
-            .then((action) => {
-                let {object} = getState();
-                logger.debug("object after cached: ", object);
-                dispatch(action);
-                let classIds = unattendedClasses.map((v) => v.id);
-                logger.debug("calling SET_UNATTENDED_CLASSES with: ", classIds);
-                if (offset == 0) {
-                    dispatch({type: SET_UNATTENDED_CLASSES, classIds});
-                } else {
-                    dispatch({type: APPEND_UNATTENDED_CLASSES, classIds});
-                }
-                if (cbOk) {
-                    cbOk();
-                }
-                if (cbFinish) {
-                    cbFinish();
-                }
-            })
-            .catch((error) => {
-                dispatch(actions.handleApiError(error));
-                if (cbFail) {
-                    cbFail();
-                }
-                if (cbFinish) {
-                    cbFinish();
-                }
-            });
+        .then((action) => {
+            let {object} = getState();
+            logger.debug("object after cached: ", object);
+            dispatch(action);
+            // always show the first 20 expanded classes
+            let classIds = unattendedClasses.map((v) => v.id).slice(0, 20);
+            dispatch({type: SET_UNATTENDED_CLASSES, classIds});
+
+            if (cbOk) {
+                cbOk();
+            }
+            if (cbFinish) {
+                cbFinish();
+            }
+        })
+        .catch((error) => {
+            dispatch(actions.handleApiError(error));
+            if (cbFail) {
+                cbFail();
+            }
+            if (cbFinish) {
+                cbFinish();
+            }
+        });
     };
 }
 
@@ -121,7 +193,6 @@ export function changeStartDay(sceneKey, changeTo) {
 
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let startDate = changeTo ? changeTo : input[sceneKey].startDate;
-            //let {startDate} = input[sceneKey];
             dispatch(changeStartDayAction(startDate));
         }));
     };
