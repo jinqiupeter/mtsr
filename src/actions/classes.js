@@ -14,6 +14,7 @@ import parse from 'date-fns/parse';
 import isAfter from 'date-fns/is_after';
 import eachDay from 'date-fns/each_day'
 import isSameDay from 'date-fns/is_same_day';
+import isBefore from 'date-fns/is_before';
 
 import * as helpers from '../components/helpers';
 
@@ -127,11 +128,17 @@ function expandUnattendedClasses(packedUnattendedClasses, startDate = new Date()
     });
 }
 
-export function moreUnattendedClassesFromCache({offset = 0}) {
+export function moreUnattendedClassesFromCache({offset = 0, sceneKey}) {
     return (dispatch, getState) => {
-        let {object} = getState();
+        let {object, input} = getState();
+        let startDate = input[sceneKey].startDate;
+        logger.debug("getting start date: ", input, sceneKey);
         let length = Math.min(offset + 20, Object.keys(object.unattendedClasses).length);
-        let classIds = Array.apply(null, {length: length}).map(Number.call, Number);
+
+        logger.debug("filtering classes: ", Object.values(object.unattendedClasses));
+        let classIds = Object.values(object.unattendedClasses).filter((v) => {
+            return !isBefore(v.date, startDate);
+        }).map((v) => v.id).slice(0, length);
 
         logger.debug("loading more ids: ", classIds);
         dispatch({type: SET_UNATTENDED_CLASSES, classIds});
@@ -194,6 +201,7 @@ export function changeStartDay(sceneKey, changeTo) {
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let startDate = changeTo ? changeTo : input[sceneKey].startDate;
             dispatch(changeStartDayAction(startDate));
+            dispatch(moreUnattendedClassesFromCache({sceneKey}));
         }));
     };
 }

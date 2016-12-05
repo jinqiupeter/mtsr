@@ -76,8 +76,9 @@ export default class Classes extends Component {
                             text='今天'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: new Date()});
-                                moreClass({});
+
                                 submitDay(sceneKey);
+                                //moreClass({sceneKey});
                             }}
                             containerStyle={{margin: 5, padding: 0}}
                             textStyle={{fontSize: 12}}
@@ -86,8 +87,9 @@ export default class Classes extends Component {
                             text='下周'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: addDays(startDate, 7)});
-                                moreClass({});
+
                                 submitDay(sceneKey);
+                                //moreClass({sceneKey});
                             }}
                             containerStyle={{margin: 5, padding: 0}}
                             textStyle={{fontSize: 12}}
@@ -96,8 +98,9 @@ export default class Classes extends Component {
                             text='下个月'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: addDays(startDate, 30)});
-                                moreClass({});
+
                                 submitDay(sceneKey);
+                                //moreClass({sceneKey});
                             }}
                             containerStyle={{margin: 5, padding: 0}}
                             textStyle={{fontSize: 12}}

@@ -12,6 +12,7 @@ import logger from '../../logger';
 import * as utils from '../../utils';
 
 import isAfter from 'date-fns/is_after';
+import parse from 'date-fns/parse';
 import isSameDay from 'date-fns/is_same_day';
 
 import * as components from '../';
@@ -34,13 +35,18 @@ export default class UnattendedClasses extends Component {
         let {object} = props;
         let {startDate} = props;
         let Ids = props.unattendedClasses;
-        logger.debug("class id to read from cache: ", Ids);
-        let cachedClasses = Ids.map((v) => helpers.unattendClassFromCache(object, v))
-                .filter((v) => v !== null);
+        logger.debug("class id to read from cache: ", Ids, object);
+        let cachedClasses = Ids.map((v) => helpers.unattendClassFromCache(object, v));
+        logger.debug("cachedClasses 11: ", cachedClasses, startDate);
+        cachedClasses.filter((v) => v !== null);
+        logger.debug("cachedClasses 222: ", cachedClasses, startDate);
 
-        return cachedClasses.filter((day) => {
+        cachedClasses = cachedClasses.filter((day) => {
             return isAfter(day.date, startDate) || isSameDay(day.date, startDate);
         });
+        logger.debug("cachedClasses 333: ", cachedClasses, startDate);
+
+        return cachedClasses;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -118,7 +124,7 @@ export default class UnattendedClasses extends Component {
                     }
                     onEndReached={() => {
                         logger.debug("reaching end, unattendedClasses.length: ", unattendedClasses.length)
-                        moreClass({offset: unattendedClasses.length});
+                        moreClass({offset: unattendedClasses.length, sceneKey: 'Classes'});
                     }}
                     />
 
