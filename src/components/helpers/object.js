@@ -5,7 +5,6 @@
 import logger from '../../logger';
 
 export function userFromCache(object, userId) {
-    logger.debug("getting userid from object.user:", userId, object.users);
     let user = object.users[userId];
     if (!user) {
         console.warn(`user ${userId} not in cache`);

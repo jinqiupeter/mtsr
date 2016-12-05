@@ -41,3 +41,4 @@ export {default as Block} from './Block';
 export {default as BlockItem} from './BlockItem';
 
 export {default as Section} from './Section';
+export {default as CalendarPicker} from './CalendarPicker';

@@ -9,31 +9,31 @@ import * as containers from './containers';
 const RouterConnected = connect()(Router);
 
 export default class ZQCApp extends Component {
-  render() {
-    return (
-      <RouterConnected>
-        <Scene key='root'>
-          <Scene key='Bootstrap' component={containers.Bootstrap} type={ActionConst.RESET} initial={true} />
-          
-          <Scene key='PreLogin' component={containers.PreLogin} type={ActionConst.RESET} />
-          <Scene key='Classes' component={containers.Classes} type={ActionConst.RESET} />
-          <Scene key='AtCourt' component={containers.AtCourt} type={ActionConst.RESET} />
-          <Scene key='Me' component={containers.Me} type={ActionConst.RESET} />
+    render() {
+        return (
+            <RouterConnected>
+                <Scene key='root'>
+                    <Scene key='Bootstrap' component={containers.Bootstrap} type={ActionConst.RESET} initial={true}/>
 
-          <Scene key='Login' component={containers.Login} />
-          <Scene key='RegisterMobile' component={containers.RegisterMobile} />
-          <Scene key='RegisterVerify' component={containers.RegisterVerify} />
-          <Scene key='RegisterProfile' component={containers.RegisterProfile} />
+                    <Scene key='PreLogin' component={containers.PreLogin} type={ActionConst.RESET}/>
+                    <Scene key='Classes' component={containers.Classes} type={ActionConst.RESET}/>
+                    <Scene key='AtCourt' component={containers.AtCourt} type={ActionConst.RESET}/>
+                    <Scene key='Me' component={containers.Me} type={ActionConst.RESET}/>
 
-          <Scene key='EditProfile' component={containers.EditProfile} />
-          <Scene key='EditProfileNickname' component={containers.EditProfileNickname} />
-          <Scene key='EditProfileAvatar' component={containers.EditProfileAvatar} />
-          
-          <Scene key='About' component={containers.About} />
-        </Scene>
-      </RouterConnected>
-    );
-  }
+                    <Scene key='Login' component={containers.Login}/>
+                    <Scene key='RegisterMobile' component={containers.RegisterMobile}/>
+                    <Scene key='RegisterVerify' component={containers.RegisterVerify}/>
+                    <Scene key='RegisterProfile' component={containers.RegisterProfile}/>
+
+                    <Scene key='EditProfile' component={containers.EditProfile}/>
+                    <Scene key='EditProfileNickname' component={containers.EditProfileNickname}/>
+                    <Scene key='EditProfileAvatar' component={containers.EditProfileAvatar}/>
+
+                    <Scene key='About' component={containers.About}/>
+                </Scene>
+            </RouterConnected>
+        );
+    }
 }
 
 const styles = StyleSheet.create({});

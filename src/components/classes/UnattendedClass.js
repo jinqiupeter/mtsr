@@ -5,68 +5,62 @@
 
 import React, {Component, PropTypes} from 'react';
 import {
-    StyleSheet, View,
+    StyleSheet, View, ListView, Text
 } from 'react-native';
 
 import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
 import * as components from '../';
+import logger from '../../logger';
+import {TextNotice} from '../common';
 
 export default class UnattendedClass extends Component {
+    componentWillMount() {
+        let {day} = this.props;
+        logger.debug("mounting UnattendedClass: ", day);
+
+        this.refreshing = false;
+        this.ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) =>
+            r1.id != r2.id
+        }).cloneWithRows(day.classes || []);
+    }
+
     render() {
-        let {aClass, containerStyle} = this.props;
+        let {day, containerStyle} = this.props;
 
         return (
-            <components.Block containerStyle={containerStyle}>
-                <View style={{flexDirection: 'row', paddingBottom: 2.5}}>
-                    <View style={{flex: 1}}>
-                        <View
-                            style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
-                            <components.Text styleKind='emphaBig' containerStyle={{paddingVertical: 5}} >
-                                {aClass.kcjss + ' '
-                                + aClass.kcjc + ' '
-                                + aClass.kckssj + ' - '
-                                + aClass.kcjssj + ' '
-                                + aClass.skrq + ' '
-                                + aClass.qdsj}
-                            </components.Text>
+            day.hasClass ?
+
+        <ListView
+            dataSource={this.ds}
+            enableEmptySections={true}
+            initialListSize={5}
+            pageSize={5}
+            renderHeader={() =>
+            <TextNotice>
+                {day.date.toDateString()}
+            </TextNotice>}
+            renderRow={(aClass) =>
+                <components.Block containerStyle={containerStyle}>
+                    <View style={{flexDirection: 'row', paddingBottom: 2.5}}>
+                        <View style={{flex: 1}}>
+                            <View
+                                style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
+                                <components.Text styleKind='emphaBig' containerStyle={{paddingVertical: 5}} >
+                                    {aClass.kcjss + ' '
+                                    + aClass.kcjc + ' '
+                                    + aClass.kckssj + ' - '
+                                    + aClass.kcjssj}
+                                </components.Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </components.Block>
+                </components.Block>
+            }
+            />
+                :
+            <View/>
         );
     }
 }
-
-let smallImageSize = Math.floor((SCREEN_WIDTH - 30) / 3);
-let middleImageSize = Math.floor((SCREEN_WIDTH - 25) / 2);
-let largeImageSize = (SCREEN_WIDTH - 20);
-
-const styles = StyleSheet.create({
-    userAvatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 5,
-    },
-    postText: {
-        marginTop: 5,
-        lineHeight: 16,
-    },
-    postImages: {
-        marginTop: 5,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    smallImage: {
-        width: smallImageSize,
-        height: smallImageSize,
-    },
-    middleImage: {
-        width: middleImageSize,
-        height: middleImageSize,
-    },
-    largeImage: {
-        width: largeImageSize,
-        height: largeImageSize * 9 / 16,
-    },
-});
 

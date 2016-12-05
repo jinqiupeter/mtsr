@@ -15,6 +15,7 @@ export const SET_ATTENDED_CLASSES = 'set_attended_classes';
 export const APPEND_ATTENDED_CLASSES = 'append_attended_classes';
 export const SET_UNATTENDED_CLASSES = 'set_unattended_classes';
 export const APPEND_UNATTENDED_CLASSES = 'append_unattended_classes';
+export const CHANGE_START_DAY = "change_start_day";
 
 export function resetClass() {
     return {
@@ -62,6 +63,7 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     };
 }
 
+
 export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
         let {object} = getState();
@@ -102,5 +104,25 @@ export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
                     cbFinish();
                 }
             });
+    };
+}
+
+export function changeStartDayAction(startDate) {
+    return {
+        type: CHANGE_START_DAY,
+        startDate
+    };
+}
+
+export function changeStartDay(sceneKey, changeTo) {
+    return (dispatch, getState) => {
+        let {input} = getState();
+        dispatch(actions.setSceneState(sceneKey, {calendarPickerVisible: false}));
+
+        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
+            let startDate = changeTo ? changeTo : input[sceneKey].startDate;
+            //let {startDate} = input[sceneKey];
+            dispatch(changeStartDayAction(startDate));
+        }));
     };
 }

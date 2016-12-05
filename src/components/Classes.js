@@ -15,10 +15,14 @@ import * as components from './';
 import * as helpers from './helpers';
 import * as containers from '../containers';
 
+import addDays from 'date-fns/add_days'
+
 export default class Classes extends Component {
     render() {
-        let {sceneKey, loading, processing, error, saveInput, input, object} = this.props;
-        let {account} = this.props;
+        let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
+        let {account, setSceneState, sceneState} = this.props;
+
+        logger.debug("props in Classes: ", this.props);
 
         let user = helpers.userFromCache(object, account.userId);
         if (!user) {
@@ -66,9 +70,46 @@ export default class Classes extends Component {
                     style={styles.segmentedControl}
                 />
 
+                {input[sceneKey].selectedClassType == 0 ?
+                    <View style={styles.titleContainer}>
+                        <components.Button
+                            text='今天'
+                            onPress={() => {
+                                saveInput(sceneKey, {startDate: new Date()});
+                                submitDay(sceneKey);
+                            }}
+                            containerStyle={{margin: 5, padding: 0}}
+                            textStyle={{fontSize: 12}}
+                        />
+                        <components.Button
+                            text='下周'
+                            onPress={() => {
+                                saveInput(sceneKey, {startDate: addDays(startDate, 7)});
+                                submitDay(sceneKey);
+                            }}
+                            containerStyle={{margin: 5, padding: 0}}
+                            textStyle={{fontSize: 12}}
+                        />
+                        <components.Button
+                            text='下个月'
+                            onPress={() => {
+                                saveInput(sceneKey, {startDate: addDays(startDate, 30)})
+                                submitDay(sceneKey);
+                            }}
+                            containerStyle={{margin: 5, padding: 0}}
+                            textStyle={{fontSize: 12}}
+                        />
+
+                    </View>
+                    :
+                    <View/>
+                }
+
+
                 {input[sceneKey].selectedClassType == 1 ?
                     <containers.AttendedClasses/>
-                    : <containers.UnattendedClasses/>
+                    :
+                    <containers.UnattendedClasses/>
                 }
             </components.Layout>
         );
@@ -90,5 +131,10 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         marginBottom: 10,
-    }
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: COLOR.backgroundDarker,
+    },
 });

@@ -8,7 +8,7 @@ import * as components from '../../components';
 import * as actions from '../../actions';
 import {default as Unattended} from '../../components/classes/UnattendedClasses'
 function mapStateToProps(state) {
-    let {loading, processing, error, classes, network, sceneKey, object} = state;
+    let {loading, processing, error, classes, network, input, sceneKey, object, sceneState} = state;
     return {
         loading,
         processing,
@@ -17,6 +17,9 @@ function mapStateToProps(state) {
         network,
         unattendedClasses: classes.unattendedClasses,
         object,
+        input,
+        sceneState,
+        startDate: classes.startDate,
     };
 }
 
@@ -28,6 +31,8 @@ function mapDispatchToProps(dispatch) {
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
         setSceneState: actions.setSceneState,
         getUnattendedClasses: actions.unattendedClasses,
+        saveInput: actions.saveInput,
+
     }, dispatch);
 }
 

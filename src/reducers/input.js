@@ -33,6 +33,7 @@ const initialState = {
     },
     Classes: {
         selectedClassType: 0,
+        startDate: new Date(),
     }
 };
 

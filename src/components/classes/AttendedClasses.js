@@ -62,7 +62,6 @@ export default class AttendedClasses extends Component {
     render () {
         let {account, attendedClasses, network, enableLoading, disableLoading, errorFlash, getAttendedClasses} = this.props;
 
-        logger.debug("props in AttendedClasses: ", this.props, this.ds);
         if (attendedClasses.length > 0) {
             return (
                 <ListView

@@ -4,6 +4,10 @@
 
 import React , {Component} from 'react';
 import {StyleSheet, View, Platform, ListView, ScrollView, RefreshControl, InteractionManager} from 'react-native';
+import parse from 'date-fns/parse';
+import isAfter from 'date-fns/is_after';
+import eachDay from 'date-fns/each_day'
+import isSameDay from 'date-fns/is_same_day';
 
 import UnattendedClass from './UnattendedClass';
 import {TextNotice} from '../common';
@@ -11,29 +15,87 @@ import * as helpers from '../helpers';
 import logger from '../../logger';
 import * as utils from '../../utils';
 
+import * as components from '../';
+
 export default class UnattendedClasses extends Component {
     componentWillMount() {
         this.refreshing = false;
+        let rows = this._getRowsUnattendedClass();
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
-            r1.id != r2.id
-        }).cloneWithRows(this._getRowsUnattendedClass());
+            r1.hasClass != r2.hasClass
+            || !isSameDay(r1.date, r2.date)
+            || r1.classes.length != r2.classes.length
+        }).cloneWithRows(rows);
     }
 
     _getRowsUnattendedClass(props) {
         props = props || this.props;
         let {object} = props;
-        let {unattendedClasses} = props;
-        logger.debug("props in components/UnattendedClasses: ", props, object);
-        let rows = unattendedClasses.map((v) => helpers.unattendClassFromCache(object, v))
+        let {startDate} = props;
+        let Ids = props.unattendedClasses;
+        let cachedClasses = Ids.map((v) => helpers.unattendClassFromCache(object, v))
                 .filter((v) => v !== null);
 
-        logger.debug("unattended classes found:", rows);
-        return rows;
+        let expanded = cachedClasses.reduce((accumulated, cachedClass) => {
+            if (cachedClass.type == 1) {
+                // regular class
+                let endDate = parse(cachedClass.enddate);
+                if (isAfter(endDate, accumulated.endDate)) {
+                    // extend end range
+                    let newDays = eachDay(accumulated.endDate, endDate).map((v) => {
+                        return {hasClass: false, date: v, classes: []};
+                    });
+
+                    accumulated.days = accumulated.days.concat(newDays);
+                    accumulated.endDate = endDate;
+                }
+
+                accumulated.days = accumulated.days.map((v) => {
+                    if (v.date.getDay() == cachedClass.kcxq) {
+                        let classes = v.classes || [];
+                        classes.push({...cachedClass});
+                        return {hasClass: true, date: v.date, classes: classes}
+                    } else {
+                        return v;
+                    }
+                });
+            }
+            else if (cachedClass.type == 2) {
+                // makeup class
+                let found = false;
+                cachedClass.date = parse(cachedClass.date);
+
+                accumulated.days = accumulated.days.map((v) => {
+                    if (isSameDay(v.date, cachedClass.date)) {
+                        let classes = v.classes || [];
+                        classes.push({...cachedClass});
+                        found = true;
+                        return {hasClass: true, date: v.date, classes: classes}
+                    } else {
+                        return v;
+                    }
+                });
+
+                if (!found) {
+                    // this makeup class is not in the range of regular classes
+                    accumulated.days.push({hasClass: true,
+                        date: cachedClass.date,
+                        classes: [cachedClass]})
+                }
+            }
+
+            return accumulated;
+        }, {days: [], endDate: startDate});
+
+        return expanded.days.filter((day) => {
+            return isAfter(day.date, startDate)
+        }).filter((v) => v !== null);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.ds = this.ds.cloneWithRows(this._getRowsUnattendedClass(nextProps));
+        let rows = this._getRowsUnattendedClass(nextProps);
+        this.ds = this.ds.cloneWithRows(rows);
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -62,20 +124,26 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        let {account, unattendedClasses, network, enableLoading, disableLoading, errorFlash, getUnattendedClasses} = this.props;
+        let {input, account, unattendedClasses,
+            enableLoading, disableLoading, errorFlash,
+            sceneState, setSceneState, saveInput, submitDay} = this.props;
+        logger.debug("props in unattended classes render: ", this.props);
+        let {startDate} = this.props;
+        let sceneKey = 'Classes';
 
-        logger.debug("props in unattendedClasses: ", this.props, this.ds);
         if (unattendedClasses.length > 0) {
             return (
+
                 <ListView
                     dataSource={this.ds}
                     enableEmptySections={true}
-                    initialListSize={5}
+                    scrollRenderAheadDistance={200}
                     pageSize={5}
-                    renderRow={(aClass) =>
+                    initialListSize={5}
+                    renderRow={(day) =>
                         <UnattendedClass
                             account={account}
-                            aClass={aClass}
+                            day={day}
                             errorFlash={errorFlash}
                             containerStyle={styles.class}
                         />
@@ -101,13 +169,10 @@ export default class UnattendedClasses extends Component {
                         />
                     }
                     onEndReached={() => {
-                        if (network.isConnected && unattendedClasses.length > 0) {
-                            getUnattendedClasses({
-                                offset: unattendedClasses.length - 1,
-                            });
-                        }
+
                     }}
                     />
+
             )
         } else {
             return (
