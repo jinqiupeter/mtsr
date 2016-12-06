@@ -128,17 +128,22 @@ function expandUnattendedClasses(packedUnattendedClasses, startDate = new Date()
     });
 }
 
-export function moreUnattendedClassesFromCache({offset = 0, sceneKey}) {
+export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
     return (dispatch, getState) => {
         let {object, input} = getState();
         let startDate = input[sceneKey].startDate;
-        logger.debug("getting start date: ", input, sceneKey);
-        let length = Math.min(offset + 20, Object.keys(object.unattendedClasses).length);
+        logger.debug("getting start date: ", input, startDate);
 
-        logger.debug("filtering classes: ", Object.values(object.unattendedClasses));
-        let classIds = Object.values(object.unattendedClasses).filter((v) => {
+        let startFound = Object.values(object.unattendedClasses).find((v) => {
             return !isBefore(v.date, startDate);
-        }).map((v) => v.id).slice(0, length);
+        });
+        if (!!!startFound) {
+            return;
+        }
+
+        let classIds = Object.values(object.unattendedClasses)
+            .slice(startFound.id, startFound.id + currentLength + 20)
+            .map((v) => v.id);
 
         logger.debug("loading more ids: ", classIds);
         dispatch({type: SET_UNATTENDED_CLASSES, classIds});

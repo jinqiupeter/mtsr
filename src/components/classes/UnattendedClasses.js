@@ -21,7 +21,6 @@ export default class UnattendedClasses extends Component {
     componentWillMount() {
         this.refreshing = false;
         let rows = this._getRowsUnattendedClass();
-        logger.debug("componentWillMount render rows: ", rows);
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
             r1.hasClass != r2.hasClass
@@ -35,23 +34,18 @@ export default class UnattendedClasses extends Component {
         let {object} = props;
         let {startDate} = props;
         let Ids = props.unattendedClasses;
-        logger.debug("class id to read from cache: ", Ids, object);
-        let cachedClasses = Ids.map((v) => helpers.unattendClassFromCache(object, v));
-        logger.debug("cachedClasses 11: ", cachedClasses, startDate);
-        cachedClasses.filter((v) => v !== null);
-        logger.debug("cachedClasses 222: ", cachedClasses, startDate);
-
-        cachedClasses = cachedClasses.filter((day) => {
-            return isAfter(day.date, startDate) || isSameDay(day.date, startDate);
-        });
-        logger.debug("cachedClasses 333: ", cachedClasses, startDate);
+        let cachedClasses = Ids
+            .map((v) => helpers.unattendClassFromCache(object, v))
+            .filter((v) => v !== null)
+            .filter((day) => {
+                return isAfter(day.date, startDate) || isSameDay(day.date, startDate);
+            });
 
         return cachedClasses;
     }
 
     componentWillReceiveProps(nextProps) {
         let rows = this._getRowsUnattendedClass(nextProps);
-        logger.debug("will render rows: ", rows);
         this.ds = this.ds.cloneWithRows(rows);
     }
     componentDidMount() {
@@ -124,7 +118,7 @@ export default class UnattendedClasses extends Component {
                     }
                     onEndReached={() => {
                         logger.debug("reaching end, unattendedClasses.length: ", unattendedClasses.length)
-                        moreClass({offset: unattendedClasses.length, sceneKey: 'Classes'});
+                        moreClass({currentLength: unattendedClasses.length, sceneKey: 'Classes'});
                     }}
                     />
 
