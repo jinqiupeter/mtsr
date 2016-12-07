@@ -13,7 +13,7 @@ import {COLOR} from '../../config';
 import * as components from '../';
 
 // test account: 13915508284/20111010
-// test account: 13584855382/2013
+// test account: 13584855382/20130918
 
 export default class Login extends Component {
   componentDidMount() {

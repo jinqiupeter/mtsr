@@ -14,10 +14,14 @@ export function postInfos(ids) {
     return getApi(`${API_ORIGIN}/post/infos`, {ids: ids.join(',')});
 }
 
-export function attendedClasses({xpybh, limit = 20, offset = 0}) {
+export function attendedClasses({xpybh, limit = 10, offset = 0}) {
     return getApi(`${API_ORIGIN}/attendedClasses`, {xpybh, limit, offset});
 }
 
-export function unattendedClasses({xpybh, limit=20, offset=0}) {
+export function unattendedClasses({xpybh, limit=10, offset=0}) {
     return getApi(`${API_ORIGIN}/unattendedClasses`, {xpybh, limit, offset});
+}
+
+export function afterClassInstruction({kcbxxbh, skqkrq, kckssj, kcjssj}) {
+    return getApi(`${API_ORIGIN}/afterClassInstruction`, {kcbxxbh, skqkrq, kckssj, kcjssj});
 }

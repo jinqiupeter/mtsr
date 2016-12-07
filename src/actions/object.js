@@ -150,66 +150,6 @@ export async function cacheUserByIds(object, userIds, update=false) {
 export function cacheAttendedClasses(object, attendedClasses, classIds) {
     let ps = [cacheObjects({attendedClasses, classIds})];
 
-    // let creatorIds = [];
-    // let creators = [];
-    // posts.filter((v) => v !== null).forEach((classes) => {
-    //     creatorIds.push(classes.creatorId);
-    //     if (classes.creator) {
-    //         creators.push(classes.creator);
-    //         delete classes.creator;
-    //     }
-    // })
-    // if (creators.length > 0) {
-    //     ps.push(cacheUsers(object, creators, creatorIds));
-    // } else {
-    //     ps.push(cacheUserByIds(object, creatorIds));
-    // }
-    //
-    // let courtIds = [];
-    // let courts = [];
-    // posts.filter((v) => v !== null).forEach((classes) => {
-    //     courtIds.push(classes.courtId);
-    //     if (classes.court) {
-    //         courts.push(classes.court);
-    //         delete classes.court;
-    //     }
-    // })
-    // if (courts.length > 0) {
-    //     ps.push(cacheCourts(object, courts, courtIds));
-    // } else {
-    //     ps.push(cacheCourtByIds(object, courtIds));
-    // }
-    //
-    // let imageIds = [];
-    // let imageFiles = [];
-    // posts.filter((v) => v !== null).forEach((classes) => {
-    //     imageIds = imageIds.concat(classes.imageIds);
-    //     if (classes.imageFiles) {
-    //         imageFiles = imageFiles.concat(classes.imageFiles);
-    //         delete classes.imageFiles;
-    //     }
-    // })
-    // if (imageFiles.length > 0) {
-    //     ps.push(cacheFiles(imageFiles, imageIds));
-    // } else {
-    //     ps.push(cacheFileByIds(object, imageIds));
-    // }
-    //
-    // postIds = [];
-    // let stats = [];
-    // posts.filter((v) => v !== null).forEach((classes) => {
-    //     postIds.push(classes.id);
-    //     if (classes.stat) {
-    //         stats[classes.id] = classes.stat;
-    //         delete classes.stat;
-    //     }
-    // })
-    // if (Object.keys(stats).length > 0) {
-    //     ps.push(cachePostStats(stats));
-    // } else {
-    //     ps.push(cachePostStatByIds(object, postIds));
-    // }
-
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }
 

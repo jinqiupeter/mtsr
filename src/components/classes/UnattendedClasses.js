@@ -52,7 +52,6 @@ export default class UnattendedClasses extends Component {
         InteractionManager.runAfterInteractions(() => {
             let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
-                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });

@@ -24,6 +24,7 @@ export const APPEND_ATTENDED_CLASSES = 'append_attended_classes';
 export const SET_UNATTENDED_CLASSES = 'set_unattended_classes';
 export const APPEND_UNATTENDED_CLASSES = 'append_unattended_classes';
 export const CHANGE_START_DAY = "change_start_day";
+export const SET_INSTRUCTION = "set_instruction";
 
 export function resetClass() {
     return {
@@ -140,7 +141,7 @@ export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
         }
 
         let classIds = Object.values(object.unattendedClasses)
-            .slice(startIndex, startIndex + currentLength + 20)
+            .slice(startIndex, startIndex + currentLength + 10)
             .map((v) => v.id);
 
         logger.debug("loading more ids: ", classIds);
@@ -166,8 +167,8 @@ export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
             let {object} = getState();
             logger.debug("object after cached: ", object);
             dispatch(action);
-            // always show the first 20 expanded classes
-            let classIds = unattendedClasses.map((v) => v.id).slice(0, 20);
+            // always show the first 10 expanded classes
+            let classIds = unattendedClasses.map((v) => v.id).slice(0, 10);
             dispatch({type: SET_UNATTENDED_CLASSES, classIds});
 
             if (cbOk) {
@@ -206,5 +207,43 @@ export function changeStartDay(sceneKey, changeTo) {
             dispatch(changeStartDayAction(startDate));
             dispatch(moreUnattendedClassesFromCache({sceneKey}));
         }));
+    };
+}
+
+export function afterClassInstruction({kcbxxbh, skqkrq, kckssj, kcjssj, cbOk, cbFail, cbFinish}) {
+    return (dispatch, getState) => {
+        let {object} = getState();
+        let instruction;
+        apis.afterClassInstruction({
+            kcbxxbh,
+            skqkrq,
+            kckssj,
+            kcjssj
+        }).then((response) => {
+            let {data} = response;
+            instruction = data.instruction;
+            instruction.hasInstruction = !!instruction.id;
+            logger.debug("got instruction: ", instruction);
+
+            if (cbOk) {
+                cbOk();
+            }
+            if (cbFinish) {
+                cbFinish();
+            }
+
+            dispatch({
+                type: SET_INSTRUCTION,
+                instruction: instruction
+            });
+        }).catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
     };
 }

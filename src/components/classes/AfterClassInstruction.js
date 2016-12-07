@@ -4,16 +4,44 @@
 
 import React, {Component, PropTypes} from 'react';
 import {
-    StyleSheet, View, WebView
+    StyleSheet, View, WebView, InteractionManager
 } from 'react-native';
-
+import * as helpers from '../helpers';
+import * as utils from '../../utils';
+import {TextNotice} from '../common';
 import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
 import * as components from '../';
+import logger from '../../logger';
 
-let static_html = '<p>课后指南测试22</p> <p>2<img alt="" height="1136" src="http://139.224.64.6:9080/CRM/images/imageUploader/bc32546a-56ab-4720-b29c-1ad213efe3be.png" width="640" /></p>';
 export default class AfterClassInstruction extends Component {
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this._refresh();
+        });
+    }
+
+    _refresh({props, cbFinish}={}) {
+        props = props || this.props;
+        let {sceneKey} = props;
+        let {getAfterClassInstruction, kcbxxbh, skqkrq, kckssj, kcjssj} = props;
+        logger.debug("props in after class instruction: ", props);
+
+        let finished = 0;
+        getAfterClassInstruction({
+            kcbxxbh,
+            skqkrq,
+            kckssj,
+            kcjssj,
+            cbFinish: () => finished++,
+        });
+        utils.waitingFor({
+            condition: () => finished == 1,
+            cbFinish,
+        });
+    }
+
     render() {
-        let {sceneKey, loading, processing, error} = this.props;
+        let {sceneKey, loading, processing, error, instruction} = this.props;
         return (
             <components.Layout
                 sceneKey={sceneKey}
@@ -23,10 +51,16 @@ export default class AfterClassInstruction extends Component {
                 renderTitle={() => components.NavBarTitle({title: '课后指南'})}
                 renderBackButton={components.NavBarCancel}
             >
+                {instruction.hasInstruction ?
                 <WebView
-                    source={{html: static_html}}
+                    source={{html: instruction.instruction}}
                 >
                 </WebView>
+                    :
+                <TextNotice>
+                    {loading.loadingCount > 0 ? "加载中" : '老师还没有发布课后指南哦！'}
+                </TextNotice>
+                }
             </components.Layout>
         );
     }

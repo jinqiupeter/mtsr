@@ -5,6 +5,7 @@ const initialState = {
     attendedClasses: [],
     unattendedClasses: [],
     startDate: new Date(),
+    instruction: '',
 };
 
 export default (state = initialState, action) => {
@@ -37,6 +38,12 @@ export default (state = initialState, action) => {
         return {
             ...state,
             startDate,
+        };
+    } else if (action.type == actions.SET_INSTRUCTION) {
+        let {instruction} = action;
+        return {
+            ...state,
+            instruction,
         };
     } else if (action.type == actions.RESET || action.type == actions.RESET_CLASS) {
         return initialState;

@@ -8,14 +8,14 @@ import * as components from '../../components';
 import * as actions from '../../actions';
 import {default as AfterClassInstruction} from '../../components/classes/AfterClassInstruction'
 function mapStateToProps(state) {
-    let {loading, processing, error, classes, network, object} = state;
+    let {loading, processing, error, classes, network, object, sceneKey} = state;
     return {
         loading,
         processing,
         error,
-        sceneKey: 'AttendedClasses',
+        sceneKey,
         network,
-        attendedClasses: classes.attendedClasses,
+        instruction: classes.instruction,
         object,
     };
 }
@@ -27,7 +27,7 @@ function mapDispatchToProps(dispatch) {
         errorFlash: actions.errorFlash,
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
         setSceneState: actions.setSceneState,
-        getAttendedClasses: actions.attendedClasses,
+        getAfterClassInstruction: actions.afterClassInstruction,
     }, dispatch);
 }
 
