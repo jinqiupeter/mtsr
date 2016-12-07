@@ -26,8 +26,6 @@ export default class EditProfileAvatar extends Component {
   render() {
     let {sceneKey, loading, processing, error, input, saveInput} = this.props;
     let {selectCustomAvatar, submit} = this.props;
-    let source = helpers.userAvatarSource(input[sceneKey], 'middle');
-    logger.debug("editting avator: ", source, input, sceneKey);
     return (
       <components.Layout 
         sceneKey={sceneKey} 

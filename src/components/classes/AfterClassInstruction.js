@@ -1,31 +1,33 @@
+/**
+ * Created by peter on 07/12/2016.
+ */
+
 import React, {Component, PropTypes} from 'react';
 import {
-    StyleSheet, View,
+    StyleSheet, View, WebView
 } from 'react-native';
-import {Actions} from 'react-native-router-flux';
 
 import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
 import * as components from '../';
 
-export default class AttendedClass extends Component {
+let static_html = '<p>课后指南测试22</p> <p>2<img alt="" height="1136" src="http://139.224.64.6:9080/CRM/images/imageUploader/bc32546a-56ab-4720-b29c-1ad213efe3be.png" width="640" /></p>';
+export default class AfterClassInstruction extends Component {
     render() {
-        let {aClass, containerStyle} = this.props;
-
+        let {sceneKey, loading, processing, error} = this.props;
         return (
-            <components.Block containerStyle={containerStyle}>
-                <View style={{flexDirection: 'row', paddingBottom: 2.5}}>
-                    <components.BlockItem
-                        leftText={aClass.kcjss + ' '
-                        + aClass.kcjc + ' '
-                        + aClass.kckssj + ' - '
-                        + aClass.kcjssj + ' '
-                                                        + aClass.qdsj}
-                        rightIcon='angle-right'
-                        onPress={() => Actions.AfterClassInstruction()}
-                        containerStyle={{borderTopWidth: 0}}
-                    />
-                </View>
-            </components.Block>
+            <components.Layout
+                sceneKey={sceneKey}
+                loading={loading}
+                processing={processing}
+                error={error}
+                renderTitle={() => components.NavBarTitle({title: '课后指南'})}
+                renderBackButton={components.NavBarCancel}
+            >
+                <WebView
+                    source={{html: static_html}}
+                >
+                </WebView>
+            </components.Layout>
         );
     }
 }
