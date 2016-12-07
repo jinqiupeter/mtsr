@@ -35,8 +35,9 @@ export default class AttendedClasses extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            let {sceneKey, network} = this.props;
+            let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
+                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });
@@ -61,7 +62,7 @@ export default class AttendedClasses extends Component {
 
     render () {
         let {account, attendedClasses, network, enableLoading, disableLoading, errorFlash, getAttendedClasses} = this.props;
-
+        logger.debug("props in attended class: ", this.props);
         if (attendedClasses.length > 0) {
             return (
                 <ListView

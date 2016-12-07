@@ -16,8 +16,6 @@ import {TextNotice} from '../common';
 export default class UnattendedClass extends Component {
     componentWillMount() {
         let {day} = this.props;
-        logger.debug("mounting UnattendedClass: ", day);
-
         this.refreshing = false;
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
@@ -32,12 +30,19 @@ export default class UnattendedClass extends Component {
             day.hasClass ?
 
         <ListView
+            contentContainerStyle={{flexDirection: 'column', alignItems: 'center', padding: 5}}
             dataSource={this.ds}
             enableEmptySections={true}
             initialListSize={5}
             pageSize={5}
             renderHeader={() =>
-            <TextNotice>
+            <TextNotice
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    backgroundColor: COLOR.backgroundDarker,
+                }}
+            >
                 {day.date.toDateString()}
             </TextNotice>}
             renderRow={(aClass) =>

@@ -20,7 +20,7 @@ import addDays from 'date-fns/add_days'
 export default class Classes extends Component {
     render() {
         let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
-        let {account, setSceneState, moreClass} = this.props;
+        let {account, setSceneState, sceneState} = this.props;
 
         logger.debug("props in Classes: ", this.props);
 
@@ -76,36 +76,50 @@ export default class Classes extends Component {
                             text='今天'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: new Date()});
-
                                 submitDay(sceneKey);
-                                //moreClass({sceneKey});
                             }}
-                            containerStyle={{margin: 5, padding: 0}}
+                            containerStyle={{margin: 5, padding: 5}}
                             textStyle={{fontSize: 12}}
                         />
                         <components.Button
                             text='下周'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: addDays(startDate, 7)});
-
                                 submitDay(sceneKey);
-                                //moreClass({sceneKey});
                             }}
-                            containerStyle={{margin: 5, padding: 0}}
+                            containerStyle={{margin: 5, padding: 5}}
                             textStyle={{fontSize: 12}}
                         />
                         <components.Button
                             text='下个月'
                             onPress={() => {
                                 saveInput(sceneKey, {startDate: addDays(startDate, 30)});
-
                                 submitDay(sceneKey);
-                                //moreClass({sceneKey});
                             }}
-                            containerStyle={{margin: 5, padding: 0}}
+                            containerStyle={{margin: 5, padding: 5}}
                             textStyle={{fontSize: 12}}
                         />
+                        {/*<components.Button*/}
+                            {/*text='选择'*/}
+                            {/*onPress={() => {*/}
+                                {/*setSceneState(sceneKey, {calendarPickerVisible: true})*/}
+                            {/*}}*/}
+                            {/*containerStyle={{margin: 5, padding: 5}}*/}
+                            {/*textStyle={{fontSize: 12}}*/}
+                        {/*/>*/}
+                        {/*<components.CalendarPicker*/}
+                            {/*visible={sceneState[sceneKey].calendarPickerVisible}*/}
+                            {/*setVisible={(visible) => setSceneState(sceneKey, {calendarPickerVisible: visible})}*/}
+                            {/*selectedDate={input[sceneKey].startDate}*/}
+                            {/*onValueChange={(selectedDate) => {*/}
+                                {/*saveInput(sceneKey, {startDate: selectedDate});*/}
 
+                            {/*}}*/}
+                            {/*submit={(selectedDate) => {*/}
+                                {/*saveInput(sceneKey, {startDate: selectedDate});*/}
+                                {/*submitDay(sceneKey);*/}
+                            {/*}}*/}
+                        {/*/>*/}
                     </View>
                     :
                     <View/>

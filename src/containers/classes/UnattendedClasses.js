@@ -13,7 +13,7 @@ function mapStateToProps(state) {
         loading,
         processing,
         error,
-        sceneKey,
+        sceneKey: 'UnattendedClasses',
         network,
         unattendedClasses: classes.unattendedClasses,
         object,

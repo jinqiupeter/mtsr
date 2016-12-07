@@ -50,8 +50,9 @@ export default class UnattendedClasses extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            let {sceneKey, network} = this.props;
+            let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
+                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });
@@ -82,8 +83,8 @@ export default class UnattendedClasses extends Component {
 
         if (unattendedClasses.length > 0) {
             return (
-
                 <ListView
+                    contentContainerStyle={{flexDirection: 'column', alignItems: 'center', padding: 5}}
                     dataSource={this.ds}
                     enableEmptySections={true}
                     pageSize={5}

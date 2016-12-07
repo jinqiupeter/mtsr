@@ -8,12 +8,12 @@ import * as components from '../../components';
 import * as actions from '../../actions';
 import {default as Attended} from '../../components/classes/AttendedClasses'
 function mapStateToProps(state) {
-    let {loading, processing, error, classes, network, sceneKey, object} = state;
+    let {loading, processing, error, classes, network, object} = state;
     return {
         loading,
         processing,
         error,
-        sceneKey,
+        sceneKey: 'AttendedClasses',
         network,
         attendedClasses: classes.attendedClasses,
         object,

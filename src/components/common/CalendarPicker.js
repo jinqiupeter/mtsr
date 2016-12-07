@@ -9,7 +9,7 @@ const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
     'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export default ({visible, startDate, setVisible, onShow, submit, cancel, onValueChange}) => {
+export default ({visible, selectedDate, setVisible, onShow, submit, cancel, onValueChange}) => {
     if (cancel === undefined) {
         cancel = () => setVisible(false);
     }
@@ -24,7 +24,7 @@ export default ({visible, startDate, setVisible, onShow, submit, cancel, onValue
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
                     <components.Text onPress={cancel} style={styles.title}>取消</components.Text>
-                    <components.Text style={styles.title}>{startDate}</components.Text>
+                    <components.Text style={styles.title}>{selectedDate}</components.Text>
                     <components.Text onPress={submit} style={styles.title}>完成</components.Text>
                 </View>
                 <Calendar
@@ -39,7 +39,6 @@ export default ({visible, startDate, setVisible, onShow, submit, cancel, onValue
                     onDateSelect={onValueChange} // Callback after date selection
                     customStyle={{day: {fontSize: 15, textAlign: 'center'}}} // Customize any pre-defined styles
                     weekStart={1} // Day on which week starts 0 - Sunday, 1 - Monday, 2 - Tuesday, etc, Default: 1
-
                     />
             </View>
         </Modal>

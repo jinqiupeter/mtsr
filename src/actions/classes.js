@@ -132,17 +132,15 @@ export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
     return (dispatch, getState) => {
         let {object, input} = getState();
         let startDate = input[sceneKey].startDate;
-        logger.debug("getting start date: ", input, startDate);
-
-        let startFound = Object.values(object.unattendedClasses).find((v) => {
-            return !isBefore(v.date, startDate);
+        let startIndex = Object.values(object.unattendedClasses).findIndex((v) => {
+            return isSameDay(v.date, startDate) || isAfter(v.date, startDate);
         });
-        if (!!!startFound) {
+        if (startIndex === 'undefined') {
             return;
         }
 
         let classIds = Object.values(object.unattendedClasses)
-            .slice(startFound.id, startFound.id + currentLength + 20)
+            .slice(startIndex, startIndex + currentLength + 20)
             .map((v) => v.id);
 
         logger.debug("loading more ids: ", classIds);
