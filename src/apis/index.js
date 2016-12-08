@@ -8,7 +8,7 @@ export * from './error';
 export * from './httpStatus';
 export * from './account';
 export * from './file';
-export * from './user';
+export * from './activities';
 export * from './class';
 export * from './court';
 export * from './security';

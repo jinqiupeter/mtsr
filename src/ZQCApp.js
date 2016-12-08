@@ -17,7 +17,7 @@ export default class ZQCApp extends Component {
 
                     <Scene key='PreLogin' component={containers.PreLogin} type={ActionConst.RESET}/>
                     <Scene key='Classes' component={containers.Classes} type={ActionConst.RESET}/>
-                    <Scene key='AtCourt' component={containers.AtCourt} type={ActionConst.RESET}/>
+                    <Scene key='Activities' component={containers.Activities} type={ActionConst.RESET}/>
                     <Scene key='Me' component={containers.Me} type={ActionConst.RESET}/>
 
                     <Scene key='Login' component={containers.Login}/>
@@ -32,6 +32,8 @@ export default class ZQCApp extends Component {
                     <Scene key='About' component={containers.About}/>
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
+                    <Scene key="ActivityPoster" component={containers.ActivityPoster}/>
+
                 </Scene>
             </RouterConnected>
         );

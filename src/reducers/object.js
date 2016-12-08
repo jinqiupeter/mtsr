@@ -10,7 +10,7 @@ const initialState = {
     users: {},
     attendedClasses: {},
     unattendedClasses: {},
-    courts: {},
+    activities: {},
     files: {},
     userStats: {},
     postStats: {},

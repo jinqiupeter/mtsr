@@ -45,6 +45,16 @@ export function unattendClassFromCache(object, classId) {
     return Object.assign({}, unattendedClass);
 }
 
+export function activitiesFromCache(object, activityId) {
+    let activity = object.activities[activityId];
+    if (!activity) {
+        console.warn(`activity ${activityId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, activity);
+}
+
 export function courtFromCache(object, courtId) {
     let court = object.courts[courtId];
     if (!court) {

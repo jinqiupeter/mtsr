@@ -64,7 +64,7 @@ export default class UnattendedClasses extends Component {
 
         setSceneLastRefreshTime({sceneKey});
 
-            let finished = 0;
+        let finished = 0;
         getUnattendedClasses({
                 cbFinish: () => finished++,
             });

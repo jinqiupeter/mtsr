@@ -49,7 +49,7 @@ export default class AfterClassInstruction extends Component {
                 processing={processing}
                 error={error}
                 renderTitle={() => components.NavBarTitle({title: '课后指南'})}
-                renderBackButton={components.NavBarCancel}
+                renderBackButton={components.NavBarBack}
             >
                 {instruction.hasInstruction ?
                 <WebView

@@ -75,7 +75,7 @@ export default class AttendedClasses extends Component {
                             account={account}
                             aClass={aClass}
                             errorFlash={errorFlash}
-                            containerStyle={styles.class}
+
                         />
                     }
                     renderScrollComponent={(props) =>
@@ -119,6 +119,6 @@ export default class AttendedClasses extends Component {
 
 const styles = StyleSheet.create({
     class: {
-        marginBottom: 5,
+        marginBottom: 1,
     },
 });

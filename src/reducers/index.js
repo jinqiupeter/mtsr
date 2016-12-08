@@ -17,7 +17,7 @@ import keyboard from './keyboard';
 import network from './network';
 import account from './account';
 import classes from './classes';
-import user from './user';
+import activities from './activities';
 
 export default combineReducers({
     navigation,
@@ -33,5 +33,5 @@ export default combineReducers({
     network,
     account,
     classes,
-    user,
+    activities,
 });

@@ -41,7 +41,7 @@ export default ({currentTab, refresh}) => {
                 if (currentTab == 2 && refresh) {
                     refresh();
                 } else {
-                    Actions.Me();
+                    Actions.Activities();
                 }
             },
         },

@@ -17,5 +17,5 @@ export * from './network';
 export * from './bootstrap';
 export * from './account';
 export * from './classes';
-export * from './user';
+export * from './activities';
 export * from './security';

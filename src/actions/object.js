@@ -16,7 +16,8 @@ export function resetObjectCache() {
     };
 }
 
-function cacheObjects({users, userIds, attendedClasses, attendedClassIds, unattendedClasses, unattendedClassIds, courts, courtIds,
+function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
+    unattendedClasses, unattendedClassIds, activities, activityIds,
     files, fileIds, userStats, postStats, courtStats}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
@@ -45,8 +46,8 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds, unatte
     if (unattendedClasses !== undefined) {
         action.unattendedClasses = aToO(unattendedClasses, unattendedClassIds);
     }
-    if (courts !== undefined) {
-        action.courts = aToO(courts, courtIds);
+    if (activities !== undefined) {
+        action.activities = aToO(activities, activityIds);
     }
     if (files !== undefined) {
         action.files = aToO(files, fileIds);
@@ -82,7 +83,6 @@ function mergeCacheObjectsActions(actions) {
                 result = action;
             }
 
-            logger.debug("returning merged cache object: ", result);
             return result;
         },
         {
@@ -94,37 +94,12 @@ function mergeCacheObjectsActions(actions) {
 export function cacheUsers(object, users, userIds) {
     let ps = [cacheObjects({users, userIds})];
 
-    // let avatarFiles = [];
-    // users.filter((v) => v !== null).forEach((user) => {
-    //     if (user.profileImageUrl) {
-    //         avatarFiles.push(user.profileImageUrl);
-    //         delete user.profileImageUrl;
-    //     }
-    // });
-    //
-    // if (avatarFiles.length > 0) {
-    //     ps.push(cacheFiles(avatarFiles));
-    // }
+    return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
+}
 
-    // logger.debug("2. in cache users, ps: ", ps);
-    // userIds = [];
-    // let stats = {};
-    // users.filter((v) => v !== null).forEach((user) => {
-    //     userIds.push(user.id);
-    //     if (user.stat) {
-    //         stats[user.id] = user.stat;
-    //         delete user.stat;
-    //     }
-    // });
-    // logger.debug("3. in cache users, ps: ", ps);
-    // if (Object.keys(stats).length > 0) {
-    //     ps.push(cacheUserStats(stats));
-    // } else {
-    //     logger.debug("caching userstatbyid: ", userIds);
-    //     ps.push(cacheUserStatByIds(object, userIds));
-    // }
+export function cacheActivities(object, activities, activityIds) {
+    let ps = [cacheObjects({activities, activityIds})];
 
-    logger.debug("4. in cache users, ps: ", ps);
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }
 
