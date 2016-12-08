@@ -15,9 +15,9 @@ import logger from '../../logger';
 
 export default class AfterClassInstruction extends Component {
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        //InteractionManager.runAfterInteractions(() => {
             this._refresh();
-        });
+        //});
     }
 
     _refresh({props, cbFinish}={}) {
@@ -65,37 +65,4 @@ export default class AfterClassInstruction extends Component {
         );
     }
 }
-
-let smallImageSize = Math.floor((SCREEN_WIDTH - 30) / 3);
-let middleImageSize = Math.floor((SCREEN_WIDTH - 25) / 2);
-let largeImageSize = (SCREEN_WIDTH - 20);
-
-const styles = StyleSheet.create({
-    userAvatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 5,
-    },
-    postText: {
-        marginTop: 5,
-        lineHeight: 16,
-    },
-    postImages: {
-        marginTop: 5,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    smallImage: {
-        width: smallImageSize,
-        height: smallImageSize,
-    },
-    middleImage: {
-        width: middleImageSize,
-        height: middleImageSize,
-    },
-    largeImage: {
-        width: largeImageSize,
-        height: largeImageSize * 9 / 16,
-    },
-});
 

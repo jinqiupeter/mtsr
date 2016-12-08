@@ -15,10 +15,12 @@ export default class AttendedClass extends Component {
             <components.Block containerStyle={containerStyle}>
                 <components.BlockItem
                     leftText={aClass.kcjss + ' '
-                    + aClass.kcjc + ' '
-                    + aClass.kckssj + ' - '
-                    + aClass.kcjssj + ' '
-                    + aClass.qdsj}
+                        + aClass.kcjc
+                    }
+                    rightText={
+                       aClass.skqkrq + ' '
+                      + aClass.kckssj
+                    }
                     rightIcon='angle-right'
                     onPress={() => Actions.AfterClassInstruction({
                         ...aClass
