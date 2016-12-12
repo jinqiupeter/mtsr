@@ -2,12 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Picker, Modal} from 'react-native';
 import Calendar from 'react-native-calendar';
 
-import {COLOR} from '../../config';
+import {COLOR, customDayHeadings, customMonthNames} from '../../config';
 import * as components from '../';
-
-const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-    'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default ({visible, selectedDate, setVisible, onShow, submit, cancel, onValueChange}) => {
     if (cancel === undefined) {

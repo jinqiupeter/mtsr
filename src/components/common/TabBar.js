@@ -30,7 +30,7 @@ export default ({currentTab, refresh}) => {
                 if (currentTab == 1 && refresh) {
                     refresh();
                 } else {
-                    Actions.AtCourt();
+                    Actions.Schedule();
                 }
             },
         },

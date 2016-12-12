@@ -34,6 +34,9 @@ const initialState = {
     Classes: {
         selectedClassType: 0,
         startDate: new Date(),
+    },
+    Schedule: {
+        startDate: new Date(),
     }
 };
 

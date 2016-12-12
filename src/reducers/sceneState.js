@@ -19,7 +19,7 @@ const initialState = {
     },
     Classes: {
         calendarPickerVisible: false
-    }
+    },
 };
 
 export default (state = initialState, action) => {

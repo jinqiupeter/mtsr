@@ -19,3 +19,4 @@ export * from './account';
 export * from './classes';
 export * from './activities';
 export * from './security';
+export * from './schedule';
