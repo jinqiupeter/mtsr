@@ -14,7 +14,6 @@ const initialState = {
     files: {},
     userStats: {},
     postStats: {},
-    courtStats: {},
 };
 
 export default (state = initialState, action) => {

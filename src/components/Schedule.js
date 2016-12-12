@@ -15,6 +15,8 @@ import * as components from './';
 import * as helpers from './helpers';
 import * as utils from '../utils';
 import Calendar from 'react-native-calendar';
+import moment from 'moment';
+import {TextNotice} from './common';
 
 
 export default class Schedule extends Component {
@@ -46,9 +48,12 @@ export default class Schedule extends Component {
     }
 
     render() {
-        let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
-        let {account, setSceneState, sceneState} = this.props;
+        let {input, sceneKey, loading, processing, error,
+            saveInput, submitDay} = this.props;
+        let {eventDates} = this.props;
 
+        eventDates = eventDates || [];
+        let selectedDate = input[sceneKey].selectedDate;
         logger.debug("props in Schedule: ", this.props);
 
         return (
@@ -64,50 +69,51 @@ export default class Schedule extends Component {
                 renderBackButton={() => null}
                 renderTitle={() => components.NavBarTitle({title: '选课'})}
             >
-                <SegmentedControlIOS
-                    values={['未上课程', '已上课程']}
-                    tintColor={COLOR.theme}
-                    style={styles.segmentedControl}
-                />
-
-                <Calendar
-                    scrollEnabled={true}              // False disables swiping. Default: False
-                    showControls={false}               // False hides prev/next buttons. Default: False
-                    showEventIndicators={true}        // False hides event indicators. Default:False
-                    titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
-                    dayHeadings={customDayHeadings}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-                    monthNames={customMonthNames}                // Defaults to english names of months
-                    prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
-                    nextButtonText={'Next'}           // Text for next button. Default: 'Next'
-                    onDateSelect={(date) => saveInput(sceneKey, {startDate: date})} // Callback after date selection
-                    customStyle={{day: {fontSize: 15, textAlign: 'center'}}} // Customize any pre-defined styles
-                    weekStart={1} // Day on which week starts 0 - Sunday, 1 - Monday, 2 - Tuesday, etc, Default: 1
-                />
-
+                <View style={{flex: 1, paddingTop: 20, backgroundColor: '#f7f7f7'}}>
+                    <Calendar
+                        scrollEnabled={true}              // False disables swiping. Default: False
+                        selectedDate={selectedDate}
+                        showControls={true}               // False hides prev/next buttons. Default: False
+                        eventDates={eventDates.map((v) => {
+                            return v.date;
+                        })}       // Optional array of moment() parseable dates that will show an event indicator
+                        events={[]}// Optional array of event objects with a date property and custom styles for the event indicator
+                        showEventIndicators={true}        // False hides event indicators. Default:False
+                        titleFormat={'YYYY MMMM'}         // Format for displaying current month. Default: 'MMMM YYYY'
+                        dayHeadings={customDayHeadings}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+                        monthNames={customMonthNames}                // Defaults to english names of months
+                        prevButtonText={'上个月'}           // Text for previous button. Default: 'Prev'
+                        nextButtonText={'下个月'}           // Text for next button. Default: 'Next'
+                        onDateSelect={(date) => saveInput(sceneKey, {selectedDate: date})} // Callback after date selection
+                        customStyle={styles} // Customize any pre-defined styles
+                        weekStart={0} // Day on which week starts 0 - Sunday, 1 - Monday, 2 - Tuesday, etc, Default: 1
+                    />
+                    <TextNotice>Selected Date: {moment(selectedDate).format('MMMM DD YYYY')}</TextNotice>
+                </View>
             </components.Layout>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    userAvatar: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginLeft: 20,
-        shadowColor: '#DFA435',
-        shadowOffset: {width: 5, height: 5},
-        shadowRadius: 5,
+    day: {
+        fontSize: 15,
+        textAlign: 'center'
     },
-    segmentedControl: {
-        marginTop: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 10,
+    calendarControls: {
+        backgroundColor: COLOR.backgroundNormal,
     },
-    titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: COLOR.backgroundDarker,
+    calendarHeading: {
+        backgroundColor: COLOR.theme,
+    },
+    controlButtonText: {
+        color: COLOR.theme,
+    },
+    currentDayCircle: {
+        backgroundColor: COLOR.theme,
+    },
+    currentDayText: {
+        color: COLOR.textHighlight,
     },
 });
+

@@ -18,7 +18,7 @@ export function resetObjectCache() {
 
 function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     unattendedClasses, unattendedClassIds, activities, activityIds,
-    files, fileIds, userStats, postStats, courtStats}) {
+    files, fileIds, userStats, postStats,}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
             o[v.id] = v;
@@ -32,7 +32,7 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
             });
         }
         return o;
-    }
+    };
 
     let action = {
         type: CACHE_OBJECTS,
@@ -57,9 +57,6 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     }
     if (postStats !== undefined) {
         action.postStats = postStats;
-    }
-    if (courtStats !== undefined) {
-        action.courtStats = courtStats;
     }
 
     return action;

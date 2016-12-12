@@ -18,6 +18,7 @@ import network from './network';
 import account from './account';
 import classes from './classes';
 import activities from './activities';
+import schedule from './schedule';
 
 export default combineReducers({
     navigation,
@@ -34,4 +35,5 @@ export default combineReducers({
     account,
     classes,
     activities,
+    schedule,
 });
