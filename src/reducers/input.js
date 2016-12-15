@@ -36,6 +36,7 @@ const initialState = {
         startDate: new Date(),
     },
     Schedule: {
+        selectedScheduleType: 0,
         startDate: new Date(),
     }
 };

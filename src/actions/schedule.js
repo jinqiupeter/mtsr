@@ -2,15 +2,20 @@
 import logger from '../logger';
 import * as apis from '../apis';
 import * as actions from './';
+import * as helpers from '../components/helpers';
 
 import eachDay from 'date-fns/each_day'
 import addMonths from 'date-fns/add_months';
 import addDays from 'date-fns/add_days';
+import startOfMonth from 'date-fns/start_of_month';
+import endOfMonth from 'date-fns/end_of_month';
+import differenceInCalendarMonths from 'date-fns/difference_in_calendar_months';
+import isThisMonth from 'date-fns/is_this_month';
+import isBefore from 'date-fns/is_before';
 
 export const RESET_SELECTABLE = 'reset_selectable';
 export const SET_SELECTABLE = 'set_selectable';
-
-export const CHANGE_SELECT_DAY = "change_select_day";
+export const CHANGE_MONTH = "change_month";
 
 export function resetSelectable() {
     return {
@@ -18,21 +23,30 @@ export function resetSelectable() {
     };
 }
 
-function expandSelectableClasses(packedSelectableClasses, monthAge) {
-    let expanded = packedSelectableClasses.reduce((accumulated, packedSelectableClass) => {
-        if (packedSelectableClass.kcjsyl > accumulated.endMonthAge) {
-            // extend end month age
-            let endDate = addMonths(accumulated.endDate, packedSelectableClass.kcjsyl - accumulated.endMonthAge);
-            let newDays = eachDay(accumulated.endDate, endDate).map((v) => {
-                return {hasClass: false, date: v, classes: []};
-            });
+function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingDate = new Date()) {
+    logger.debug("expanding selectables since ", startingDate);
+    let today = new Date();
+    let start = startOfMonth(startingDate);
+    if (isThisMonth(startingDate)) {
+        start = today;
+    } else if (isBefore(startingDate, startOfMonth(today))) {
+        return [];
+    }
 
-            accumulated.days = accumulated.days.concat(newDays);
-            accumulated.endDate = endDate;
-            accumulated.endMonthAge = packedSelectableClass.kcjsyl;
+    let end = endOfMonth(startingDate, today);
+    let days = eachDay(start, end).map((v) => {
+        return {hasClass: false, date: v, classes: []};
+    });
+    logger.debug("days ", days);
+
+    let minDiff = differenceInCalendarMonths(startingDate, new Date);
+    let expanded = packedSelectableClasses.reduce((accumulated, packedSelectableClass) => {
+        let actualDiff = packedSelectableClass.kcjsyl - xpyMonthAge;
+        if (actualDiff < minDiff) {
+            return accumulated;
         }
 
-        accumulated.days = accumulated.days.map((v) => {
+        accumulated = accumulated.map((v) => {
             if (v.date.getDay() == packedSelectableClass.kcxq) {
                 let classes = v.classes || [];
                 classes.push({...packedSelectableClass});
@@ -43,40 +57,44 @@ function expandSelectableClasses(packedSelectableClasses, monthAge) {
         });
 
         return accumulated;
-    }, {days: [], endDate: addDays(new Date(), 1) , endMonthAge: monthAge});
+    }, days);
 
-    expanded.days.filter((v) => {
+    expanded = expanded.filter((v) => {
         return v.hasClass == true;
     });
 
-    return expanded.days.map((v, index) => {
+    return expanded.map((v, index) => {
         return {...v, id:index};
     });
 }
-export function selectableClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
+
+export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
         let {object, account} = getState();
-        let selectableDays;
-        apis.selectableClasses({
-            xpybh,
-            offset,
-        }).then((response) => {
-            let {data} = response;
-            let classes = data.selectableClasses.filter((v) => {return !!v.id});
-            logger.debug("got unexpanded selectableClasses: ", classes, object, object.users[account.userId].monthage);
-            let monthAge = object.users[account.userId].monthage;
-            selectableDays = expandSelectableClasses(classes, monthAge);
-            logger.debug("got selectableClasses: ", selectableDays);
+        apis.selectableClasses({})
+            .then((response) => {
+                let {data} = response;
+                let classes = data.selectableClasses.filter((v) => {return !!v.id});
+                logger.debug("got selectables: ", classes);
+                return actions.cacheSelectableClasses(object, classes);
+            })
+            .then((action) => {
+                let {object} = getState();
+                dispatch(action);
 
-            dispatch({type: SET_SELECTABLE, selectableDays});
+                let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
+                let monthAge = object.users[account.userId].monthage;
+                let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
 
-            if (cbOk) {
-                cbOk();
-            }
-            if (cbFinish) {
-                cbFinish();
-            }
-        })
+                dispatch({type: SET_SELECTABLE, selectableDays});
+
+                if (cbOk) {
+                    cbOk();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            })
             .catch((error) => {
                 dispatch(actions.handleApiError(error));
                 if (cbFail) {
@@ -87,4 +105,17 @@ export function selectableClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
                 }
             });
     };
+}
+
+export function changeMonth({startingDate}) {
+    return (dispatch, getState) => {
+        let {object, account} = getState();
+
+        let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
+        let monthAge = object.users[account.userId].monthage;
+        let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
+
+        logger.debug("changing CHANGE_MONTH: ", selectableDays);
+        dispatch({type: CHANGE_MONTH, selectableDays});
+    }
 }

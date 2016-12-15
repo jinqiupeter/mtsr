@@ -34,7 +34,7 @@ export default class ZQCApp extends Component {
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>
-
+                    <Scene key="SelectClass" component={containers.SelectClass}/>
                 </Scene>
             </RouterConnected>
         );

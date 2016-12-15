@@ -10,7 +10,7 @@ import * as components from '../components';
 import * as actions from '../actions';
 
 function mapStateToProps(state) {
-    let {loading, processing, error, input, sceneState, schedule, object, network} = state;
+    let {loading, processing, error, input, sceneState, object, network} = state;
     let {account} = state;
     return {
         loading,
@@ -21,7 +21,6 @@ function mapStateToProps(state) {
         object,
         account,
         network,
-        eventDates: schedule.selectableDays,
     };
 }
 
@@ -31,6 +30,7 @@ function mapDispatchToProps(dispatch) {
         submitDay: actions.changeStartDay,
         setSceneState: actions.setSceneState,
         getSelectable: actions.selectableClasses,
+        changeMonth: actions.changeMonth,
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
     }, dispatch);
 }

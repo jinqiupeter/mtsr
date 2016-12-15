@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 12,
-        color: COLOR.textEmpha,
+        color: COLOR.textPrompt,
     },
     icon: {
         fontSize: 24,
-        color: COLOR.textEmpha,
+        color: COLOR.textPrompt,
         bottom: 3,
     },
     selected: {

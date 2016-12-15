@@ -20,14 +20,14 @@ export function resetInput(scene) {
   };
 }
 
-export function saveInput(scene, input) {
+export function saveInput(scene, input, cbOK) {
   return dispatch => {
     dispatch({
       type: INPUT,
       scene,
       input,
     });
-    dispatch(validateInput(scene, input));
+    dispatch(validateInput(scene, input, cbOK));
   };
 }
 

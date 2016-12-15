@@ -41,6 +41,20 @@ export function dayTimeText(date) {
     return utils.lpad((hour), 2, '0') + ':' + utils.lpad(minute, 2, '0');
 }
 
+export function yearMonthDayText(date) {
+    if (typeof date == 'string') {
+        date = new Date(date);
+    }
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    let day = date.getDate();
+    return `${year}年${month}月${day}日`;
+}
+
+export function yearMonthDayWeekText(date) {
+    return yearMonthDayText(date) + ' ' + weekDayText(date);
+}
+
 export function isNeedRefresh({sceneKey, network, minInterval = 600, objectId = ''}) {
     logger.debug("network.lastRefreshTime: ", network.lastRefreshTime, objectId);
     let lastRefreshTime = network.lastRefreshTime[sceneKey] || {};

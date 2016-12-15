@@ -12,15 +12,6 @@ export function userFromCache(object, userId) {
         return null;
     }
 
-    // let profileImageUrl = fileFromCache(object, user.profileImageUrl);
-    // if (!profileImageUrl) {
-    //     return null;
-    // }
-    // let stat = userStatFromCache(object, user.id);
-    // if (!stat) {
-    //   return null;
-    // }
-    //return Object.assign({}, user, {avatarFile, stat});
     return Object.assign({}, user);
 }
 
@@ -55,17 +46,15 @@ export function activitiesFromCache(object, activityId) {
     return Object.assign({}, activity);
 }
 
-export function courtFromCache(object, courtId) {
-    let court = object.courts[courtId];
-    if (!court) {
-        console.warn(`court ${courtId} not in cache`);
+export function packedSelectablesFromCache(object) {
+    logger.debug("getting packed selectables from: ", object);
+    let packed = object.selectableClasses;
+    if (!packed) {
+        console.warn(`selectableClasses not in cache`);
         return null;
     }
-    let stat = courtStatFromCache(object, court.id);
-    if (!stat) {
-        return null;
-    }
-    return Object.assign({}, court, {stat});
+
+    return Object.assign({}, packed);
 }
 
 export function fileFromCache(object, fileId) {
@@ -75,31 +64,4 @@ export function fileFromCache(object, fileId) {
         return null;
     }
     return file;
-}
-
-export function userStatFromCache(object, userId) {
-    let userStat = object.userStats[userId];
-    if (!userStat) {
-        console.warn(`userStat ${userId} not in cache`);
-        return null;
-    }
-    return userStat;
-}
-
-export function postStatFromCache(object, postId) {
-    let postStat = object.postStats[postId];
-    if (!postStat) {
-        console.warn(`postStat ${postId} not in cache`);
-        return null;
-    }
-    return postStat;
-}
-
-export function courtStatFromCache(object, courtId) {
-    let courtStat = object.courtStats[courtId];
-    if (!courtStat) {
-        console.warn(`courtStat ${courtId} not in cache`);
-        return null;
-    }
-    return courtStat;
 }

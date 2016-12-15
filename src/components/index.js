@@ -14,3 +14,4 @@ export * from './account';
 export * from './classes';
 export * from './about';
 export * from './activities';
+export * from './schedule';

@@ -13,7 +13,7 @@ const initialState = {
     activities: {},
     files: {},
     userStats: {},
-    postStats: {},
+    selectableClasses: [],
 };
 
 export default (state = initialState, action) => {
