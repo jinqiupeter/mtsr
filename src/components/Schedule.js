@@ -5,7 +5,7 @@
 
 import React, {Component} from 'react';
 import {
-    StyleSheet, View, Text,
+    StyleSheet, ScrollView, Text,
     SegmentedControlIOS, InteractionManager
 } from 'react-native';
 
@@ -63,6 +63,7 @@ export default class Schedule extends Component {
                 renderBackButton={() => null}
                 renderTitle={() => components.NavBarTitle({title: '选课'})}
             >
+                <ScrollView>
                 <SegmentedControlIOS
                     values={['Regular选课', 'Makeup选课']}
                     selectedIndex={input[sceneKey].selectedScheduleType}
@@ -78,6 +79,7 @@ export default class Schedule extends Component {
                     :
                     <containers.Makeup/>
                 }
+                </ScrollView>
             </components.Layout>
         );
     }

@@ -15,6 +15,7 @@ import isBefore from 'date-fns/is_before';
 
 export const RESET_SELECTABLE = 'reset_selectable';
 export const SET_SELECTABLE = 'set_selectable';
+export const SET_PACKED_SELECTABLE = "set_packed_selectable";
 export const CHANGE_MONTH = "change_month";
 
 export function resetSelectable() {
@@ -86,6 +87,7 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 let monthAge = object.users[account.userId].monthage;
                 let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
 
+                dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
                 dispatch({type: SET_SELECTABLE, selectableDays});
 
                 if (cbOk) {

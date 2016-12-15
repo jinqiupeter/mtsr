@@ -3,7 +3,7 @@ import * as actions from '../actions';
 
 const initialState = {
     selectableDays: [],
-    selectedDate: new Date(),
+    packedSelectableClasses: [],
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +12,12 @@ export default (state = initialState, action) => {
         return {
             ...state,
             selectableDays: selectableDays,
+        };
+    } else if (action.type == actions.SET_PACKED_SELECTABLE) {
+        let {packedSelectableClasses} = action;
+        return {
+            ...state,
+            packedSelectableClasses,
         };
     } else if (action.type == actions.CHANGE_MONTH) {
         let {selectableDays} = action;

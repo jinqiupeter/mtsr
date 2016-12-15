@@ -2,33 +2,73 @@
  * Created by peter on 14/12/2016.
  */
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import isSameDay from 'date-fns/is_same_day';
+import {View, StyleSheet, ListView, ScrollView, Text} from 'react-native';
 
 import * as helpers from '../helpers';
 import * as components from '../';
 import {COLOR, customDayHeadings, customMonthNames} from '../../config';
 import {TextNotice} from '../common';
+import logger from '../../logger';
+import {default as Selectable} from './Selectable';
 
 export default class Regular extends Component {
+    componentWillMount() {
+        this.refreshing = false;
+        let rows = this._getRowsPacked();
+        this.ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) =>
+            r1.length != r2.length
+        }).cloneWithRows(rows);
+    }
+
+    _getRowsPacked(props) {
+        props = props || this.props;
+        let {packedSelectableClasses} = props;
+
+        let reduced = packedSelectableClasses.sort((a, b) => {
+            return a.kcxq > b.kcxq ? 1 : a.kcxq == b.kcxq ? 0 : -1;
+        }).reduce((accumulator, v) => {
+            accumulator[v.kcxq] = (accumulator[v.kcxq] || []).concat([v]);
+
+            return accumulator;
+        }, {});
+
+        let rows = Object.keys(reduced).map((v) => {
+            return {kcxq: v, classes: reduced[v]};
+        });
+        return Object.values(rows);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let rows = this._getRowsPacked(nextProps);
+        this.ds = this.ds.cloneWithRows(rows);
+    }
     render() {
-        let {selectedDate, eventDates} = this.props;
+        let {selectedDate} = this.props;
+        logger.debug("props in Regular: ", this.props);
         return (
-            <View style={{flex: 1, paddingTop: 20, backgroundColor: COLOR.backgroundNormal}}>
-                <TextNotice>Regular 选课</TextNotice>
+            <ScrollView style={{flex: 1, paddingTop: 20, backgroundColor: COLOR.backgroundNormal}}>
                 <TextNotice>
                     已选日期: {helpers.yearMonthDayWeekText(selectedDate)}
                 </TextNotice>
-                <components.ButtonWithBg
-                    text='查看详情'
-                    onPress={() => Actions.SelectClass({selectable: eventDates.find((v) => {
-                            return isSameDay(v.date, selectedDate);
-                        }) || {date: selectedDate, hasClass: false}})}
-                    textStyle={{fontSize: 16}}
-                    containerStyle={{marginTop: 20}}
+                <ListView
+
+                    dataSource={this.ds}
+                    enableEmptySections={true}
+                    pageSize={5}
+                    initialListSize={5}
+                    renderRow={(packedSelectable) =>
+                            <View style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
+                                <TextNotice>
+                                    {helpers.WEEK_DAYS[packedSelectable.kcxq]}
+                                </TextNotice>
+                                <Selectable
+                                    classes={packedSelectable.classes}
+                                />
+                            </View>
+                    }
                 />
-            </View>
+            </ScrollView>
         )
     }
 }
