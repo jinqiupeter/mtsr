@@ -20,3 +20,4 @@ export * from './classes';
 export * from './activities';
 export * from './security';
 export * from './schedule';
+export * from './about';

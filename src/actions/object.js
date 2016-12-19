@@ -18,7 +18,7 @@ export function resetObjectCache() {
 
 function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     unattendedClasses, unattendedClassIds, activities, activityIds,
-    files, fileIds, userStats, selectableClasses, selectableClassIds}) {
+    files, fileIds, faqs, faqIds, userStats, selectableClasses, selectableClassIds}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
             o[v.id] = v;
@@ -57,6 +57,9 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     }
     if (selectableClasses !== undefined) {
         action.selectableClasses = selectableClasses;
+    }
+    if (faqs !== undefined) {
+        action.faqs = aToO(faqs, faqIds);
     }
 
     return action;
@@ -133,6 +136,12 @@ export function cacheUnattendedClasses(object, unattendedClasses, classIds) {
 
 export function cacheSelectableClasses(object, selectableClasses, classIds) {
     let ps = [cacheObjects({selectableClasses, classIds})];
+
+    return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
+}
+
+export function cacheFaqs(object, faqs, faqIds) {
+    let ps = [cacheObjects({faqs, faqIds})];
 
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }
@@ -223,25 +232,7 @@ export function cacheUserStats(userStats) {
     return cacheObjects({userStats});
 }
 
-export async function cacheUserStatByIds(object, userIds, update=false) {
-    userIds = Array.from(new Set(userIds));
-    if (!update) {
-        userIds = userIds.filter((v) => object.userStats[v] === undefined);
-    }
-    if (userIds.length > 0) {
-        let response;
-        try {
-            response = await apis.userStats(userIds);
-        } catch (error) {
-            logger.debug("failed to get user stats: ", error);
-            return actions.handleApiError(error);
-        }
-        let {data: {stats: userStats}} = response;
-        return cacheUserStats(userStats);
-    } else {
-        return cacheUserStats({});
-    }
-}
+
 
 export function cachePostStats(postStats) {
     return cacheObjects({postStats});

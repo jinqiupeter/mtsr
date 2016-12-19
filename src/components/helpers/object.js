@@ -46,6 +46,16 @@ export function activitiesFromCache(object, activityId) {
     return Object.assign({}, activity);
 }
 
+export function faqFromCache(object, faqId) {
+    let faq = object.faqs[faqId];
+    if (!faq) {
+        console.warn(`faq ${faqId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, faq);
+}
+
 export function packedSelectablesFromCache(object) {
     logger.debug("getting packed selectables from: ", object);
     let packed = object.selectableClasses;

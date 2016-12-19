@@ -31,6 +31,7 @@ export default class ZQCApp extends Component {
                     <Scene key='EditProfileAvatar' component={containers.EditProfileAvatar}/>
 
                     <Scene key='About' component={containers.About}/>
+                    <Scene key="FAQ" component={containers.FAQ}/>
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>

@@ -19,6 +19,7 @@ import account from './account';
 import classes from './classes';
 import activities from './activities';
 import schedule from './schedule';
+import about from './about';
 
 export default combineReducers({
     navigation,
@@ -36,4 +37,5 @@ export default combineReducers({
     classes,
     activities,
     schedule,
+    about,
 });

@@ -14,6 +14,7 @@ const initialState = {
     files: {},
     userStats: {},
     selectableClasses: [],
+    faqs: [],
 };
 
 export default (state = initialState, action) => {

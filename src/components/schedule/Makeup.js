@@ -18,6 +18,7 @@ import logger from '../../logger';
 export default class Makeup extends Component {
     render() {
         let {selectedDate, eventDates, changeMonth, saveInput} = this.props;
+        selectedDate = selectedDate || new Date();
         let sceneKey = 'Schedule';
         logger.debug("Props in Makeup render: ", this.props);
         let showMonth = (delta) => {

@@ -83,11 +83,40 @@ export default class Me extends Component {
           <components.Block containerStyle={{marginTop: 10}}>
             <components.BlockItem
               leftIcon='info-circle'
-              leftText='关于'
+              leftText='关于蒙特梭利'
               rightIcon='angle-right'
               onPress={() => Actions.About()}
               leftIconStyle={{color: COLOR.theme}}
               containerStyle={{borderTopWidth: 0}}
+            />
+            <components.BlockItem
+                leftIcon='question-circle'
+                leftText='常见问题'
+                rightIcon='angle-right'
+                onPress={() => Actions.FAQ()}
+                leftIconStyle={{color: COLOR.theme}}
+                containerStyle={{height: 50}}
+            />
+            <components.BlockItem
+                leftIcon='comments-o'
+                leftText='留言反馈'
+                rightIcon='angle-right'
+                onPress={() => Actions.About()}
+                leftIconStyle={{color: COLOR.theme}}
+
+            />
+          </components.Block>
+          <components.TextNotice>
+            帐号安全
+          </components.TextNotice>
+          <components.Block>
+            <components.BlockItem
+                leftIcon='info-circle'
+                leftText='修改密码'
+                rightIcon='angle-right'
+                onPress={() => Actions.About()}
+                leftIconStyle={{color: COLOR.theme}}
+                containerStyle={{borderTopWidth: 0, height: 30}}
             />
           </components.Block>
           <components.ButtonWithBg

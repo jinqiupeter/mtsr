@@ -45,6 +45,8 @@ export default class Regular extends Component {
     }
     render() {
         let {selectedDate} = this.props;
+        selectedDate = selectedDate || new Date();
+
         logger.debug("props in Regular: ", this.props);
         return (
             <ScrollView style={{flex: 1, paddingTop: 20, backgroundColor: COLOR.backgroundNormal}}>
