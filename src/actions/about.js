@@ -9,6 +9,7 @@ import * as helpers from '../components/helpers';
 
 export const RESET_FAQ = 'reset_faq';
 export const SET_FAQ = 'set_faq';
+export const APPEND_FAQ = 'append_faq';
 
 export function resetFaq() {
     return {
@@ -32,7 +33,11 @@ export function getFqa({offset = 0, limit = 10, cbOk, cbFail, cbFinish}) {
 
                 let faqIds = faqs.map((v) => v.id);
                 logger.debug("dispatching FAQIDS: ", faqIds);
-                dispatch({type: SET_FAQ, faqIds});
+                if (offset == 0) {
+                    dispatch({type: SET_FAQ, faqIds});
+                } else {
+                    dispatch({type: APPEND_FAQ, faqIds});
+                }
 
                 if (cbOk) {
                     cbOk();

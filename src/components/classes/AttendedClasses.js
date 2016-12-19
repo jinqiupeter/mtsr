@@ -101,7 +101,8 @@ export default class AttendedClasses extends Component {
                     onEndReached={() => {
                         if (network.isConnected && attendedClasses.length > 0) {
                             getAttendedClasses({
-                                offset: attendedClasses.length - 1,
+                                offset: attendedClasses.length,
+                                offset: attendedClasses.length,
                             });
                         }
                     }}

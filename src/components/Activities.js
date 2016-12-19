@@ -126,9 +126,9 @@ export default class Activities extends Component {
                             />
                         }
                         onEndReached={() => {
-                            if (network.isConnected && activities.length > 0 && activities.length > 10) {
+                            if (network.isConnected && activities.length > 0) {
                                 getActivities({
-                                    offset: activities.length - 1,
+                                    offset: activities.length,
                                 });
                             }
                         }}

@@ -14,6 +14,12 @@ export default (state = initialState, action) => {
             ...state,
             faqIds,
         };
+    } else if (action.type == actions.APPEND_FAQ) {
+        let {faqIds} = action;
+        return {
+            ...state,
+            faqIds: state.faqIds.concat(faqIds),
+        }
     } else if (action.type == actions.RESET || action.type == actions.RESET_FAQ) {
         return initialState;
     } else {

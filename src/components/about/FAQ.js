@@ -118,17 +118,36 @@ export default class FAQ extends Component {
                             />
                         }
                         onEndReached={() => {
-                            if (network.isConnected && faqIds.length > 10) {
+                            if (network.isConnected && faqIds.length > 0) {
                                 getFaq({
-                                    offset: faqIds.length - 1,
+                                    offset: faqIds.length,
                                 });
                             }
                         }}
                     />
                     :
-                    <TextNotice>
-                        {loading.loadingCount > 0 ? "加载中" : '没有常见问题哦！'}
-                    </TextNotice>
+                    <ScrollView
+                        {...this.props}
+                        refreshControl={
+                                <RefreshControl
+                                   refreshing={this.refreshing}
+                                    onRefresh={() => {
+                                        disableLoading();
+                                        this.refreshing = true;
+                                        this._refresh({
+                                            cbFinish: () => {
+                                                this.refreshing = false;
+                                                enableLoading();
+                                            },
+                                        });
+                                    }}
+                                />
+                              }
+                    >
+                        <TextNotice>
+                            {loading.loadingCount > 0 ? "加载中" : '没有常见问题哦！'}
+                        </TextNotice>
+                    </ScrollView>
                 }
             </components.Layout>
         );
