@@ -7,3 +7,7 @@ import {getApi, postApi} from './';
 export function getFaq({limit = 10, offset = 0}) {
     return getApi(`${API_ORIGIN}/faq`, {limit, offset});
 }
+
+export function getFeedback({xpybh, limit = 10, offset = 0}) {
+    return getApi(`${API_ORIGIN}/feedback`, {xpybh, limit, offset});
+}

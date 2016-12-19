@@ -56,6 +56,16 @@ export function faqFromCache(object, faqId) {
     return Object.assign({}, faq);
 }
 
+export function feedBackFromCache(object, feedbackId) {
+    let feedback = object.feedbacks[feedbackId];
+    if (!feedback) {
+        console.warn(`feedback ${feedbackId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, feedback);
+}
+
 export function packedSelectablesFromCache(object) {
     logger.debug("getting packed selectables from: ", object);
     let packed = object.selectableClasses;

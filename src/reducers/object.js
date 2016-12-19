@@ -15,6 +15,7 @@ const initialState = {
     userStats: {},
     selectableClasses: [],
     faqs: [],
+    feedbacks: [],
 };
 
 export default (state = initialState, action) => {

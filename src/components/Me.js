@@ -98,10 +98,10 @@ export default class Me extends Component {
                 containerStyle={{height: 50}}
             />
             <components.BlockItem
-                leftIcon='comments-o'
+                leftIcon='comments'
                 leftText='留言反馈'
                 rightIcon='angle-right'
-                onPress={() => Actions.About()}
+                onPress={() => Actions.Feedback()}
                 leftIconStyle={{color: COLOR.theme}}
 
             />

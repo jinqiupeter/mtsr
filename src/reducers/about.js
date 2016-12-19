@@ -5,6 +5,7 @@ import * as actions from '../actions';
 
 const initialState = {
     faqIds: [],
+    feedbackIds: [],
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +21,21 @@ export default (state = initialState, action) => {
             ...state,
             faqIds: state.faqIds.concat(faqIds),
         }
-    } else if (action.type == actions.RESET || action.type == actions.RESET_FAQ) {
+    } else if (action.type == actions.SET_FEEDBACK) {
+        let {feedbackIds} = action;
+        return {
+            ...state,
+            feedbackIds,
+        };
+    } else if (action.type == actions.APPEND_FEEDBACK) {
+        let {feedbackIds} = action;
+        return {
+            ...state,
+            faqIds: state.faqIds.concat(feedbackIds),
+        }
+    } else if (action.type == actions.RESET
+        || action.type == actions.RESET_FAQ
+        || action.type == actions.RESET_FEEDBACK) {
         return initialState;
     } else {
         return state;
