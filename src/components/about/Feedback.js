@@ -11,6 +11,7 @@ import * as utils from '../../utils';
 import * as components from '../';
 import {COLOR} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Actions} from 'react-native-router-flux';
 
 export default class Feedback extends Component {
     componentWillMount() {
@@ -113,7 +114,7 @@ export default class Feedback extends Component {
                                 </Text>
                             </View>
 
-                            {!!feedback.answer ? <TextNotice>{'回答: ' + feedback.answer}</TextNotice> : null}
+                            <TextNotice>{!!feedback.answer ? '回答: ' + feedback.answer : '(还没有回复)'}</TextNotice>
                             </components.Block>
                         }
                         renderScrollComponent={(props) =>

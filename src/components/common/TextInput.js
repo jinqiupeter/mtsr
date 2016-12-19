@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, View, Text, TextInput, Platform} from 'react-native';
 import {Actions} from 'react-native-router-flux';
@@ -11,7 +6,7 @@ import flattenStyle from 'flattenStyle';
 
 import {COLOR} from '../../config';
 
-export default ({onRef, style, ...props}) => {
+export default ({onRef, style, multiline = false, ...props}) => {
   let {fontSize} = flattenStyle(style || styles.input);
   return (
     <TextInput
@@ -21,6 +16,7 @@ export default ({onRef, style, ...props}) => {
       returnKeyType='done'
       {...props}
       ref={onRef}
+      multiline={multiline}
       style={[styles.input, Platform.select({ios: {height: (fontSize + 10)}}), style]}
     />
   );

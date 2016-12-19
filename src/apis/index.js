@@ -9,4 +9,4 @@ export * from './court';
 export * from './security';
 export * from './stat';
 export * from './schedule';
-export * from './faq';
+export * from './about';

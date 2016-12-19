@@ -32,6 +32,7 @@ export default class ZQCApp extends Component {
 
                     <Scene key='About' component={containers.About}/>
                     <Scene key="FAQ" component={containers.FAQ}/>
+                    <Scene key="CreateFeedback" component={containers.CreateFeedback}/>
                     <Scene key="Feedback" component={containers.Feedback} />
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
@@ -42,5 +43,3 @@ export default class ZQCApp extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});

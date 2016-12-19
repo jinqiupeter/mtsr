@@ -107,3 +107,32 @@ export function getFeedback({xpybh, offset = 0, limit = 10, cbOk, cbFail, cbFini
             });
     };
 }
+
+export function createFeedback(sceneKey, cbOk, cbFail, cbFinish) {
+    return (dispatch, getState) => {
+        let {input} = getState();
+
+        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
+            let {xpybh, feedback} = input[sceneKey];
+            apis.createFeedback({xpybh, feedback})
+                .then(() => {
+                    if (cbOk) {
+                        cbOk();
+                    }
+                    if (cbFinish) {
+                        cbFinish();
+                    }
+                })
+                .catch((error) => {
+                    dispatch(actions.handleApiError(error));
+                    if (cbFail) {
+                        cbFail();
+                    }
+                    if (cbFinish) {
+                        cbFinish();
+                    }
+                });
+        }));
+
+    };
+}

@@ -1,9 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
-import logger from '../logger';
 import * as actions from '../actions';
 
 const initialState = {
@@ -38,6 +32,9 @@ const initialState = {
     Schedule: {
         selectedScheduleType: 0,
         startDate: new Date(),
+    },
+    CreateFeedback: {
+        feedback: '',
     }
 };
 
