@@ -10,7 +10,7 @@ import {SCREEN_HEIGHT} from '../../config';
 
 export default class CreateFeedback extends Component {
     render() {
-        let {sceneKey, loading, processing, error, input, saveInput, createFeedback} = this.props;
+        let {sceneKey, loading, processing, error, input, saveInput, createFeedback, cbOk} = this.props;
         return (
             <components.Layout
                 sceneKey={sceneKey}
@@ -22,20 +22,27 @@ export default class CreateFeedback extends Component {
                 renderRightButton={() => components.NavBarDone({
                     onPress: () => {
                         dismissKeyboard();
-                        createFeedback(sceneKey, () => {Actions.pop()});
+                        createFeedback(sceneKey, () => {
+                            Actions.pop();
+                            if(cbOk) {
+                                cbOk();
+                            }
+                        });
                     },
                 })}
             >
                 <components.Form>
                     <components.FormItem containerStyle={{borderTopWidth: 0}}>
                         <components.TextInput
-                            placeholder='在此输入反馈'
+                            placeholder='在此输入留言'
                             returnKeyType='done'
+                            onSubmitEditing={() => dismissKeyboard()}
                             defaultValue={input[sceneKey].feedback}
                             autoFocus={true}
                             onChangeText={(text) => saveInput(sceneKey, {feedback: text.trim()})}
                             multiline={true}
                             style={{height: SCREEN_HEIGHT/2}}
+                            blurOnSubmit={true}
                         />
                     </components.FormItem>
                 </components.Form>
@@ -43,7 +50,12 @@ export default class CreateFeedback extends Component {
                     text='提交'
                     onPress={() => {
                         dismissKeyboard();
-                        createFeedback(sceneKey, () => {Actions.pop()});
+                        createFeedback(sceneKey, () => {
+                            Actions.pop();
+                            if(cbOk) {
+                                cbOk();
+                            }
+                        });
                     }}
                     textStyle={{fontSize: 16, alignItems: 'stretch'}}
                 />

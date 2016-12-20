@@ -78,6 +78,10 @@ export default class Feedback extends Component {
                 error={error}
                 renderTitle={() => components.NavBarTitle({title: '留言反馈'})}
                 renderBackButton={components.NavBarBack}
+                renderRightButton={() => components.NavBarRightButton({
+                    text: '留言',
+                    onPress: () => Actions.CreateFeedback({cbOk: () => this._refresh()})
+                })}
                 containerStyle={{flex: 1}}
             >
                 <ScrollView
@@ -99,6 +103,10 @@ export default class Feedback extends Component {
                                 />
                               }
                 >
+                    <TextNotice
+                    >
+                        蒙特梭利非常重视家长的反馈，您对我们有任何的建议和意见都可以在此留言，我们会及时回复。留言只有校长能查看。
+                    </TextNotice>
                 {feedbackIds.length > 0
                     ? <ListView
                         dataSource={this.ds}
@@ -114,7 +122,7 @@ export default class Feedback extends Component {
                                 </Text>
                             </View>
 
-                            <TextNotice>{!!feedback.answer ? '回答: ' + feedback.answer : '(还没有回复)'}</TextNotice>
+                            <TextNotice>{feedback.answered ? '校长回答: ' + feedback.answer : '(还没有回复)'}</TextNotice>
                             </components.Block>
                         }
                         renderScrollComponent={(props) =>
@@ -152,14 +160,9 @@ export default class Feedback extends Component {
 
                 }
 
-                <TextNotice
-                    style={{paddingTop: 20, paddingBottom: 0}}
-                >
-                    蒙特梭利非常重视家长的反馈，您对我们有任何的建议和意见都可以在此留言，我们会及时回复。留言只有校长能查看。
-                </TextNotice>
                 <components.ButtonWithBg
                     text='给校长留言'
-                    onPress={() => Actions.CreateFeedback()}
+                    onPress={() => Actions.CreateFeedback({cbOk: () => this._refresh()})}
                     textStyle={{fontSize: 16, alignItems: 'stretch'}}
                 />
                 </ScrollView>
