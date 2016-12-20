@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
         let {activityIds} = action;
         return {
             ...state,
-            activityIds: (state.activityIds || []).concat(activityIds),
+            activityIds: state.activityIds.concat(activityIds),
         };
     } else if (action.type == actions.RESET || action.type == actions.RESET_ACTIVITIES) {
         return initialState;

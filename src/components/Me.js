@@ -5,8 +5,7 @@
 
 import React, {Component} from 'react';
 import {
-    StyleSheet, View, Text, Image, ListView, ScrollView, RefreshControl,
-    TouchableOpacity, InteractionManager
+    StyleSheet, View,Alert, ScrollView, RefreshControl,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
@@ -152,7 +151,16 @@ export default class Me extends Component {
                     </components.Block>
                     <components.ButtonWithBg
                         text='退出当前帐号'
-                        onPress={() => logoutRequest()}
+                        onPress={ () => {
+                            Alert.alert(
+                                '退出',
+                                '确定退出当前帐号吗？',
+                                [
+                                    {text: '取消', onPress: () => {}},
+                                    {text: '确定', onPress: () => logoutRequest()},
+                                ],
+                            );
+                        }}
                         textStyle={{fontSize: 16}}
                         containerStyle={{marginTop: 20}}
                     />

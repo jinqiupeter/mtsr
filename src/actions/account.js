@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {Actions, ActionConst} from 'react-native-router-flux';
 import ImageResizer from 'react-native-image-resizer';
 
@@ -242,7 +237,7 @@ export function changePassword(sceneKey, cbOk) {
             apis.changePassword({currentPassword, newPassword, newPasswordRepeat})
                 .then(() => {
                     dispatch(actions.errorFlash('密码修改成功，请重新登录'));
-                    setTimeout(() => Actions.Bootstrap({isReset: true}), 2000);
+                    setTimeout(() => Actions.Bootstrap({isReset: true}), 3000);
                 })
                 .catch((error) => dispatch(actions.handleApiError(error)));
         }));

@@ -83,7 +83,7 @@ export function bootstrap() {
             booted = true;
         }
 
-        dispatch(actions.processingTask('正在检测网络和位置'));
+        dispatch(actions.processingTask('正在检测网络'));
         utils.waitingFor({
             condition: () => {
                 let {location, store, network} = getState();
