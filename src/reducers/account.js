@@ -8,8 +8,6 @@ import * as actions from '../actions';
 
 const initialState = {
   userId: '',
-  city: {name: '成都', code: '028'},
-  sport: {name: '网球', code: 'tennis'},
 };
 
 export default (state = initialState, action) => {

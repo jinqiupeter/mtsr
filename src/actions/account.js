@@ -223,3 +223,28 @@ export function editProfileGenderSubmit(sceneKey) {
         }));
     };
 }
+
+export function changePassword(sceneKey, cbOk) {
+    return (dispatch, getState) => {
+        let {input} = getState();
+
+        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
+            let {currentPassword, newPassword, newPasswordRepeat} = input[sceneKey];
+            if (currentPassword == "") {
+                dispatch(actions.errorFlash('请输入当前密码！'));
+                return;
+            }
+            if (newPasswordRepeat != newPassword) {
+                dispatch(actions.errorFlash('两次密码输入不匹配！'));
+                return;
+            }
+
+            apis.changePassword({currentPassword, newPassword, newPasswordRepeat})
+                .then(() => {
+                    dispatch(actions.errorFlash('密码修改成功，请重新登录'));
+                    setTimeout(() => Actions.Bootstrap({isReset: true}), 2000);
+                })
+                .catch((error) => dispatch(actions.handleApiError(error)));
+        }));
+    };
+}

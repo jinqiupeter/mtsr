@@ -122,7 +122,7 @@ export default class Me extends Component {
                             leftIcon='lock'
                             leftText='修改密码'
                             rightIcon='angle-right'
-                            onPress={() => Actions.About()}
+                            onPress={() => Actions.EditProfilePassword()}
                             leftIconStyle={{color: COLOR.theme}}
                             containerStyle={{borderTopWidth: 0, height: 30}}
                         />

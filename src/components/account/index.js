@@ -16,3 +16,4 @@ export {default as GenderPicker} from './GenderPicker';
 export {default as EditProfile} from './EditProfile';
 export {default as EditProfileNickname} from './EditProfileNickname';
 export {default as EditProfileAvatar} from './EditProfileAvatar';
+export {default as EditProfilePassword} from './EditProfilePassword';

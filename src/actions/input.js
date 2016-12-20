@@ -83,6 +83,28 @@ let passwordConstraints = {
     },
 };
 
+let newPasswordConstraints = {
+    presence: {
+        message: '请输入新密码。',
+    },
+    length: {
+        minimum: 6,
+        maximum: 20,
+        message: '密码长度须在6到20之间。'
+    },
+};
+
+let newPasswordRepeatConstraints = {
+    presence: {
+        message: '请再次输入新密码。',
+    },
+    length: {
+        minimum: 6,
+        maximum: 20,
+        message: '密码长度须在6到20之间。'
+    },
+};
+
 let verifyCodeConstraints = {
     presence: {
         message: '请输入验证码。',
@@ -130,5 +152,10 @@ let constraints = {
                 message: '留言长度须在10到500个字符之间。'
             },
         }
+    },
+    EditProfilePassword: {
+        currentPassword: passwordConstraints,
+        newPassword: newPasswordConstraints,
+        newPasswordRepeat: newPasswordRepeatConstraints,
     }
 };
