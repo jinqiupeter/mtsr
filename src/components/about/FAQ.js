@@ -19,6 +19,9 @@ export default class FAQ extends Component {
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
             r1.id != r2.id
+            || r1.question != r2.question
+            || r1.answer != r2.answer
+            || r1.weight != r2.weight
         }).cloneWithRows(rows);
     }
 

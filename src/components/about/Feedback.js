@@ -20,6 +20,8 @@ export default class Feedback extends Component {
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
             r1.id != r2.id
+            || r1.question != r2.question
+            || r1.answer != r2.answer
         }).cloneWithRows(rows);
     }
 
@@ -42,7 +44,6 @@ export default class Feedback extends Component {
         InteractionManager.runAfterInteractions(() => {
             let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
-                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });
