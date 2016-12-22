@@ -35,6 +35,14 @@ const initialState = {
     },
     CreateFeedback: {
         feedback: '',
+    },
+    CreateReferral: {
+        xm: '',
+        csrq: '',
+        mqxm: '',
+        mqdh: '',
+        fqxm: '',
+        fqdh: '',
     }
 };
 

@@ -137,7 +137,7 @@ export default class Me extends Component {
                             leftIcon='share-alt-square'
                             leftText='推荐朋友'
                             rightIcon='angle-right'
-                            onPress={() => Actions.About()}
+                            onPress={() => Actions.Referral()}
                             leftIconStyle={{color: COLOR.theme}}
                             containerStyle={{borderTopWidth: 0}}
                         />

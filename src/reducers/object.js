@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import logger from '../logger';
 import * as actions from '../actions';
 
@@ -16,6 +11,7 @@ const initialState = {
     selectableClasses: [],
     faqs: [],
     feedbacks: [],
+    referrals: [],
 };
 
 export default (state = initialState, action) => {

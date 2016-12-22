@@ -66,6 +66,16 @@ export function feedBackFromCache(object, feedbackId) {
     return Object.assign({}, feedback);
 }
 
+export function referralFromCache(object, referralId) {
+    let referral = object.referrals[referralId];
+    if (!referral) {
+        console.warn(`referral ${referralId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, referral);
+}
+
 export function packedSelectablesFromCache(object) {
     logger.debug("getting packed selectables from: ", object);
     let packed = object.selectableClasses;

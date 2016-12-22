@@ -6,6 +6,7 @@ import * as actions from '../actions';
 const initialState = {
     faqIds: [],
     feedbackIds: [],
+    referralIds: [],
 };
 
 export default (state = initialState, action) => {
@@ -31,11 +32,25 @@ export default (state = initialState, action) => {
         let {feedbackIds} = action;
         return {
             ...state,
-            faqIds: state.faqIds.concat(feedbackIds),
+            feedbackIds: state.feedbackIds.concat(feedbackIds),
+        }
+    } else if (action.type == actions.SET_REFERRAL) {
+        let {referralIds} = action;
+        return {
+            ...state,
+            referralIds,
+        };
+    } else if (action.type == actions.APPENND_REFERRAL) {
+        let {referralIds} = action;
+        return {
+            ...state,
+            referralIds: state.referralIds.concat(referralIds),
         }
     } else if (action.type == actions.RESET
         || action.type == actions.RESET_FAQ
-        || action.type == actions.RESET_FEEDBACK) {
+        || action.type == actions.RESET_FEEDBACK
+        || action.type == actions.RESET_REFERRAL
+    ) {
         return initialState;
     } else {
         return state;

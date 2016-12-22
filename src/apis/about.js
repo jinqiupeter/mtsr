@@ -15,3 +15,11 @@ export function getFeedback({xpybh, limit = 10, offset = 0}) {
 export function createFeedback({xpybh, feedback}) {
     return postApi(`${API_ORIGIN}/feedback`, {xpybh, feedback})
 }
+
+export function getReferral({xpybh, limit = 10, offset = 0}) {
+    return getApi(`${API_ORIGIN}/referral`, {xpybh, limit, offset});
+}
+
+export function createReferral({xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh}) {
+    return postApi(`${API_ORIGIN}/referral`, {xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh})
+}
