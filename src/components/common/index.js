@@ -42,3 +42,5 @@ export {default as BlockItem} from './BlockItem';
 
 export {default as Section} from './Section';
 export {default as CalendarPicker} from './CalendarPicker';
+export {default as DatePick} from './DatePick';
+export {default as TakeInput} from './TakeInput';

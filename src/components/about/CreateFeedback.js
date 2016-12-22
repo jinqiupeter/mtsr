@@ -19,17 +19,6 @@ export default class CreateFeedback extends Component {
                 error={error}
                 renderTitle={() => components.NavBarTitle({title: '提交留言'})}
                 renderBackButton={components.NavBarCancel}
-                renderRightButton={() => components.NavBarDone({
-                    onPress: () => {
-                        dismissKeyboard();
-                        createFeedback(sceneKey, () => {
-                            Actions.pop();
-                            if(cbOk) {
-                                cbOk();
-                            }
-                        });
-                    },
-                })}
             >
                 <components.Form>
                     <components.FormItem containerStyle={{borderTopWidth: 0}}>
@@ -48,6 +37,7 @@ export default class CreateFeedback extends Component {
                 </components.Form>
                 <components.ButtonWithBg
                     text='提交'
+                    disabled={!input[sceneKey].validity}
                     onPress={() => {
                         dismissKeyboard();
                         createFeedback(sceneKey, () => {

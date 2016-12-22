@@ -12,6 +12,7 @@ import * as actions from './';
 
 export const RESET_INPUT = 'reset_input';
 export const INPUT = 'input';
+export const CHANGE_VALIDITY = "change_validity";
 
 export function resetInput(scene) {
     return {
@@ -50,8 +51,22 @@ export function validateInput(scene, input, cbOk) {
         });
         dispatch(actions.errorInput(scene, error));
 
-        if (cbOk !== undefined && Object.values(error).every(v => v.length == 0)) {
-            cbOk();
+        if (Object.values(error).every(v => v.length == 0)) {
+            dispatch({
+                type: CHANGE_VALIDITY,
+                scene,
+                validity: true,
+            });
+
+            if (cbOk !== undefined) {
+                cbOk();
+            }
+        } else {
+            dispatch({
+                type: CHANGE_VALIDITY,
+                scene,
+                validity: false,
+            });
         }
     };
 }
@@ -115,6 +130,17 @@ let verifyCodeConstraints = {
     },
 };
 
+let nameConstraints =  {
+    presence: {
+        message: '姓名不能为空',
+    },
+    length: {
+        minimum: 2,
+            maximum: 5,
+            message: '姓名必须是2到5个字符'
+    }
+};
+
 let constraints = {
     Login: {
         account: accountConstraints,
@@ -157,5 +183,12 @@ let constraints = {
         currentPassword: passwordConstraints,
         newPassword: newPasswordConstraints,
         newPasswordRepeat: newPasswordRepeatConstraints,
+    },
+    CreateReferral: {
+        xm: nameConstraints,
+        mqxm: nameConstraints,
+        fqxm: nameConstraints,
+        mqdh: mobileConstraints,
+        fqdh: mobileConstraints,
     }
 };

@@ -56,10 +56,6 @@ export default class Referral extends Component {
                 error={error}
                 renderTitle={() => components.NavBarTitle({title: '推荐朋友'})}
                 renderBackButton={components.NavBarBack}
-                renderRightButton={() => components.NavBarRightButton({
-                    text: '推荐',
-                    onPress: () => Actions.CreateReferral({cbOk: () => this._refresh()})
-                })}
                 containerStyle={{flex: 1}}
             >
                 <ScrollView

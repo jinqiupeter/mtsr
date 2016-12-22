@@ -12,7 +12,7 @@ import {COLOR} from '../../config';
 
 export default ({
     leftIcon, leftText, rightImage, rightText, rightIcon, onPress,
-    containerStyle, imageStyle, leftIconStyle, rightIconStyle
+    containerStyle, imageStyle, leftIconStyle, rightIconStyle, renderRightComponent
 }) => {
     return (
         <TouchableOpacity onPress={onPress} style={[styles.container, containerStyle]}>
@@ -23,6 +23,7 @@ export default ({
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 {rightImage ? <Image source={rightImage} style={[{width: 50, height: 50}, imageStyle]}/> : null}
                 {rightText ? <Text style={styles.rightText}>{rightText}</Text> : null}
+                {renderRightComponent ? renderRightComponent() : null}
                 {rightIcon ?
                     <Icon name={rightIcon} style={[styles.rightText, styles.rightIcon, rightIconStyle]}/> : null}
             </View>

@@ -191,6 +191,11 @@ export function createReferral(sceneKey, cbOk, cbFail, cbFinish) {
     return (dispatch, getState) => {
         let {input} = getState();
 
+        dispatch(actions.setSceneState(sceneKey, {
+            genderPickerVisible: false,
+            datePickerVisible: false,
+        }));
+
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh} = input[sceneKey];
             apis.createReferral({xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh})

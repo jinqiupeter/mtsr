@@ -1,48 +1,61 @@
 import * as actions from '../actions';
+import logger from '../logger';
 
 const initialState = {
     Login: {
         account: '',
         password: '',
+        validity: false,
     },
     RegisterMobile: {
         mobile: '',
         password: '',
+        validity: false,
     },
     RegisterVerify: {
         code: '',
+        validity: false,
     },
     RegisterProfile: {
         gender: '',
+        validity: false,
     },
 
     EditProfile: {
         gender: '',
+        validity: false,
     },
     EditProfileNickname: {
         nickname: '',
+        validity: false,
     },
     EditProfileAvatar: {
         profileImageUrl: '',
+        validity: false,
     },
     Classes: {
         selectedClassType: 0,
         startDate: new Date(),
+        validity: false,
     },
     Schedule: {
         selectedScheduleType: 0,
         startDate: new Date(),
+        validity: false,
     },
     CreateFeedback: {
         feedback: '',
+        validity: false,
     },
     CreateReferral: {
         xm: '',
+        gender: '',
         csrq: '',
         mqxm: '',
         mqdh: '',
         fqxm: '',
         fqdh: '',
+        validity: false,
     }
 };
 
@@ -63,6 +76,13 @@ export default (state = initialState, action) => {
                 [scene]: initialState[scene],
             };
         }
+    } else if (action.type == actions.CHANGE_VALIDITY) {
+        let {scene, validity} = action;
+
+        return  {
+            ...state,
+            [scene]: Object.assign({}, state[scene], {validity}),
+        };
     } else if (action.type == actions.RESET) {
         return initialState;
     } else {

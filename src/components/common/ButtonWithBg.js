@@ -11,17 +11,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLOR} from '../../config';
 import {BUTTON} from '../../config';
 
-export default ({text, disable=false, onPress, containerStyle, textStyle}) => {
-  let children = <Text style={[styles.text, (disable ? styles.textDisable : null), textStyle]}>{text}</Text>;
+export default ({text, disabled=false, onPress, containerStyle, textStyle}) => {
+  let children = <Text style={[styles.text, (disabled ? styles.textDisable : null), textStyle]}>{text}</Text>;
   if (onPress) {
     return (
-      <TouchableOpacity onPress={onPress} style={[styles.container, (disable ? styles.containerDisable : null), containerStyle]}>
+      <TouchableOpacity onPress={onPress} style={[styles.container, (disabled ? styles.containerDisable : null), containerStyle]}>
         {children}
       </TouchableOpacity>
     );
   } else {
     return (
-      <View style={[styles.container, (disable ? styles.containerDisable : null), containerStyle]}>
+      <View style={[styles.container, (disabled ? styles.containerDisable : null), containerStyle]}>
        {children}
       </View>
     );

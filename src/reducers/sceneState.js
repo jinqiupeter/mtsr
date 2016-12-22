@@ -20,6 +20,10 @@ const initialState = {
     Classes: {
         calendarPickerVisible: false
     },
+    CreateReferral: {
+        datePickerVisible: false,
+        genderPickerVisible: false,
+    }
 };
 
 export default (state = initialState, action) => {

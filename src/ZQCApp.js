@@ -5,6 +5,7 @@ import {Router, Scene} from 'react-native-router-flux';
 import {ActionConst} from 'react-native-router-flux';
 
 import * as containers from './containers';
+import * as components from './components';
 
 const RouterConnected = connect()(Router);
 
@@ -41,6 +42,9 @@ export default class ZQCApp extends Component {
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>
                     <Scene key="SelectClass" component={containers.SelectClass}/>
+
+                    <Scene key="TakeInput" component={components.TakeInput} />
+                    <Scene key="DatePick" component={components.DatePick} />
                 </Scene>
             </RouterConnected>
         );

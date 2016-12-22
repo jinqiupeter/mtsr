@@ -10,9 +10,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {COLOR} from '../../config';
 
-export default ({icon, text, onPress, containerStyle, iconStyle, textStyle}) => {
+export default ({icon, disabled=false, text, onPress, containerStyle, iconStyle, textStyle}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.container, containerStyle]}>
+    <TouchableOpacity disabled={disabled} onPress={onPress} style={[styles.container, containerStyle]}>
       {icon ? <Icon name={icon} style={[styles.icon, iconStyle]} /> : null}
       {text ? <Text style={[styles.text, textStyle]}>{text}</Text> : null}
     </TouchableOpacity>
