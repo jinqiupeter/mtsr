@@ -197,8 +197,8 @@ export function createReferral(sceneKey, cbOk, cbFail, cbFinish) {
         }));
 
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
-            let {xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh} = input[sceneKey];
-            apis.createReferral({xpybh, xm, csrq, mqxm, mqdh, fqxm, fqdh})
+            let {xpybh, xm, csrq, gender, mqxm, mqdh, fqxm, fqdh} = input[sceneKey];
+            apis.createReferral({xpybh, xm, csrq, gender, mqxm, mqdh, fqxm, fqdh})
                 .then(() => {
                     if (cbOk) {
                         cbOk();

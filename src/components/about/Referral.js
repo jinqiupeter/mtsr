@@ -45,7 +45,7 @@ export default class Referral extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, referralIds,
+        let {sceneKey, loading, processing, error, object, referralIds,
             disableLoading, enableLoading} = this.props;
 
         return (
@@ -83,12 +83,13 @@ export default class Referral extends Component {
                     </TextNotice>
                 {referralIds.length > 0
                     ? referralIds.map((id) => {
-                        let referral = helpers.referralFromCache(id);
+                        let referral = helpers.referralFromCache(object, id);
+                        logger.debug("showing referral: ", referral);
                         return (
-                        <components.Block containerStyle={{borderTopWidth: 1, borderColor: COLOR.linePrompt,}}>
+                        <components.Block key={id} containerStyle={{borderTopWidth: 1, borderColor: COLOR.linePrompt,}}>
                             <View style={{flexDirection: 'row'}}>
-                                <TextNotice>{referral.xm + " (" + referral.mqxm ? referral.mqxm : referral.fqxm + ")"}</TextNotice>
-                                <TextNotice>{helpers.yearMonthDayWeekText(referral.csrq)}</TextNotice>
+                                <TextNotice>{'小朋友：' + referral.xm + " (" + (referral.mqxm ? '妈妈：' + referral.mqxm : '爸爸： ' + referral.fqxm) + ")"}</TextNotice>
+                                <TextNotice>{'生日：' + helpers.yearMonthDayText(referral.csrq)}</TextNotice>
                             </View>
 
                             <TextNotice>{referral.kind != 1 ? '已联络': '未联络'}</TextNotice>
