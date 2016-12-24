@@ -61,8 +61,10 @@ export default class CreateReferral extends Component {
                                 style={{ backgroundColor: COLOR.backgroundLighter}}
                                 date={input[sceneKey].csrq}
                                 mode="date"
-                                showIcon={false}
-                                customStyles={{dateInput: {borderWidth: 0}}}
+                                showIcon={true}
+                                customStyles={{
+                                    dateInput: {borderWidth: 0},
+                                    btnTextConfirm: {color: COLOR.theme}}}
                                 format="YYYY-MM-DD"
                                 minDate="2000-05-01"
                                 maxDate="2026-06-01"

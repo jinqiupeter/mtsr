@@ -81,25 +81,34 @@ export default class Referral extends Component {
                     >
                         如果您喜欢蒙特索利，可以把您的朋友推荐给我们！
                     </TextNotice>
+                    {referralIds.length > 0 && <TextNotice>推荐历史：</TextNotice>}
                 {referralIds.length > 0
                     ? referralIds.map((id) => {
                         let referral = helpers.referralFromCache(object, id);
-                        logger.debug("showing referral: ", referral);
                         return (
-                        <components.Block key={id} containerStyle={{borderTopWidth: 1, borderColor: COLOR.linePrompt,}}>
-                            <View style={{flexDirection: 'row'}}>
-                                <TextNotice>{'小朋友：' + referral.xm + " (" + (referral.mqxm ? '妈妈：' + referral.mqxm : '爸爸： ' + referral.fqxm) + ")"}</TextNotice>
-                                <TextNotice>{'生日：' + helpers.yearMonthDayText(referral.csrq)}</TextNotice>
-                            </View>
+                            <components.Block key={id} containerStyle={{borderTopWidth: 1, borderColor: COLOR.linePrompt,}}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <TextNotice>{'小朋友：' + referral.xm }</TextNotice>
+                                    <TextNotice>{referral.gender=='m' ? '男' : '女'}</TextNotice>
+                                    <TextNotice>{'生日：' + helpers.yearMonthDayText(referral.csrq)}</TextNotice>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    {referral.mqxm != '' && <TextNotice>{'妈妈：' + referral.mqxm }</TextNotice>}
+                                    {referral.fqxm != '' && <TextNotice>{'爸爸：' + referral.fqxm }</TextNotice>}
+                                </View>
 
-                            <TextNotice>{referral.kind != 1 ? '已联络': '未联络'}</TextNotice>
-                        </components.Block>)
+                                <TextNotice
+                                    style={{fontSize: 10, color: COLOR.textPrompt}}
+                                >
+                                    {'推荐时间：' + helpers.yearMonthDayText(referral.txsj)}
+                                </TextNotice>
+                            </components.Block>
+                        )
                     })
                     :
                     <TextNotice>
                         {loading.loadingCount > 0 ? "加载中" : '您还没有推荐过朋友！'}
                     </TextNotice>
-
                 }
 
                 <components.ButtonWithBg

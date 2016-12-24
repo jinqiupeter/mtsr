@@ -22,8 +22,7 @@ export default class Me extends Component {
 
     render() {
         let {
-            sceneKey, loading, processing, error, location, object,
-            disableLoading, enableLoading, errorFlash
+            sceneKey, loading, processing, error, object, clearCache
         } = this.props;
         let {account, logoutRequest} = this.props;
 
@@ -122,6 +121,23 @@ export default class Me extends Component {
                             leftText='修改密码'
                             rightIcon='angle-right'
                             onPress={() => Actions.EditProfilePassword()}
+                            leftIconStyle={{color: COLOR.theme}}
+                            containerStyle={{borderTopWidth: 0, height: 30}}
+                        />
+                        <components.BlockItem
+                            leftIcon='eraser'
+                            leftText='清除缓存'
+                            rightIcon='angle-right'
+                            onPress={ () => {
+                                Alert.alert(
+                                    '清除缓存',
+                                    '清除缓存并重新登录？',
+                                    [
+                                        {text: '取消', onPress: () => {}},
+                                        {text: '确定', onPress: () => clearCache()},
+                                    ],
+                                );
+                            }}
                             leftIconStyle={{color: COLOR.theme}}
                             containerStyle={{borderTopWidth: 0, height: 30}}
                         />

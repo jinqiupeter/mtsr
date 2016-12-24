@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         marginRight: 5,
+        width: 20,
         fontSize: 16,
         color: COLOR.textNormal,
     },

@@ -149,6 +149,13 @@ export function logoutRequest() {
     };
 }
 
+export function clearCache() {
+    return (dispatch) => {
+        dispatch(actions.reset());
+        dispatch(actions.bootstrap());
+    };
+}
+
 export function editProfileNicknameSubmit(sceneKey) {
     return (dispatch, getState) => {
         let {input, } = getState();
