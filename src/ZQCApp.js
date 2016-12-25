@@ -38,6 +38,7 @@ export default class ZQCApp extends Component {
                     <Scene key="Feedback" component={containers.Feedback} />
                     <Scene key="Referral" component={containers.Referral} />
                     <Scene key="CreateReferral" component={containers.CreateReferral} />
+                    <Scene key="Sponsor" component={containers.Sponsor} />
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>
@@ -45,6 +46,7 @@ export default class ZQCApp extends Component {
 
                     <Scene key="TakeInput" component={components.TakeInput} />
                     <Scene key="DatePick" component={components.DatePick} />
+                    <Scene key="Web" component={components.Web} />
                 </Scene>
             </RouterConnected>
         );

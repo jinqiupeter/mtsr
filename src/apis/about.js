@@ -23,3 +23,7 @@ export function getReferral({xpybh, limit = 10, offset = 0}) {
 export function createReferral(referral) {
     return postApi(`${API_ORIGIN}/referral`, referral)
 }
+
+export function getSponsor({limit = 10, offset = 0}) {
+    return getApi(`${API_ORIGIN}/sponsor`, {limit, offset});
+}

@@ -19,7 +19,7 @@ export function resetObjectCache() {
 function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     unattendedClasses, unattendedClassIds, activities, activityIds,
     files, fileIds, faqs, faqIds, userStats, selectableClasses, selectableClassIds,
-    feedbacks, feedbackIds, referrals, referralIds}) {
+    feedbacks, feedbackIds, referrals, referralIds, sponsors, sponsorIds}) {
     let aToO = (objects, objectIds) => {
         let o = objects.reduce((o, v) => {
             o[v.id] = v;
@@ -67,6 +67,9 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     }
     if (referrals !== undefined) {
         action.referrals = aToO(referrals, referralIds);
+    }
+    if (sponsors !== undefined) {
+        action.sponsors = aToO(sponsors, sponsorIds);
     }
 
     return action;
@@ -161,6 +164,12 @@ export function cacheFeedbacks(object, feedbacks, feedbackIds) {
 
 export function cacheReferrals(object, referrals, referralIds) {
     let ps = [cacheObjects({referrals, referralIds})];
+
+    return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
+}
+
+export function cacheSponsors(object, sponsors, sponsorIds) {
+    let ps = [cacheObjects({sponsors, sponsorIds})];
 
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
 }

@@ -44,3 +44,4 @@ export {default as Section} from './Section';
 export {default as CalendarPicker} from './CalendarPicker';
 export {default as DatePick} from './DatePick';
 export {default as TakeInput} from './TakeInput';
+export {default as Web} from './Web';

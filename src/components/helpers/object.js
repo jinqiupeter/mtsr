@@ -1,10 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-import logger from '../../logger';
-import parse from 'date-fns/parse';
-
 export function userFromCache(object, userId) {
     let user = object.users[userId];
     if (!user) {
@@ -76,8 +69,17 @@ export function referralFromCache(object, referralId) {
     return Object.assign({}, referral);
 }
 
+export function sponsorFromCache(object, sponsorId) {
+    let sponsor = object.sponsors[sponsorId];
+    if (!sponsor) {
+        console.warn(`sponsor ${sponsorId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, sponsor);
+}
+
 export function packedSelectablesFromCache(object) {
-    logger.debug("getting packed selectables from: ", object);
     let packed = object.selectableClasses;
     if (!packed) {
         console.warn(`selectableClasses not in cache`);

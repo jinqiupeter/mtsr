@@ -159,7 +159,14 @@ export default class Me extends Component {
                         />
                         <components.BlockItem
                             leftIcon='shopping-bag'
-                            leftText='合作商家'
+                            leftText='优惠商家'
+                            rightIcon='angle-right'
+                            onPress={() => Actions.Sponsor()}
+                            leftIconStyle={{color: COLOR.theme}}
+                        />
+                        <components.BlockItem
+                            leftIcon='home'
+                            leftText='蒙特索利托班'
                             rightIcon='angle-right'
                             onPress={() => Actions.Feedback()}
                             leftIconStyle={{color: COLOR.theme}}

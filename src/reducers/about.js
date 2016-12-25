@@ -7,6 +7,7 @@ const initialState = {
     faqIds: [],
     feedbackIds: [],
     referralIds: [],
+    sponsorIds: [],
 };
 
 export default (state = initialState, action) => {
@@ -40,16 +41,29 @@ export default (state = initialState, action) => {
             ...state,
             referralIds,
         };
-    } else if (action.type == actions.APPENND_REFERRAL) {
+    } else if (action.type == actions.APPEND_REFERRAL) {
         let {referralIds} = action;
         return {
             ...state,
             referralIds: state.referralIds.concat(referralIds),
         }
+    } else if (action.type == actions.SET_SPONSOR) {
+        let {sponsorIds} = action;
+        return {
+            ...state,
+            sponsorIds,
+        };
+    } else if (action.type == actions.APPEND_SPONSOR) {
+        let {sponsorIds} = action;
+        return {
+            ...state,
+            sponsorIds: state.sponsorIds.concat(sponsorIds),
+        }
     } else if (action.type == actions.RESET
         || action.type == actions.RESET_FAQ
         || action.type == actions.RESET_FEEDBACK
         || action.type == actions.RESET_REFERRAL
+        || action.type == actions.RESET_SPONSOR
     ) {
         return initialState;
     } else {
