@@ -87,7 +87,9 @@ export default class Sponsor extends Component {
                     {sponsorIds.length > 0
                         ? sponsorIds.map((id) => {
                             let sponsor = helpers.sponsorFromCache(object, id);
-                            let website = sponsor.website.match(/^http(s?):\/\//i) ? sponsor.website : 'http://' + sponsor.website;
+                            let website = sponsor.website.match(/^http(s?):\/\//i)
+                                ? sponsor.website
+                                : 'http://' + sponsor.website;
                             return (
                                 <components.Block
                                     key={id}
@@ -125,7 +127,7 @@ export default class Sponsor extends Component {
                         })
                         :
                         <TextNotice>
-                            {loading.loadingCount > 0 ? "加载中" : '列表为空！'}
+                            {loading.loadingCount > 0 ? "加载中" : '列表为空'}
                         </TextNotice>
                     }
                 </ScrollView>
