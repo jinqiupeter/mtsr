@@ -25,7 +25,7 @@ export default class UnattendedClass extends Component {
                     }}
                 >{helpers.yearMonthDayWeekText(day.date)}</TextNotice>
                 {day.classes.map((aClass) => { return (
-                    <components.Block containerStyle={[styles.container, styles.box]} key={aClass.id} >
+                    <components.Block containerStyle={[styles.container, styles.card]} key={aClass.id} >
                         <TextNotice
                             style={{fontSize: 18, color: COLOR.textHighlight}}
                         >
@@ -57,25 +57,6 @@ export default class UnattendedClass extends Component {
                     </components.Block>
                     )})
                 }
-                {day.classes.map((aClass) => { return (
-                    <components.Block containerStyle={[styles.container, styles.box]} key={aClass.id} >
-                        <TextNotice
-                            style={{fontSize: 18, color: COLOR.textHighlight}}
-                        >
-                            {'课程：' + aClass.kcjc.toUpperCase()}
-                        </TextNotice>
-                        <View  style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <TextNotice>{'开始时间：' + aClass.kckssj}</TextNotice>
-                            <TextNotice>{'结束时间：' + aClass.kcjssj}</TextNotice>
-                            <TextNotice>{'教室：' + aClass.kcjss}</TextNotice>
-                        </View>
-                        <TextNotice
-                            style={{fontSize: 10, color: COLOR.textPrompt}}
-                        >{'选课类型：' + (aClass.type == 1 ? 'Regular' : 'Makeup')}</TextNotice>
-
-                    </components.Block>
-                )})
-                }
             </components.Block>
         );
     }
@@ -83,10 +64,10 @@ export default class UnattendedClass extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 8,
+        marginTop: 8,
     },
 
-    box: {
+    card: {
         borderRadius: 8,
         shadowColor: COLOR.backgroundDarkLighter,
         shadowOpacity: 0.8,

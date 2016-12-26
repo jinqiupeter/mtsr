@@ -30,6 +30,7 @@ export const BUTTON = {
 export const COLOR = {
     theme: '#70BA42',
     textHighlight: '#ECBA3A',
+    shadowHighlight: '#EEA434',
     textPrompt: '#929292',
     textNormal: '#5E5E5E',
     textEmpha: '#212121',

@@ -1,14 +1,5 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import {COLOR} from '../../config';
+import {StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 export default ({onPress, style, containerStyle, ...props}) => {
   if (onPress) {

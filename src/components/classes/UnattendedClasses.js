@@ -76,28 +76,15 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        let {account, unattendedClasses,
-            enableLoading, disableLoading, errorFlash, moreClass
-            } = this.props;
+        let { unattendedClasses, enableLoading, disableLoading,
+            errorFlash, moreClass
+        } = this.props;
         logger.debug("props in unattended classes render: ", this.props);
-
-        if (unattendedClasses.length > 0) {
-            return (
-                <ListView
-                    dataSource={this.ds}
-                    enableEmptySections={true}
-                    pageSize={5}
-                    initialListSize={5}
-                    renderRow={(day) =>
-                        <UnattendedClass
-                            day={day}
-                            errorFlash={errorFlash}
-                        />
-                    }
-                    renderScrollComponent={(props) =>
-                        <ScrollView
-                            {...props}
-                            refreshControl={
+        return (
+            <ScrollView
+                {...this.props}
+                contentContainerStyle={{flexDirection: 'column', justifyContent: 'space-between'}}
+                refreshControl={
                             <RefreshControl
                                refreshing={this.refreshing}
                                 onRefresh={() => {
@@ -112,20 +99,32 @@ export default class UnattendedClasses extends Component {
                                 }}
                             />
                           }
-                        />
-                    }
-                    onEndReached={() => {
-                        moreClass({currentLength: unattendedClasses.length, sceneKey: 'Classes'});
-                    }}
-                    />
+            >
+                {unattendedClasses.length > 0
+                    ? <ListView
+                        dataSource={this.ds}
+                        enableEmptySections={true}
+                        pageSize={5}
+                        initialListSize={5}
+                        renderRow={(day) =>
+                            <UnattendedClass
+                                day={day}
+                                errorFlash={errorFlash}
+                            />
+                        }
 
-            )
-        } else {
-            return (
-                <TextNotice>
-                    小朋友还没有选课哦！
-                </TextNotice>
-            )
-        }
+                        onEndReached={() => {
+                            moreClass({
+                                currentLength: unattendedClasses.length,
+                                sceneKey: 'Classes'
+                            });
+                        }}
+                    />
+                    : <TextNotice>
+                        小朋友还没有选课哦！
+                    </TextNotice>
+                }
+            </ScrollView>
+        )
     }
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet, View,
+    StyleSheet, View, Image, Text,
     SegmentedControlIOS
 } from 'react-native';
 
@@ -34,16 +34,19 @@ export default class Classes extends Component {
                 hideTabBar={false}
                 statusBarBgColor={COLOR.theme}
                 currentTab={0}
-                renderBackButton={() => null}
-
             >
-                <components.Block containerStyle={{flexDirection: 'row', backgroundColor: COLOR.theme, paddingTop: 20}}>
-                    <components.Image
-                        source={helpers.userAvatarSource(user, 'middle')}
-                        style={styles.userAvatar}
-                        containerStyle={{marginRight: 20}}
-                    />
-                    <View style={{flex: 1}}>
+                <components.Block containerStyle={{
+                    flexDirection: 'row',
+                    backgroundColor: COLOR.theme,
+                    paddingTop: 20,
+                }}>
+                    <View style={[styles.userAvatarContainer, styles.shadow]}>
+                        <Image
+                            style={styles.userAvatarContainer}
+                            source={helpers.userAvatarSource(user, 'middle')}
+                        />
+                    </View>
+                    <View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
                             <components.Text text={user.nickname} styleKind='emphaExtraBig'>
                                 {user.nickname}
@@ -55,6 +58,9 @@ export default class Classes extends Component {
                         </View>
                     </View>
                 </components.Block>
+                <View
+                    style={styles.container}
+                >
                 <SegmentedControlIOS
                     values={['未上课程', '已上课程']}
                     selectedIndex={input[sceneKey].selectedClassType}
@@ -64,6 +70,7 @@ export default class Classes extends Component {
                     tintColor={COLOR.theme}
                     style={styles.segmentedControl}
                 />
+                </View>
 
                 {input[sceneKey].selectedClassType == 0 ?
                     <View style={styles.titleContainer}>
@@ -132,23 +139,31 @@ export default class Classes extends Component {
 }
 
 const styles = StyleSheet.create({
-    userAvatar: {
+    userAvatarContainer: {
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginLeft: 20,
-        shadowColor: '#DFA435',
-        shadowOffset: {width: 5, height: 5},
-        shadowRadius: 5,
+    },
+    shadow: {
+        shadowColor: COLOR.shadowHighlight,
+        shadowOpacity: 2,
+        shadowRadius: 10,
+        shadowOffset: {
+            height: 1,
+            width: 0
+        }
     },
     segmentedControl: {
         marginTop: 10,
         marginLeft: 30,
         marginRight: 30,
-        marginBottom: 10,
     },
     titleContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        backgroundColor: COLOR.backgroundLighter,
+    },
+    container: {
+        backgroundColor: COLOR.backgroundLighter,
     },
 });
