@@ -82,7 +82,7 @@ export default class Sponsor extends Component {
                 >
                     <TextNotice
                     >
-                        蒙特索利会员在以下合作商家享受优惠！
+                        蒙特索利会员在以下合作商家享受优惠
                     </TextNotice>
                     {sponsorIds.length > 0
                         ? sponsorIds.map((id) => {
@@ -100,27 +100,41 @@ export default class Sponsor extends Component {
                                         title: sponsor.name,
                                     })}
                                 >
-                                    <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center'}} >
-                                    <View>
-                                        <TextNotice style={{fontSize: 18, color: COLOR.theme}}>{sponsor.name}</TextNotice>
-                                        <components.TextWithIcon
-                                            iconName="location-arrow"
-                                            iconStyle={{color: COLOR.theme}}
-                                            text={sponsor.address}
-                                        />
-                                        <components.TextWithIcon
-                                            iconName="phone"
-                                            iconStyle={{color: COLOR.theme}}
-                                            text={sponsor.phone}
-                                        />
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        }}
+                                    >
+                                        <View style={{flex: 1}}>
+                                            <TextNotice style={{
+                                                fontSize: 18,
+                                                color: COLOR.theme,
+                                                textAlign: 'center',
+                                                }}
+                                            >{sponsor.name}</TextNotice>
+                                            <components.TextWithIcon
+                                                iconName="location-arrow"
+                                                iconStyle={{color: COLOR.theme}}
+                                                text={sponsor.address}
+                                            />
+                                            <components.TextWithIcon
+                                                iconName="phone"
+                                                iconStyle={{color: COLOR.theme}}
+                                                text={sponsor.phone}
+                                                containerStyle={{paddingTop: 5}}
+                                            />
 
-                                        <TextNotice style={{flex: 1}}> {sponsor.description} </TextNotice>
-                                    </View>
-                                    <Icon name="angle-right" style={{
-                                        marginLeft: 5,
-                                        fontSize: 16,
-                                        color: COLOR.textNormal,
-                                    }}/>
+                                            <TextNotice
+                                                numberOfLines={3}
+                                                ellipsizeMode='tail'
+                                                > {'简介：' + sponsor.description} </TextNotice>
+                                        </View>
+                                        <Icon name="angle-right" style={{
+                                            marginLeft: 5,
+                                            fontSize: 16,
+                                            color: COLOR.textNormal,
+                                        }}/>
                                     </View>
                                 </components.Block>
                             )
@@ -135,11 +149,3 @@ export default class Sponsor extends Component {
         );
     }
 }
-
-const style = StyleSheet.create({
-    icon: {
-        marginRight: 5,
-        fontSize: 16,
-        color: COLOR.theme,
-    },
-});
