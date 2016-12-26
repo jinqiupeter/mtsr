@@ -5,3 +5,4 @@ export {default as CreateFeedback} from './CreateFeedback';
 export {default as Referral} from './Referral';
 export {default as CreateReferral} from './CreateReferral';
 export {default as Sponsor} from './Sponsor';
+export {default as ChildCare} from './ChildCare';

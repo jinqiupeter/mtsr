@@ -1,10 +1,6 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import * as utils from '../../utils';
 import logger from '../../logger';
+import diffInWeek from 'date-fns/difference_in_calendar_weeks';
 
 export const WEEK_DAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
@@ -29,7 +25,18 @@ export function weekDayText(date) {
     if (typeof date == 'string') {
         date = new Date(date);
     }
-    return WEEK_DAYS[date.getDay()];
+
+    let str = WEEK_DAYS[date.getDay()];
+    let diff = diffInWeek(date, new Date());
+    if (diff == 0) {
+        return '本' + str;
+    } else if (diff == 1) {
+        return '下' + str;
+    } else if (diff == -1) {
+        return '上' + str;
+    } else {
+        return str;
+    }
 }
 
 export function dayTimeText(date) {

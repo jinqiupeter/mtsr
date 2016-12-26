@@ -38,7 +38,7 @@ export default class UnattendedClasses extends Component {
             .map((v) => helpers.unattendClassFromCache(object, v))
             .filter((v) => v !== null)
             .filter((day) => {
-                return isAfter(day.date, startDate) || isSameDay(day.date, startDate);
+                return day.hasClass && (isAfter(day.date, startDate) || isSameDay(day.date, startDate));
             });
 
         return cachedClasses;
@@ -84,17 +84,14 @@ export default class UnattendedClasses extends Component {
         if (unattendedClasses.length > 0) {
             return (
                 <ListView
-                    contentContainerStyle={{flexDirection: 'column', alignItems: 'center', padding: 5}}
                     dataSource={this.ds}
                     enableEmptySections={true}
                     pageSize={5}
                     initialListSize={5}
                     renderRow={(day) =>
                         <UnattendedClass
-                            account={account}
                             day={day}
                             errorFlash={errorFlash}
-                            containerStyle={styles.class}
                         />
                     }
                     renderScrollComponent={(props) =>
@@ -118,7 +115,6 @@ export default class UnattendedClasses extends Component {
                         />
                     }
                     onEndReached={() => {
-                        logger.debug("reaching end, unattendedClasses.length: ", unattendedClasses.length)
                         moreClass({currentLength: unattendedClasses.length, sceneKey: 'Classes'});
                     }}
                     />
@@ -133,9 +129,3 @@ export default class UnattendedClasses extends Component {
         }
     }
 }
-
-const styles = StyleSheet.create({
-    class: {
-        marginBottom: 5,
-    },
-});

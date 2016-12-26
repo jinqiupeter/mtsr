@@ -1,11 +1,6 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {
-    StyleSheet, View, Text,
+    StyleSheet, View,
     SegmentedControlIOS
 } from 'react-native';
 
@@ -154,7 +149,6 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: COLOR.backgroundDarker,
+        justifyContent: 'space-around',
     },
 });

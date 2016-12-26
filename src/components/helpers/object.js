@@ -1,3 +1,5 @@
+import parse from 'date-fns/parse';
+
 export function userFromCache(object, userId) {
     let user = object.users[userId];
     if (!user) {
