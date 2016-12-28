@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {Actions} from 'react-native-router-flux';
 
 import logger from '../logger';
@@ -190,5 +185,12 @@ let constraints = {
         fqxm: nameConstraints,
         mqdh: mobileConstraints,
         fqdh: mobileConstraints,
+    },
+    CreateAppointment: {
+        name: nameConstraints,
+        motherName: nameConstraints,
+        fatherName: nameConstraints,
+        motherPhone: mobileConstraints,
+        fatherPhone: mobileConstraints,
     }
 };

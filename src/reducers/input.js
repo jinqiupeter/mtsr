@@ -56,6 +56,16 @@ const initialState = {
         fqxm: '',
         fqdh: '',
         validity: false,
+    },
+    CreateAppointment: {
+        name: '',
+        gender: '',
+        dateOfBirth: '',
+        motherName: '',
+        motherPhone: '',
+        fatherName: '',
+        fatherPhone: '',
+        validity: false,
     }
 };
 

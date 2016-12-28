@@ -23,6 +23,10 @@ const initialState = {
     CreateReferral: {
         datePickerVisible: false,
         genderPickerVisible: false,
+    },
+    CreateAppointment: {
+        datePickerVisible: false,
+        genderPickerVisible: false,
     }
 };
 

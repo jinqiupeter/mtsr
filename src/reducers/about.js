@@ -8,6 +8,7 @@ const initialState = {
     feedbackIds: [],
     referralIds: [],
     sponsorIds: [],
+    appointmentIds: [],
 };
 
 export default (state = initialState, action) => {
@@ -59,11 +60,24 @@ export default (state = initialState, action) => {
             ...state,
             sponsorIds: state.sponsorIds.concat(sponsorIds),
         }
-    } else if (action.type == actions.RESET
+    } else if (action.type == actions.SET_APPOINTMENT) {
+        let {appointmentIds} = action;
+        return {
+            ...state,
+            appointmentIds,
+        };
+    } else if (action.type == actions.APPEND_APPOINTMENT) {
+        let {appointmentIds} = action;
+        return {
+            ...state,
+            appointmentIds: state.appointmentIds.concat(appointmentIds),
+        }
+    }else if (action.type == actions.RESET
         || action.type == actions.RESET_FAQ
         || action.type == actions.RESET_FEEDBACK
         || action.type == actions.RESET_REFERRAL
         || action.type == actions.RESET_SPONSOR
+        || action.type == actions.RESET_APPOINTMENT
     ) {
         return initialState;
     } else {

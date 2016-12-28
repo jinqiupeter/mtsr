@@ -21,7 +21,7 @@ export default class UnattendedClass extends Component {
                     style={{
                         color: COLOR.theme,
                         textAlign: 'center',
-                        paddingTop: 0,
+                        padding: 0,
                     }}
                 >{helpers.yearMonthDayWeekText(day.date)}</TextNotice>
                 {day.classes.map((aClass) => { return (

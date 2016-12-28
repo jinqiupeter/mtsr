@@ -168,7 +168,7 @@ export default class Me extends Component {
                             leftIcon='home'
                             leftText='蒙特索利托班'
                             rightIcon='angle-right'
-                            onPress={() => Actions.Feedback()}
+                            onPress={() => Actions.Appointment()}
                             leftIconStyle={{color: COLOR.theme}}
                         />
                     </components.Block>

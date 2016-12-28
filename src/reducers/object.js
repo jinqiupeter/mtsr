@@ -13,6 +13,7 @@ const initialState = {
     feedbacks: [],
     referrals: [],
     sponsors: [],
+    appointments: [],
 };
 
 export default (state = initialState, action) => {

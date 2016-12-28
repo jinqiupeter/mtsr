@@ -39,6 +39,8 @@ export default class ZQCApp extends Component {
                     <Scene key="Referral" component={containers.Referral} />
                     <Scene key="CreateReferral" component={containers.CreateReferral} />
                     <Scene key="Sponsor" component={containers.Sponsor} />
+                    <Scene key="Appointment" component={containers.Appointment} />
+                    <Scene key="CreateAppointment" component={containers.CreateAppointment} />
 
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>

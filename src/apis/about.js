@@ -27,3 +27,11 @@ export function createReferral(referral) {
 export function getSponsor({limit = 10, offset = 0}) {
     return getApi(`${API_ORIGIN}/sponsor`, {limit, offset});
 }
+
+export function getAppointment({limit = 10, offset = 0}) {
+    return getApi(`${API_ORIGIN}/appointment`, {limit, offset});
+}
+
+export function createAppointment(appointment) {
+    return postApi(`${API_ORIGIN}/appointment`, appointment)
+}

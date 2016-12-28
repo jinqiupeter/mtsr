@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {COLOR} from '../../config';
 
-export default ({children, style, numberOfLines = 1, ellipsizeMode = 'tail'}) => {
+export default ({children, style, numberOfLines = 3, ellipsizeMode = 'tail'}) => {
     return <Text numberOfLines={numberOfLines}
                  ellipsizeMode={ellipsizeMode}
                  style={[styles.text, style]}>{children}</Text>;

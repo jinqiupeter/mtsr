@@ -81,6 +81,16 @@ export function sponsorFromCache(object, sponsorId) {
     return Object.assign({}, sponsor);
 }
 
+export function appointmentFromCache(object, appointmentId) {
+    let appointment = object.appointments[appointmentId];
+    if (!appointment) {
+        console.warn(`appointment ${appointmentId} not in cache`);
+        return null;
+    }
+
+    return Object.assign({}, appointment);
+}
+
 export function packedSelectablesFromCache(object) {
     let packed = object.selectableClasses;
     if (!packed) {

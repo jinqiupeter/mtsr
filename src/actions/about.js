@@ -11,6 +11,7 @@ export const RESET_FAQ = 'reset_faq';
 export const RESET_FEEDBACK = 'reset_feedback';
 export const RESET_REFERRAL = "reset_referral";
 export const RESET_SPONSOR = "reset_sponsor";
+export const RESET_APPOINTMENT = "reset_appointment";
 export const SET_FAQ = 'set_faq';
 export const APPEND_FAQ = 'append_faq';
 export const SET_FEEDBACK = 'set_feedback';
@@ -19,6 +20,8 @@ export const SET_REFERRAL = "set_referral";
 export const APPEND_REFERRAL = "append_referral";
 export const SET_SPONSOR = "set_sponsor";
 export const APPEND_SPONSOR = "append_sponsor";
+export const SET_APPOINTMENT = "set_appointment";
+export const APPEND_APPOINTMENT = "append_appointment";
 
 export function resetFaq() {
     return {
@@ -265,5 +268,80 @@ export function getSponsor({offset = 0, limit = 10, cbOk, cbFail, cbFinish}) {
                     cbFinish();
                 }
             });
+    };
+}
+
+export function getAppointment({xpybh, offset = 0, limit = 10, cbOk, cbFail, cbFinish}) {
+    return (dispatch, getState) => {
+        let {object} = getState();
+        let appointments = [];
+        apis.getAppointment({xpybh, offset, limit})
+            .then((response) => {
+                let {data} = response;
+                appointments = data.appointment.filter((v) => {return !!v.id});
+                logger.debug("got appointments: ", appointments);
+                return actions.cacheAppointments(object, appointments);
+            })
+            .then((action) => {
+                dispatch(action);
+
+                let appointmentIds = appointments.map((v) => v.id);
+                logger.debug("dispatching appointmentIds: ", appointmentIds);
+                if (offset == 0) {
+                    dispatch({type: SET_APPOINTMENT, appointmentIds});
+                } else {
+                    dispatch({type: APPEND_APPOINTMENT, appointmentIds});
+                }
+
+                if (cbOk) {
+                    cbOk();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function createAppointment(sceneKey, cbOk, cbFail, cbFinish) {
+    return (dispatch, getState) => {
+        let {input} = getState();
+
+        dispatch(actions.setSceneState(sceneKey, {
+            genderPickerVisible: false,
+            datePickerVisible: false,
+        }));
+
+        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
+            let {name, dateOfBirth, gender, motherName, motherPhone, fatherName, fatherPhone} = input[sceneKey];
+            apis.createAppointment({name, dateOfBirth, gender, motherName, motherPhone, fatherName, fatherPhone})
+                .then(() => {
+                    if (cbOk) {
+                        cbOk();
+                    }
+                    if (cbFinish) {
+                        cbFinish();
+                    }
+                })
+                .catch((error) => {
+                    dispatch(actions.handleApiError(error));
+                    if (cbFail) {
+                        cbFail();
+                    }
+                    if (cbFinish) {
+                        cbFinish();
+                    }
+                });
+        }));
+
     };
 }
