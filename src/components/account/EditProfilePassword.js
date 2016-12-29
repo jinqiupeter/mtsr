@@ -1,15 +1,7 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import dismissKeyboard from 'dismissKeyboard';
 
-import {COLOR} from '../../config';
 import * as components from '../';
 
 export default class EditProfilePassword extends Component {
@@ -43,6 +35,7 @@ export default class EditProfilePassword extends Component {
                             returnKeyType='done'
                             defaultValue=""
                             autoFocus={true}
+                            onFocus={() => {saveInput(sceneKey, {currentPassword: ""});}}
                             secureTextEntry={true}
                             onChangeText={(text) => saveInput(sceneKey, {currentPassword: text.trim()})}
                         />
@@ -56,6 +49,7 @@ export default class EditProfilePassword extends Component {
                             placeholder='新密码'
                             returnKeyType='done'
                             autoFocus={false}
+                            onFocus={() => {saveInput(sceneKey, {newPassword: ""});}}
                             secureTextEntry={true}
                             onChangeText={(text) => saveInput(sceneKey, {newPassword: text.trim()})}
                         />
@@ -69,6 +63,7 @@ export default class EditProfilePassword extends Component {
                             placeholder='再次输入新密码'
                             returnKeyType='done'
                             autoFocus={false}
+                            onFocus={() => {saveInput(sceneKey, {newPasswordRepeat: ""});}}
                             secureTextEntry={true}
                             onChangeText={(text) => saveInput(sceneKey, {newPasswordRepeat: text.trim()})}
                         />
@@ -78,5 +73,3 @@ export default class EditProfilePassword extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});

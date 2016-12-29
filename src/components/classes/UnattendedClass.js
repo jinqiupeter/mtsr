@@ -14,7 +14,6 @@ import * as helpers from '../helpers';
 export default class UnattendedClass extends Component {
     render() {
         let {day} = this.props;
-        logger.debug("rendering day: ", day);
         return (
             <components.Block containerStyle={styles.container}>
                 <TextNotice

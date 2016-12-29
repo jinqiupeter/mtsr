@@ -144,7 +144,6 @@ export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
             .slice(startIndex, startIndex + currentLength + 10)
             .map((v) => v.id);
 
-        logger.debug("loading more ids: ", classIds);
         dispatch({type: SET_UNATTENDED_CLASSES, classIds});
     }
 }
@@ -165,7 +164,6 @@ export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
         })
         .then((action) => {
             let {object} = getState();
-            logger.debug("object after cached: ", object);
             dispatch(action);
             // always show the first 10 expanded classes
             let classIds = unattendedClasses.map((v) => v.id).slice(0, 10);

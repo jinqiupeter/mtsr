@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {AsyncStorage} from 'react-native';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
@@ -15,39 +10,39 @@ import reducers from './reducers';
 let middlewares = [thunk];
 
 if (IN_DEBUGGER) {
-  middlewares.push(createLogger({
-    duration: true,
-    collapsed: false,
-  }));
+    middlewares.push(createLogger({
+        duration: true,
+        collapsed: false,
+    }));
 }
 
 export const createZqcStore = compose(
-  applyMiddleware(...middlewares),
+    applyMiddleware(...middlewares),
 )(createStore);
 
 export function createPersistStore(onOk, onFail) {
-  let store = createZqcStore(reducers, undefined, autoRehydrate());
-  persistStore(
-    store,
-    {
-      storage: AsyncStorage, 
-      blacklist: ['navigation', 'loading', 'processing', 'error', 'network', 
-        'location', 'store'],
-    },
-    (error, state) => {
-      if (error) {
-        if (onFail) {
-          onFail(error);
+    let store = createZqcStore(reducers, undefined, autoRehydrate());
+    persistStore(
+        store,
+        {
+            storage: AsyncStorage,
+            blacklist: ['navigation', 'loading', 'processing', 'error', 'network',
+                'store'],
+        },
+        (error, state) => {
+            if (error) {
+                if (onFail) {
+                    onFail(error);
+                }
+            } else {
+                if (onOk) {
+                    onOk(store);
+                }
+            }
         }
-      } else {
-        if (onOk) {
-          onOk(store);
-        }
-      }
+    );
+    if (IN_DEBUGGER) {
+        window.store = store;
     }
-  );
-  if (IN_DEBUGGER) {
-    window.store = store;
-  }
-  return store;
+    return store;
 }

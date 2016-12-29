@@ -46,7 +46,6 @@ export default class UnattendedClasses extends Component {
 
     componentWillReceiveProps(nextProps) {
         let rows = this._getRowsUnattendedClass(nextProps);
-        logger.debug("rows will render: ", rows);
         this.ds = this.ds.cloneWithRows(rows);
     }
     componentDidMount() {
@@ -79,7 +78,6 @@ export default class UnattendedClasses extends Component {
         let { unattendedClasses, enableLoading, disableLoading,
             errorFlash, moreClass
         } = this.props;
-        logger.debug("props in unattended classes render: ", this.props);
         return (
             <ScrollView
                 {...this.props}

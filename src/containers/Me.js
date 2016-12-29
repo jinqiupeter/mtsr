@@ -11,7 +11,7 @@ import * as actions from '../actions';
 
 function mapStateToProps(state) {
     let {
-        loading, processing, error, input, sceneState, location, object,
+        loading, processing, error, input, sceneState, object,
         network
     } = state;
     let {account} = state;
@@ -21,7 +21,6 @@ function mapStateToProps(state) {
         error,
         input,
         sceneState,
-        location,
         object,
         network,
         account,

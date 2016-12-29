@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {PushNotificationIOS, AlertIOS} from 'react-native';
 import {connect} from 'react-redux';
 import {Router, Scene} from 'react-native-router-flux';
 import {ActionConst} from 'react-native-router-flux';

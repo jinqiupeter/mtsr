@@ -116,23 +116,19 @@ export function loginRequest({username, mobile, email, password}, cbOk) {
 
 export function login({user, cbOk, cbFail}) {
     return (dispatch, getState) => {
-        let whoState = getState();
-        logger.debug("who state when login:", whoState);
         let {object} = getState();
-        logger.debug("cacheing object: user", object, user);
         actions.cacheUsers(object, [user])
             .then((action) => {
-                logger.debug("dispatching action: ", action);
                 dispatch(action);
-                logger.debug("dispatching action: ", LOGIN);
+
+                dispatch(actions.registerPush());
+
                 dispatch({type: LOGIN, userId: user.id});
                 if (cbOk) {
-                    logger.debug("calling cbOK");
                     cbOk(user);
                 }
             })
             .catch((error) => {
-                logger.debug("Error occured: ", error);
                 dispatch(actions.handleApiError(error));
                 if (cbFail) {
                     cbFail(error);

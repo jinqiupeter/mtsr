@@ -30,7 +30,6 @@ export function getApi(url, query={}, {method='GET', headers={}, timeout=5000}={
 
 export function postApi(url, data={}, {method='POST', headers={}, timeout=5000}={}) {
     let {account, object} = store.getState();
-    logger.debug("inside postApi, cache object is: ", object, account);
     if (account.userId) {
         let user = helpers.userFromCache(object, account.userId);
         headers["session"] = user.session;
@@ -52,7 +51,6 @@ export function postApi(url, data={}, {method='POST', headers={}, timeout=5000}=
     }
 
     let request = new Request(url, {method, headers, body, timeout});
-    logger.debug("posting :, body ", request, body, data);
     return fetchApi(request, timeout);
 }
 

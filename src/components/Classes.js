@@ -15,9 +15,7 @@ import addDays from 'date-fns/add_days'
 export default class Classes extends Component {
     render() {
         let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
-        let {account, setSceneState, sceneState} = this.props;
-
-        logger.debug("props in Classes: ", this.props);
+        let {account} = this.props;
 
         let user = helpers.userFromCache(object, account.userId);
         if (!user) {
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     shadow: {
-        shadowColor: COLOR.shadowHighlight,
+        shadowColor: COLOR.backgroundDarkLighter,
         shadowOpacity: 2,
         shadowRadius: 10,
         shadowOffset: {

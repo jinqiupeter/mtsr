@@ -1,13 +1,10 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
-import {Alert, Keyboard, NetInfo, Platform} from 'react-native';
+import {Alert, Keyboard, NetInfo, Platform, PushNotificationIOS} from 'react-native';
 import {Actions, ActionConst} from 'react-native-router-flux';
-import AMapLocation from 'react-native-amap-location';
 
-import {DEBUG, HOT_CITIES, SPORTS} from '../config';
+import {LC_CONFIG} from '../config';
+import AV from 'leancloud-storage';
+import LcInstallation from 'leancloud-installation';
+
 import logger from '../logger';
 import * as apis from '../apis';
 import * as utils from '../utils';
@@ -42,53 +39,14 @@ export function bootstrap() {
                 },
             );
 
-            let getPositionSuccess = (position) => dispatch(actions.setLocationPosition(position));
-            let getPositionError = (error) => logger.warn(error);
-            let getPositionOptions = {
-                enableHighAccuracy: Platform.OS == 'ios',
-                timeout: 5000,
-                maximumAge: 600000,
-            };
-            if (Platform.OS == 'android') {
-                AMapLocation.addEventListener((position) => {
-                    if (position.latitude && position.longitude) {
-                        getPositionSuccess({
-                            coords: {
-                                latitude: position.latitude,
-                                longitude: position.longitude,
-                                altitude: 0,
-                            },
-                            timestamp: new Date().getTime(),
-                        });
-                    } else {
-                        getPositionError(position);
-                    }
-                });
-                AMapLocation.startLocation({
-                    interval: 5000,
-                    httpTimeOut: 5000,
-                });
-            } else {
-                navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, getPositionOptions);
-                navigator.geolocation.watchPosition(getPositionSuccess, getPositionError, getPositionOptions);
-            }
-
-            let keyboardShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
-                dispatch(actions.setKeyboard({coords: event.endCoordinates}));
-            });
-            let keyboardHideListener = Keyboard.addListener('keyboardDidHide', (event) => {
-                dispatch(actions.resetKeyboard());
-            });
-
             booted = true;
         }
 
         dispatch(actions.processingTask('正在检测网络'));
         utils.waitingFor({
             condition: () => {
-                let {location, store, network} = getState();
-                return (store.isReady && network.isConnected !== undefined
-                && location.position);
+                let {store, network} = getState();
+                return (store.isReady && network.isConnected !== undefined);
             },
             cbOk: () => {
                 dispatch(actions.processingTask(''));
@@ -96,16 +54,13 @@ export function bootstrap() {
             },
             cbFail: () => {
                 dispatch(actions.processingTask(''));
-                let {location, store, network} = getState();
+                let {store, network} = getState();
                 let errors = [];
                 if (!store.isReady) {
                     errors.push('访问本地存储失败。');
                 }
                 if (network.isConnected === undefined) {
                     errors.push('获取网络状态失败。');
-                }
-                if (!location.position) {
-                    errors.push('获取位置失败。');
                 }
                 if (errors.length > 0) {
                     Alert.alert(
@@ -132,6 +87,66 @@ export function bootstrap() {
     };
 }
 
+export function registerPush() {
+    return (dispatch, getState) => {
+        logger.debug("adding event listener: .......",);
+
+        // Subscribe to register event of PushNotificationIOS.
+        PushNotificationIOS.addEventListener('register', (deviceToken) => {
+            let {account, object} = getState();
+            if (object.users[account.userId]
+                && object.users[account.userId].deviceid == deviceToken) {
+                return;
+            }
+
+            AV.init({appId: LC_CONFIG.id, appKey: LC_CONFIG.key});
+            let installation = LcInstallation(AV);
+
+            // create a new Installation in leancloud
+            logger.debug("saving deviceToken: ", deviceToken);
+            installation.getCurrent()
+                .then(aInstall => {
+                    logger.debug("saving ainstallation: ", aInstall);
+                    aInstall.save({
+                        deviceToken: deviceToken
+                    })
+                }).then(() => {
+                    // upload deviceToken to server so we can have conditional push
+                    apis.editAccount({deviceToken})
+                        .catch((error) => {
+                            Alert.alert(
+                                '更新推送信息出错',
+                                error,
+                                [{
+                                    text: '忽略',
+                                    onPress: null,
+                                }]
+                            );
+                        });
+            });
+
+        });
+
+        PushNotificationIOS.addEventListener('registrationError', (error) => {
+            logger.debug("failed to register push: ", error);
+            Alert.alert(
+                '启用推送失败',
+                `Error (${error.code}): ${error.message}`,
+                [{
+                    text: '忽略',
+                    onPress: null,
+                }]
+            );
+        });
+
+        // Request permissions and deviceToken
+        PushNotificationIOS.requestPermissions()
+            .catch((error) => {
+                dispatch(actions.errorFlash(error.message));
+            });
+    };
+}
+
 function login(dispatch, getState) {
     var {account, object} = getState();
     let cbFail = (error) => {
@@ -147,7 +162,7 @@ function login(dispatch, getState) {
             ],
         );
     };
-    logger.debug("who state at login: ", account, object);
+
     let username = object.users[account.userId] ? object.users[account.userId].user : '';
     apis.isLoggedin({username: username})
         .then((response) => {
