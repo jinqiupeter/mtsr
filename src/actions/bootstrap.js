@@ -139,6 +139,11 @@ export function registerPush() {
             );
         });
 
+        PushNotificationIOS.addEventListener('notification', (notification) => {
+            dispatch(actions.processingTask(notification.getMessage()));
+            setTimeout(()=>dispatch(actions.processingTask()), 2000);
+        });
+
         // Request permissions and deviceToken
         PushNotificationIOS.requestPermissions()
             .catch((error) => {
