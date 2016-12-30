@@ -1,15 +1,8 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import dismissKeyboard from 'dismissKeyboard';
 
-import {COLOR} from '../../config';
+import * as containers from '../../containers';
 import * as components from '../';
 
 export default class EditProfileNickname extends Component {
@@ -22,13 +15,10 @@ export default class EditProfileNickname extends Component {
   }
 
   render() {
-    let {sceneKey, loading, processing, error, input, saveInput, submit} = this.props;
+    let {sceneKey, input, saveInput, submit} = this.props;
     return (
-      <components.Layout 
-        sceneKey={sceneKey} 
-        loading={loading} 
-        processing={processing} 
-        error={error}
+      <containers.Layout
+        sceneKey={sceneKey}
         renderTitle={() => components.NavBarTitle({title: '修改昵称'})}
         renderBackButton={components.NavBarCancel}
         renderRightButton={() => components.NavBarDone({
@@ -46,7 +36,7 @@ export default class EditProfileNickname extends Component {
             />
           </components.FormItem>
         </components.Form>
-      </components.Layout>
+      </containers.Layout>
     );
   }
 }

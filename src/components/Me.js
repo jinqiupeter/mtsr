@@ -1,17 +1,12 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {
     StyleSheet, View,Alert, ScrollView, RefreshControl,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../config';
-import logger from '../logger';
-import * as utils from '../utils';
+import {COLOR} from '../config';
+
+import * as containers from '../containers';
 import * as components from './';
 import * as helpers from './helpers';
 
@@ -22,7 +17,7 @@ export default class Me extends Component {
 
     render() {
         let {
-            sceneKey, loading, processing, error, object, clearCache
+            sceneKey, object, clearCache
         } = this.props;
         let {account, logoutRequest} = this.props;
 
@@ -32,11 +27,8 @@ export default class Me extends Component {
         }
 
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 hideTabBar={false}
                 currentTab={3}
                 renderTitle={() => components.NavBarTitle({title: '我'})}
@@ -188,7 +180,7 @@ export default class Me extends Component {
                         containerStyle={{marginTop: 20}}
                     />
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

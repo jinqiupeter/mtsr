@@ -6,18 +6,16 @@ import {
     WebView
 } from 'react-native';
 import * as components from '../';
+import * as containers from '../../containers';
 import logger from '../../logger';
 
 export default class Web extends Component {
     render() {
-        let {sceneKey, loading, processing, error, stackHtml, uri, title} = this.props;
+        let {sceneKey, stackHtml, uri, title} = this.props;
         logger.debug("props in Web: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title})}
                 renderBackButton={components.NavBarBack}
             >
@@ -25,7 +23,7 @@ export default class Web extends Component {
                     startInLoadingState={true}
                     source={ uri ? {uri} : {html: stackHtml}}
                 />
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

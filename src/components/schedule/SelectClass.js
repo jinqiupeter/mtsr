@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {ScrollView, ListView, Text, View} from 'react-native';
 import * as components from '../';
-import logger from '../../logger';
+import * as containers from '../../containers';
 
 import {COLOR} from '../../config';
 import * as helpers from '../helpers';
@@ -32,14 +32,11 @@ export default class SelectClass extends Component {
         this.ds = this.ds.cloneWithRows(rows);
     }
     render() {
-        let {sceneKey, loading, processing, error, selectable} = this.props;
+        let {sceneKey, selectable} = this.props;
 
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({
                     title: helpers.yearMonthDayWeekText(selectable.date) })
                 }
@@ -79,7 +76,7 @@ export default class SelectClass extends Component {
                     <TextNotice>今天没有可选课程</TextNotice>
                     }
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

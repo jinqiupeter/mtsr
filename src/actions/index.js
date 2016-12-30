@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export * from './navigation';
 export * from './loading';
 export * from './processing';
@@ -20,3 +15,4 @@ export * from './activities';
 export * from './security';
 export * from './schedule';
 export * from './about';
+export * from './notification';

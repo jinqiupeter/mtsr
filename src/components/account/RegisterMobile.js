@@ -1,26 +1,16 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import dismissKeyboard from 'dismissKeyboard';
 
-import {COLOR} from '../../config';
+import * as containers from '../../containers';
 import * as components from '../';
 
 export default class RegisterMobile extends Component {
   render() {
-    let {sceneKey, loading, processing, error, input, saveInput, submit} = this.props;
+    let {sceneKey, input, saveInput, submit} = this.props;
     return (
-      <components.Layout 
-        sceneKey={sceneKey} 
-        loading={loading} 
-        processing={processing} 
-        error={error}
+      <containers.Layout
+        sceneKey={sceneKey}
         renderTitle={() => components.NavBarTitle({title: '手机号注册'})}
       >
         <components.TextNotice>注册帐号后，您可以预约试听和体验我们的课程及活动</components.TextNotice>
@@ -54,7 +44,7 @@ export default class RegisterMobile extends Component {
           onPress={() => {dismissKeyboard(); submit(sceneKey);}}
           textStyle={{fontSize: 16}}
         />
-      </components.Layout>
+      </containers.Layout>
     );
   }
 }

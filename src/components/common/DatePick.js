@@ -9,6 +9,7 @@ import {Actions} from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR} from '../../config';
 
 export default class DatePick extends Component {
@@ -20,15 +21,12 @@ export default class DatePick extends Component {
     }
 
     render() {
-        let {parentSceneKey, loading, processing, error,
+        let {parentSceneKey,
             title, selectedDate, inputKey,
             saveInput} = this.props;
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={parentSceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title})}
                 renderBackButton={components.NavBarBack}
                 renderRightButton={() => components.NavBarDone({
@@ -52,7 +50,7 @@ export default class DatePick extends Component {
                         this.state.date = date;
                     }}
                 />
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

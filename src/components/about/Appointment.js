@@ -9,6 +9,7 @@ import logger from '../../logger';
 import * as helpers from '../helpers';
 import * as utils from '../../utils';
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR} from '../../config';
 import {Actions} from 'react-native-router-flux';
 
@@ -49,11 +50,8 @@ export default class Appointment extends Component {
 
         logger.debug("props in Appointments: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '蒙特梭利托班'})}
                 renderBackButton={components.NavBarBack}
                 containerStyle={{flex: 1}}
@@ -123,7 +121,7 @@ export default class Appointment extends Component {
                     textStyle={{fontSize: 16, alignItems: 'stretch'}}
                 />
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

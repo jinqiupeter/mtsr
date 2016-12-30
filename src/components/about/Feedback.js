@@ -9,6 +9,7 @@ import logger from '../../logger';
 import * as helpers from '../helpers';
 import * as utils from '../../utils';
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Actions} from 'react-native-router-flux';
@@ -67,16 +68,13 @@ export default class Feedback extends Component {
     }
 
     render() {
-        let {network, sceneKey, loading, processing, error, feedbackIds,
+        let {network, sceneKey, loading, feedbackIds,
             disableLoading, enableLoading, getFeedback} = this.props;
 
         logger.debug("props in Feedback: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '留言反馈'})}
                 renderBackButton={components.NavBarBack}
                 renderRightButton={() => components.NavBarRightButton({
@@ -167,7 +165,7 @@ export default class Feedback extends Component {
                     textStyle={{fontSize: 16, alignItems: 'stretch'}}
                 />
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

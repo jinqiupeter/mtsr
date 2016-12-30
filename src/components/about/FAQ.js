@@ -9,6 +9,7 @@ import logger from '../../logger';
 import * as helpers from '../helpers';
 import * as utils from '../../utils';
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -74,11 +75,8 @@ export default class FAQ extends Component {
 
         logger.debug("props in FAQ: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '常见问题'})}
                 renderBackButton={components.NavBarBack}
             >
@@ -152,7 +150,7 @@ export default class FAQ extends Component {
                         </TextNotice>
                     </ScrollView>
                 }
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

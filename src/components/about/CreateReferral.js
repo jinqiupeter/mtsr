@@ -8,6 +8,7 @@ import DatePicker from 'react-native-datepicker';
 
 import * as helpers from '../helpers';
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR, GENDERS} from '../../config';
 import logger from '../../logger';
 
@@ -18,11 +19,8 @@ export default class CreateReferral extends Component {
 
         logger.debug("props in createReferral: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '推荐朋友'})}
                 renderBackButton={components.NavBarCancel}
             >
@@ -170,7 +168,7 @@ export default class CreateReferral extends Component {
                     onValueChange={(value, index) => saveInput(sceneKey, {gender: value})}
                     submit={() => setSceneState(sceneKey, {genderPickerVisible: false})}
                 />
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image, ListView, ScrollView, RefreshControl, 
   TouchableOpacity, InteractionManager, Platform} from 'react-native';
@@ -10,18 +5,15 @@ import {Actions} from 'react-native-router-flux';
 
 import {COLOR, VERSION} from '../../config';
 import * as components from '../';
-import * as helpers from '../helpers';
+import * as containers from '../../containers';
 
 export default class About extends Component {
   render() {
-    let {sceneKey, loading, processing, error} = this.props;
+    let {sceneKey} = this.props;
 
     return (
-      <components.Layout 
-        sceneKey={sceneKey} 
-        loading={loading} 
-        processing={processing} 
-        error={error}
+      <containers.Layout
+        sceneKey={sceneKey}
         renderTitle={() => components.NavBarTitle({title: '关于'})}
       >
         <ScrollView>
@@ -45,7 +37,7 @@ export default class About extends Component {
           </components.Block>
           <components.TextNotice>Copyright © 苏州蒙特索利教育咨询有限公司 All Rights Reserved.</components.TextNotice>
         </ScrollView>
-      </components.Layout>
+      </containers.Layout>
     );
   }
 }

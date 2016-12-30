@@ -9,7 +9,7 @@ import {
 import * as helpers from '../helpers';
 import * as utils from '../../utils';
 import {TextNotice} from '../common';
-import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
+import * as containers from '../../containers';
 import * as components from '../';
 import logger from '../../logger';
 
@@ -41,13 +41,10 @@ export default class AfterClassInstruction extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, instruction} = this.props;
+        let {sceneKey, loading, instruction} = this.props;
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '课后指南'})}
                 renderBackButton={components.NavBarBack}
             >
@@ -61,7 +58,7 @@ export default class AfterClassInstruction extends Component {
                     {loading.loadingCount > 0 ? "加载中" : '老师还没有发布课后指南哦！'}
                 </TextNotice>
                 }
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

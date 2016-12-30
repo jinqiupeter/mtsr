@@ -1,18 +1,10 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image, ScrollView} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
 
 import {COLOR, RES_USER_AVATARS} from '../../config';
-import * as utils from '../../utils';
 import * as components from '../';
-import * as actions from '../../actions';
+import * as containers from '../../containers';
 import * as helpers from '../helpers';
 import logger from '../../logger'
 
@@ -24,14 +16,11 @@ export default class EditProfileAvatar extends Component {
   }
 
   render() {
-    let {sceneKey, loading, processing, error, input, saveInput} = this.props;
+    let {sceneKey, input, saveInput} = this.props;
     let {selectCustomAvatar, submit} = this.props;
     return (
-      <components.Layout 
-        sceneKey={sceneKey} 
-        loading={loading} 
-        processing={processing} 
-        error={error}
+      <containers.Layout
+        sceneKey={sceneKey}
         renderTitle={() => components.NavBarTitle({title: '设置头像'})}
         renderBackButton={components.NavBarCancel}
         renderRightButton={() => components.NavBarDone({
@@ -74,7 +63,7 @@ export default class EditProfileAvatar extends Component {
             textStyle={{fontSize: 16}}
           />
         </ScrollView>
-      </components.Layout>
+      </containers.Layout>
     );
   }
 }

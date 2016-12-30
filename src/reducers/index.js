@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {combineReducers} from 'redux';
 import navigation from './navigation';
 import loading from './loading';
@@ -19,6 +14,7 @@ import classes from './classes';
 import activities from './activities';
 import schedule from './schedule';
 import about from './about';
+import notification from './notification';
 
 export default combineReducers({
     navigation,
@@ -36,4 +32,5 @@ export default combineReducers({
     activities,
     schedule,
     about,
+    notification,
 });

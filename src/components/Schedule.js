@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {
     StyleSheet, ScrollView, Text,
@@ -51,11 +46,8 @@ export default class Schedule extends Component {
             saveInput} = this.props;
 
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 hideNavBar={false}
                 hideTabBar={false}
                 statusBarBgColor={COLOR.theme}
@@ -80,7 +72,7 @@ export default class Schedule extends Component {
                     <containers.Makeup/>
                 }
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

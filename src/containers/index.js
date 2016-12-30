@@ -10,3 +10,4 @@ export * from './classes';
 export * from './activities';
 export * from './schedule';
 export * from './about';
+export * from './common';

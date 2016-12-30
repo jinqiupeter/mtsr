@@ -1,16 +1,12 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {
     StyleSheet,    ListView, InteractionManager,
     ScrollView, RefreshControl
 } from 'react-native';
 
-import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../config';
+import {COLOR} from '../config';
 import * as components from './';
+import * as containers from '../containers';
 import * as helpers from './helpers';
 import * as utils from '../utils';
 import logger from '../logger';
@@ -45,12 +41,12 @@ export default class Activities extends Component {
     }
 
     componentDidMount() {
-        //InteractionManager.runAfterInteractions(() => {
+        InteractionManager.runAfterInteractions(() => {
             let {sceneKey, network} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
                 this._refresh();
             }
-        //});
+        });
     }
 
     _refresh({props, cbFinish}={}) {
@@ -78,11 +74,8 @@ export default class Activities extends Component {
 
         if (activities.length > 0) {
             return (
-                <components.Layout
+                <containers.Layout
                     sceneKey={sceneKey}
-                    loading={loading}
-                    processing={processing}
-                    error={error}
                     hideNavBar={false}
                     hideTabBar={false}
                     statusBarBgColor={COLOR.theme}
@@ -133,7 +126,7 @@ export default class Activities extends Component {
                             }
                         }}
                     />
-                </components.Layout>
+                </containers.Layout>
             )
         } else {
             return (

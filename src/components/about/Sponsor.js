@@ -4,11 +4,12 @@
 import React, {Component} from 'react';
 import {ListView, View, InteractionManager,
     RefreshControl, ScrollView, StyleSheet, Text} from 'react-native';
-import {TextNotice, TextWithIcon} from '../common';
+import {TextNotice} from '../common';
 import logger from '../../logger';
 import * as helpers from '../helpers';
 import * as utils from '../../utils';
 import * as components from '../';
+import * as containers from '../../containers';
 import {COLOR} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Actions} from 'react-native-router-flux';
@@ -50,11 +51,8 @@ export default class Sponsor extends Component {
 
         logger.debug("props in Sponsor: ", this.props);
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '优惠商家列表'})}
                 renderBackButton={components.NavBarBack}
                 containerStyle={{flex: 1}}
@@ -145,7 +143,7 @@ export default class Sponsor extends Component {
                         </TextNotice>
                     }
                 </ScrollView>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

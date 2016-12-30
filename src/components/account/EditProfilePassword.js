@@ -3,6 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import dismissKeyboard from 'dismissKeyboard';
 
 import * as components from '../';
+import * as containers from '../../containers';
 
 export default class EditProfilePassword extends Component {
     componentDidMount() {
@@ -15,13 +16,10 @@ export default class EditProfilePassword extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, saveInput, changePassword} = this.props;
+        let {sceneKey, saveInput, changePassword} = this.props;
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '修改密码'})}
                 renderBackButton={components.NavBarCancel}
                 renderRightButton={() => components.NavBarDone({
@@ -69,7 +67,7 @@ export default class EditProfilePassword extends Component {
                         />
                     </components.FormItem>
                 </components.Form>
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

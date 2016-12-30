@@ -14,7 +14,7 @@ import addDays from 'date-fns/add_days'
 
 export default class Classes extends Component {
     render() {
-        let {startDate, sceneKey, loading, processing, error, saveInput, submitDay, input, object} = this.props;
+        let {startDate, sceneKey, saveInput, submitDay, input, object} = this.props;
         let {account} = this.props;
 
         let user = helpers.userFromCache(object, account.userId);
@@ -23,11 +23,8 @@ export default class Classes extends Component {
         }
 
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 hideNavBar={true}
                 hideTabBar={false}
                 statusBarBgColor={COLOR.theme}
@@ -131,7 +128,7 @@ export default class Classes extends Component {
                     :
                     <containers.UnattendedClasses/>
                 }
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

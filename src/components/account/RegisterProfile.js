@@ -1,27 +1,17 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {COLOR} from '../../config';
+import * as containers from '../../containers';
 import * as components from '../';
 import logger from '../../logger';
 
 export default class RegisterProfile extends Component {
   render() {
     logger.debug("RegisterProfile props: ", this.props);
-    let {sceneKey, loading, processing, error, submit, ...otherProps} = this.props;
+    let {sceneKey, error, submit, ...otherProps} = this.props;
     return (
-      <components.Layout 
-        sceneKey={sceneKey} 
-        loading={loading} 
-        processing={processing} 
-        error={error}
+      <containers.Layout
+        sceneKey={sceneKey}
         renderTitle={() => components.NavBarTitle({title: '完善资料'})}
       >
         <ScrollView>
@@ -37,7 +27,7 @@ export default class RegisterProfile extends Component {
             textStyle={{fontSize: 16}}
           />
         </ScrollView>
-      </components.Layout>
+      </containers.Layout>
     );
   }
 }

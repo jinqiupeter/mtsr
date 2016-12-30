@@ -6,17 +6,15 @@ import dismissKeyboard from 'dismissKeyboard';
 import {Actions} from 'react-native-router-flux';
 
 import * as components from '../';
+import * as containers from '../../containers';
 import {SCREEN_HEIGHT} from '../../config';
 
 export default class CreateFeedback extends Component {
     render() {
-        let {sceneKey, loading, processing, error, input, saveInput, createFeedback, cbOk} = this.props;
+        let {sceneKey, input, saveInput, createFeedback, cbOk} = this.props;
         return (
-            <components.Layout
+            <containers.Layout
                 sceneKey={sceneKey}
-                loading={loading}
-                processing={processing}
-                error={error}
                 renderTitle={() => components.NavBarTitle({title: '提交留言'})}
                 renderBackButton={components.NavBarCancel}
             >
@@ -49,7 +47,7 @@ export default class CreateFeedback extends Component {
                     }}
                     textStyle={{fontSize: 16, alignItems: 'stretch'}}
                 />
-            </components.Layout>
+            </containers.Layout>
         );
     }
 }

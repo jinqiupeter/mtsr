@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React, {Component, PropTypes} from 'react';
 import {StyleSheet, View} from 'react-native';
 import ActionSheet from '@exponent/react-native-action-sheet';
@@ -36,7 +31,7 @@ export default class Layout extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, children, containerStyle} = this.props;
+        let {sceneKey, loading, processing, error, notification, children, containerStyle} = this.props;
         let {
             statusBarBgColor, hideStatusBar = false, statusBarStyle, hideNavBar = false, hideTabBar = true,
             currentTab, refresh
@@ -49,6 +44,7 @@ export default class Layout extends Component {
                 <View style={[styles.container, {paddingTop, paddingBottom}, containerStyle]}>
                     <components.StatusBar hidden={hideStatusBar} barStyle={statusBarStyle}
                         backgroundColor={statusBarBgColor || 'transparent'}/>
+                    {notification ? <components.Notification notification={notification}/> : null}
                     {processing ? <components.Processing processing={processing}/> : null}
                     {error && sceneKey ? <components.ErrorInput sceneKey={sceneKey} error={error.input}/> : null}
                     {children}
