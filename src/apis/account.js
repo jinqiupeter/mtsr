@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {API_ORIGIN} from '../config';
 import {getApi, postApi} from './';
 import logger from '../logger'
@@ -25,7 +20,6 @@ export function logout() {
 }
 
 export function editAccount(update) {
-    logger.debug("editAccount: update: ", update);
     return postApi(`${API_ORIGIN}/account/edit`, update);
 }
 

@@ -120,8 +120,8 @@ let verifyCodeConstraints = {
         message: '请输入验证码。',
     },
     format: {
-        pattern: /^\d{4}$/,
-        message: '验证码为4位数字。'
+        pattern: /^\d{6}$/,
+        message: '验证码为6位数字。'
     },
 };
 

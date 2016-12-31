@@ -21,7 +21,21 @@ export function registerMobileSubmit(sceneKey) {
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {mobile, password} = input[sceneKey];
             let cbOk = () => Actions.RegisterVerify({mobile, password});
-            dispatch(actions.sendVerifyCode({by: "mobile", mobile, cbOk}));
+            apis.sendVerifyCode({mobile})
+                .then(() => {
+                    if (cbOk) {
+                        cbOk();
+                    }
+                })
+                .catch(error => {
+                    if (error instanceof apis.ResultError) {
+                        if (error.code == apis.ERROR_CODE_SMS_CODE_FAILED) {
+                            dispatch(actions.errorFlash("发送验证码失败，请稍后重试。"));
+                            return;
+                        }
+                    }
+                    dispatch(actions.handleApiError(error))
+                });
         }));
     };
 }
@@ -31,8 +45,9 @@ export function registerVerifySubmit(sceneKey) {
         let {input, sceneState} = getState();
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {mobile, password, code} = input[sceneKey];
+            logger.debug("verifying ", mobile, password, code);
             apis.register({mobile, password, code})
-                .then((response) => {
+                .then(() => {
                     dispatch(actions.loginRequest(
                         {mobile, password}, () => Actions.RegisterProfile()
                     ));

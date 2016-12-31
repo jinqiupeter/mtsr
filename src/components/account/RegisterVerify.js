@@ -47,7 +47,7 @@ export default class RegisterVerify extends Component {
                     <components.FormItem iconName='key' containerStyle={{borderTopWidth: 0}}>
                         <components.TextInput
                             placeholder='输入验证码'
-                            maxLength={4}
+                            maxLength={6}
                             keyboardType='numeric'
                             defaultValue={input[sceneKey].code}
                             autoFocus={true}

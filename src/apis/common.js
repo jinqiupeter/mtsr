@@ -1,9 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
-import {Actions} from 'react-native-router-flux';
 import URL from 'url';
 
 import logger from '../logger';
