@@ -42,7 +42,7 @@ export function registerMobileSubmit(sceneKey) {
 
 export function registerVerifySubmit(sceneKey) {
     return (dispatch, getState) => {
-        let {input, sceneState} = getState();
+        let {input} = getState();
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {mobile, password, code} = input[sceneKey];
             logger.debug("verifying ", mobile, password, code);
