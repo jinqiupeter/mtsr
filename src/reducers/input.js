@@ -16,7 +16,7 @@ const initialState = {
         code: '',
         validity: false,
     },
-    RegisterProfile: {
+    AssociateXpy: {
         gender: '',
         validity: false,
     },
@@ -66,6 +66,11 @@ const initialState = {
         fatherName: '',
         fatherPhone: '',
         validity: false,
+    },
+    AssociateXpy: {
+        realname: '',
+        gender: '',
+        dateOfBirth:'',
     }
 };
 

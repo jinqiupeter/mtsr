@@ -23,6 +23,10 @@ export function editAccount(update) {
     return postApi(`${API_ORIGIN}/account/edit`, update);
 }
 
+export function searchXpy(condition) {
+    return getApi(`${API_ORIGIN}/searchXpy`, condition);
+}
+
 export function changePassword(update) {
     logger.debug("changePassword: ", update);
     return postApi(`${API_ORIGIN}/account/password`, update);

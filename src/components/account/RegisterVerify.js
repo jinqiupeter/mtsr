@@ -10,7 +10,7 @@ export default class RegisterVerify extends Component {
         let {sceneKey, saveInput, setSceneState} = this.props;
         let {mobile, password} = this.props;
         saveInput(sceneKey, {mobile, password});
-        setSceneState(sceneKey, {secondsToSend: 30});
+        setSceneState(sceneKey, {secondsToSend: 60});
 
         this.timerSend = setInterval(
             () => {
@@ -60,7 +60,7 @@ export default class RegisterVerify extends Component {
                     <components.ButtonWithBg
                         text={'重发'+(secondsToSend > 0 ? ' ('+secondsToSend+')' : '')}
                         containerStyle={{flex: 1}}
-                        disable={secondsToSend > 0}
+                        disabled={secondsToSend > 0}
                         onPress={
               secondsToSend == 0 ? 
               () => {

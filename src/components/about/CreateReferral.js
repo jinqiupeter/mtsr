@@ -71,13 +71,6 @@ export default class CreateReferral extends Component {
                                 }}
                             />
                         }
-                        onPress={() => Actions.DatePick({
-                            loading, processing, error, saveInput,
-                            title: '出生日期',
-                            parentSceneKey: sceneKey,
-                            inputKey: 'csrq',
-                            selectedDate: input[sceneKey].csrq,
-                        })}
                     />
                 </components.Block>
 

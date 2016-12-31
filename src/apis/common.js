@@ -71,7 +71,7 @@ export async function fetchApi(request, timeout=5000) {
         if (error === undefined) {
             error = new HttpError(504, HTTP_STATUS[504]);
         } else if (error instanceof TypeError) {
-            error = new HttpError(503, "网络不通");
+            error = new HttpError(503, "服务器无响应");
         }
         return Promise.reject(error);
     }

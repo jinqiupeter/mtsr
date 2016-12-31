@@ -8,6 +8,7 @@ import * as actions from './';
 
 export const RESET_ACCOUNT = 'reset_account';
 export const LOGIN = 'login';
+export const FIND_XPY = "find_xpy";
 
 export function resetAccount() {
     return {
@@ -49,7 +50,7 @@ export function registerVerifySubmit(sceneKey) {
             apis.register({mobile, password, code})
                 .then(() => {
                     dispatch(actions.loginRequest(
-                        {mobile, password}, () => Actions.RegisterProfile()
+                        {mobile, password}, () => Actions.AssociateXpy()
                     ));
                 })
                 .catch(error => {
@@ -68,16 +69,18 @@ export function registerVerifySubmit(sceneKey) {
     };
 }
 
-export function registerProfileSubmit(sceneKey) {
+export function associateXpy(sceneKey) {
     return (dispatch, getState) => {
-        let {object, account} = getState();
-        logger.debug("object and account:", object, account);
-        let user = object.users[account.userId];
-        if (user.nickname && user.profileImageUrl && user.gender) {
-            Actions.Classes();
-        } else {
-            dispatch(actions.errorFlash("请填写完基本资料。"));
-        }
+        dispatch(actions.setSceneState(sceneKey, {genderPickerVisible: false}));
+
+        let {account} = getState();
+        let {xpyby, khbh} = account.xpyFound;
+
+        apis.editAccount({xpyby, khbh})
+            .then(() => {
+                Actions.Classes();
+            })
+            .catch((error) => dispatch(actions.handleApiError(error)));
     };
 }
 
@@ -90,7 +93,7 @@ export function loginSubmit(sceneKey, cbOk) {
                     if (user.nickname && user.profileImageUrl && user.gender) {
                         Actions.Classes();
                     } else {
-                        Actions.RegisterProfile();
+                        Actions.AssociateXpy();
                     }
                 };
             }
@@ -220,17 +223,20 @@ export function editProfileAvatarSubmit(sceneKey) {
     };
 }
 
-export function editProfileGenderSubmit(sceneKey) {
+export function searchXpy(sceneKey) {
     return (dispatch, getState) => {
         let {input} = getState();
         dispatch(actions.setSceneState(sceneKey, {genderPickerVisible: false}));
-
+        logger.debug("input in searchXpy: ", input, sceneKey);
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
-            let {gender} = input[sceneKey];
-            apis.editAccount({gender})
+            let {realname, dateOfBirth, gender} = input[sceneKey];
+            apis.searchXpy({realname, dateOfBirth, gender})
                 .then((response) => {
-                    let {data: {user}} = response;
-                    dispatch(login({user}));
+                    let {data: {xpyFound}} = response;
+                    dispatch({
+                        type: FIND_XPY,
+                        xpyFound,
+                    });
                 })
                 .catch((error) => dispatch(actions.handleApiError(error)));
         }));

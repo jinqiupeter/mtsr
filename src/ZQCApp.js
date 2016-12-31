@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {PushNotificationIOS, AlertIOS} from 'react-native';
+import {PushNotificationIOS} from 'react-native';
 import {connect} from 'react-redux';
 import {Router, Scene} from 'react-native-router-flux';
 import {ActionConst} from 'react-native-router-flux';
@@ -10,6 +10,10 @@ import * as components from './components';
 const RouterConnected = connect()(Router);
 
 export default class ZQCApp extends Component {
+    componentDidMount() {
+        PushNotificationIOS.setApplicationIconBadgeNumber(0);
+    }
+
     render() {
         return (
             <RouterConnected>
@@ -25,7 +29,7 @@ export default class ZQCApp extends Component {
                     <Scene key='Login' component={containers.Login}/>
                     <Scene key='RegisterMobile' component={containers.RegisterMobile}/>
                     <Scene key='RegisterVerify' component={containers.RegisterVerify}/>
-                    <Scene key='RegisterProfile' component={containers.RegisterProfile}/>
+                    <Scene key='AssociateXpy' component={containers.AssociateXpy}/>
 
                     <Scene key='EditProfile' component={containers.EditProfile}/>
                     <Scene key='EditProfileNickname' component={containers.EditProfileNickname}/>

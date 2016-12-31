@@ -179,7 +179,7 @@ function login(dispatch, getState) {
                         if (user.nickname && user.profileImageUrl && user.gender) {
                             Actions.Classes();
                         } else {
-                            Actions.RegisterProfile();
+                            Actions.AssociateXpy();
                         }
                     },
                     cbFail,

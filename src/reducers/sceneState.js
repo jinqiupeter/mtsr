@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import logger from '../logger';
 import * as actions from '../actions';
 
@@ -10,7 +5,7 @@ const initialState = {
     RegisterVerify: {
         secondsToSend: 0,
     },
-    RegisterProfile: {
+    AssociateXpy: {
         genderPickerVisible: false,
     },
 

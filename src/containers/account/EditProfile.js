@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     saveInput: actions.saveInput,
     setSceneState: actions.setSceneState,
-    submitGender: actions.editProfileGenderSubmit,
+    submitGender: actions.searchXpy,
   }, dispatch);
 }
 

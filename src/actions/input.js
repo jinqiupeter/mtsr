@@ -192,5 +192,8 @@ let constraints = {
         fatherName: nameConstraints,
         motherPhone: mobileConstraints,
         fatherPhone: mobileConstraints,
+    },
+    AssociateXpy: {
+        realname: nameConstraints,
     }
 };
