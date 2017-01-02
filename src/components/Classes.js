@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {
     StyleSheet, View, Image, Text,
-    SegmentedControlIOS
+    SegmentedControlIOS, ScrollView
 } from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 import {COLOR} from '../config';
 import logger from '../logger';
@@ -14,16 +15,10 @@ import addDays from 'date-fns/add_days'
 
 export default class Classes extends Component {
     render() {
-        let {startDate, sceneKey, saveInput, submitDay, input, object} = this.props;
+        let {startDate, sceneKey, saveInput, submitDay, input} = this.props;
         let {account} = this.props;
 
         logger.debug("account in classes: ", account);
-
-        if (!account) {
-            return null;
-        }
-
-
 
         return (
             <containers.Layout
@@ -56,80 +51,96 @@ export default class Classes extends Component {
                         </View>
                     </View>
                 </components.Block>
-                <View
-                    style={styles.container}
-                >
-                <SegmentedControlIOS
-                    values={['未上课程', '已上课程']}
-                    selectedIndex={input[sceneKey].selectedClassType}
-                    onChange={(event) => saveInput(sceneKey,
-                        {selectedClassType: event.nativeEvent.selectedSegmentIndex}
-                        )}
-                    tintColor={COLOR.theme}
-                    style={styles.segmentedControl}
-                />
-                </View>
 
-                {input[sceneKey].selectedClassType == 0 ?
-                    <View style={styles.titleContainer}>
-                        <components.Button
-                            text='今天'
-                            onPress={() => {
-                                saveInput(sceneKey, {startDate: new Date()});
-                                submitDay(sceneKey);
-                            }}
-                            containerStyle={{margin: 5, padding: 5}}
-                            textStyle={{fontSize: 12}}
+                {(!account.xpybh || !account.khbh) ?
+                    <View>
+                        <components.TextNotice>
+                            您还没有绑定学员
+                        </components.TextNotice>
+                        <components.ButtonWithBg
+                            text='立即绑定'
+                            onPress={() => Actions.AssociateXpy()}
+                            textStyle={{fontSize: 16}}
                         />
-                        <components.Button
-                            text='下周'
-                            onPress={() => {
-                                saveInput(sceneKey, {startDate: addDays(startDate, 7)});
-                                submitDay(sceneKey);
-                            }}
-                            containerStyle={{margin: 5, padding: 5}}
-                            textStyle={{fontSize: 12}}
-                        />
-                        <components.Button
-                            text='下个月'
-                            onPress={() => {
-                                saveInput(sceneKey, {startDate: addDays(startDate, 30)});
-                                submitDay(sceneKey);
-                            }}
-                            containerStyle={{margin: 5, padding: 5}}
-                            textStyle={{fontSize: 12}}
-                        />
-                        {/*<components.Button*/}
-                            {/*text='选择'*/}
-                            {/*onPress={() => {*/}
-                                {/*setSceneState(sceneKey, {calendarPickerVisible: true})*/}
-                            {/*}}*/}
-                            {/*containerStyle={{margin: 5, padding: 5}}*/}
-                            {/*textStyle={{fontSize: 12}}*/}
-                        {/*/>*/}
-                        {/*<components.CalendarPicker*/}
-                            {/*visible={sceneState[sceneKey].calendarPickerVisible}*/}
-                            {/*setVisible={(visible) => setSceneState(sceneKey, {calendarPickerVisible: visible})}*/}
-                            {/*selectedDate={input[sceneKey].startDate}*/}
-                            {/*onValueChange={(selectedDate) => {*/}
-                                {/*saveInput(sceneKey, {startDate: selectedDate});*/}
-
-                            {/*}}*/}
-                            {/*submit={(selectedDate) => {*/}
-                                {/*saveInput(sceneKey, {startDate: selectedDate});*/}
-                                {/*submitDay(sceneKey);*/}
-                            {/*}}*/}
-                        {/*/>*/}
                     </View>
-                    :
-                    <View/>
-                }
+                        :
+                    <ScrollView>
+                        <View
+                            style={styles.container}
+                        >
+                        <SegmentedControlIOS
+                            values={['未上课程', '已上课程']}
+                            selectedIndex={input[sceneKey].selectedClassType}
+                            onChange={(event) => saveInput(sceneKey,
+                                {selectedClassType: event.nativeEvent.selectedSegmentIndex}
+                                )}
+                            tintColor={COLOR.theme}
+                            style={styles.segmentedControl}
+                        />
+                        </View>
 
+                        {input[sceneKey].selectedClassType == 0 ?
+                            <View style={styles.titleContainer}>
+                                <components.Button
+                                    text='今天'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: new Date()});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                <components.Button
+                                    text='下周'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: addDays(startDate, 7)});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                <components.Button
+                                    text='下个月'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: addDays(startDate, 30)});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                {/*<components.Button*/}
+                                    {/*text='选择'*/}
+                                    {/*onPress={() => {*/}
+                                        {/*setSceneState(sceneKey, {calendarPickerVisible: true})*/}
+                                    {/*}}*/}
+                                    {/*containerStyle={{margin: 5, padding: 5}}*/}
+                                    {/*textStyle={{fontSize: 12}}*/}
+                                {/*/>*/}
+                                {/*<components.CalendarPicker*/}
+                                    {/*visible={sceneState[sceneKey].calendarPickerVisible}*/}
+                                    {/*setVisible={(visible) => setSceneState(sceneKey, {calendarPickerVisible: visible})}*/}
+                                    {/*selectedDate={input[sceneKey].startDate}*/}
+                                    {/*onValueChange={(selectedDate) => {*/}
+                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
 
-                {input[sceneKey].selectedClassType == 1 ?
-                    <containers.AttendedClasses/>
-                    :
-                    <containers.UnattendedClasses/>
+                                    {/*}}*/}
+                                    {/*submit={(selectedDate) => {*/}
+                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
+                                        {/*submitDay(sceneKey);*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            </View>
+                            :
+                            <View/>
+                        }
+
+                        {input[sceneKey].selectedClassType == 1
+                                ?
+                                <containers.AttendedClasses/>
+                                :
+                                <containers.UnattendedClasses/>
+                        }
+                    </ScrollView>
                 }
             </containers.Layout>
         );
