@@ -7,6 +7,5 @@ export * from './activities';
 export * from './class';
 export * from './court';
 export * from './security';
-export * from './stat';
 export * from './schedule';
 export * from './about';

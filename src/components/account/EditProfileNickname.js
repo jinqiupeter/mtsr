@@ -7,10 +7,9 @@ import * as components from '../';
 
 export default class EditProfileNickname extends Component {
   componentDidMount() {
-    let {sceneKey, object, account, saveInput} = this.props;
-    let user = object.users[account.userId];
-    if (user.nickname) {
-      saveInput(sceneKey, {nickname: user.nickname});  
+    let {sceneKey, account, saveInput} = this.props;
+    if (account.nickname) {
+      saveInput(sceneKey, {nickname: account.nickname});
     }
   }
 

@@ -5,7 +5,7 @@ import * as components from '../../components';
 import * as actions from '../../actions';
 
 function mapStateToProps(state) {
-    let {loading, processing, error, input, sceneState, object, account} = state;
+    let {loading, processing, error, input, sceneState, object, account, associate} = state;
     return {
         loading,
         processing,
@@ -14,6 +14,7 @@ function mapStateToProps(state) {
         sceneState,
         object,
         account,
+        associate,
     };
 }
 

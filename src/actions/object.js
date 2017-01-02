@@ -16,7 +16,7 @@ export function resetObjectCache() {
     };
 }
 
-function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
+function cacheObjects({attendedClasses, attendedClassIds,
     unattendedClasses, unattendedClassIds, activities, activityIds,
     files, fileIds, faqs, faqIds, userStats, selectableClasses, selectableClassIds,
     feedbacks, feedbackIds, referrals, referralIds, sponsors, sponsorIds,
@@ -39,9 +39,7 @@ function cacheObjects({users, userIds, attendedClasses, attendedClassIds,
     let action = {
         type: CACHE_OBJECTS,
     };
-    if (users !== undefined) {
-        action.users = aToO(users, userIds);
-    }
+
     if (attendedClasses !== undefined) {
         action.attendedClasses = aToO(attendedClasses, attendedClassIds);
     }
@@ -105,35 +103,10 @@ function mergeCacheObjectsActions(actions) {
     );
 }
 
-export function cacheUsers(object, users, userIds) {
-    let ps = [cacheObjects({users, userIds})];
-
-    return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
-}
-
 export function cacheActivities(object, activities, activityIds) {
     let ps = [cacheObjects({activities, activityIds})];
 
     return Promise.all(ps).then((actions) => mergeCacheObjectsActions(actions));
-}
-
-export async function cacheUserByIds(object, userIds, update=false) {
-    userIds = Array.from(new Set(userIds));
-    if (!update) {
-        userIds = userIds.filter((v) => object.users[v] === undefined);
-    }
-    if (userIds.length > 0) {
-        let response;
-        try {
-            response = await apis.userInfos(userIds);
-        } catch (error) {
-            return actions.handleApiError(error);
-        }
-        let {data: {users}} = response;
-        return cacheUsers(object, users, userIds);
-    } else {
-        return cacheUsers(object, []);
-    }
 }
 
 export function cacheAttendedClasses(object, attendedClasses, classIds) {

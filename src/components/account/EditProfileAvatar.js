@@ -11,8 +11,8 @@ import logger from '../../logger'
 export default class EditProfileAvatar extends Component {
   componentDidMount() {
     let {sceneKey, object, account, saveInput} = this.props;
-    let {profileImageUrl} = helpers.userFromCache(object, account.userId);
-    saveInput(sceneKey, {profileImageUrl});
+    let {profileimageurl} = account.profileimageurl;
+    saveInput(sceneKey, {profileimageurl});
   }
 
   render() {
@@ -28,7 +28,7 @@ export default class EditProfileAvatar extends Component {
         })}
       >
         <ScrollView>
-          <components.Image source={helpers.userAvatarSource(input[sceneKey], 'middle')} style={styles.avatar} />
+          <components.Image source={helpers.accountAvatarSource(input[sceneKey], 'middle')} style={styles.avatar} />
           <components.TextNotice>从内置里选取</components.TextNotice>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5}}>
             {Array.from(

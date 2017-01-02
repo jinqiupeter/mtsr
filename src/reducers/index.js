@@ -15,6 +15,7 @@ import activities from './activities';
 import schedule from './schedule';
 import about from './about';
 import notification from './notification';
+import associate from './associate';
 
 export default combineReducers({
     navigation,
@@ -33,4 +34,5 @@ export default combineReducers({
     schedule,
     about,
     notification,
+    associate,
 });

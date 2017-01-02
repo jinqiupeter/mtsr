@@ -9,10 +9,9 @@ import {fetchUrl as fetch} from '../utils';
 import * as helpers from '../components/helpers';
 
 export function getApi(url, query={}, {method='GET', headers={}, timeout=5000}={}) {
-    let {account, object} = store.getState();
-    if (account.userId) {
-        let user = helpers.userFromCache(object, account.userId);
-        headers["session"] = user.session;
+    let {account} = store.getState();
+    if (account.session) {
+        headers["session"] = account.session;
     }
 
     let urlParts = URL.parse(url, true);
@@ -23,10 +22,9 @@ export function getApi(url, query={}, {method='GET', headers={}, timeout=5000}={
 }
 
 export function postApi(url, data={}, {method='POST', headers={}, timeout=5000}={}) {
-    let {account, object} = store.getState();
-    if (account.userId) {
-        let user = helpers.userFromCache(object, account.userId);
-        headers["session"] = user.session;
+    let {account} = store.getState();
+    if (account.session) {
+        headers["session"] = account.session;
     }
 
     if (Object.keys(data).length == 0) {

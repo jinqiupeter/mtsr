@@ -93,9 +93,8 @@ export function registerPush() {
 
         // Subscribe to register event of PushNotificationIOS.
         PushNotificationIOS.addEventListener('register', (deviceToken) => {
-            let {account, object} = getState();
-            if (object.users[account.userId]
-                && object.users[account.userId].deviceid == deviceToken) {
+            let {account} = getState();
+            if (account.deviceid == deviceToken) {
                 return;
             }
 
@@ -167,16 +166,16 @@ function login(dispatch, getState) {
         );
     };
 
-    let username = object.users[account.userId] ? object.users[account.userId].user : '';
+    let username = account.username;
     apis.isLoggedin({username: username})
         .then((response) => {
             logger.debug("isLoggedIn response: ", response);
-            let {data: {user}} = response;
-            if (user) {
+            let {data: {account}} = response;
+            if (account) {
                 dispatch(actions.login({
-                    user,
+                    account,
                     cbOk: () => {
-                        if (user.nickname && user.profileImageUrl && user.gender) {
+                        if (account.xpybh && account.khbh) {
                             Actions.Classes();
                         } else {
                             Actions.AssociateXpy();

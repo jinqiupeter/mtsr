@@ -1,15 +1,5 @@
 import parse from 'date-fns/parse';
 
-export function userFromCache(object, userId) {
-    let user = object.users[userId];
-    if (!user) {
-        console.warn(`user ${userId} not in cache`);
-        return null;
-    }
-
-    return Object.assign({}, user);
-}
-
 export function attendClassFromCache(object, classId) {
     let attendedClass = object.attendedClasses[classId];
     if (!attendedClass) {

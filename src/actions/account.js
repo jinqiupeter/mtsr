@@ -7,7 +7,8 @@ import * as apis from '../apis';
 import * as actions from './';
 
 export const RESET_ACCOUNT = 'reset_account';
-export const LOGIN = 'login';
+export const SET_ACCOUNT = 'set_account';
+export const SET_PROFILE_IMAGE = "set_profile_image";
 export const FIND_XPY = "find_xpy";
 
 export function resetAccount() {
@@ -73,11 +74,13 @@ export function associateXpy(sceneKey) {
     return (dispatch, getState) => {
         dispatch(actions.setSceneState(sceneKey, {genderPickerVisible: false}));
 
-        let {account} = getState();
-        let {xpyby, khbh} = account.xpyFound;
+        let {associate} = getState();
+        let {xpybh, khbh} = associate;
 
-        apis.editAccount({xpyby, khbh})
-            .then(() => {
+        apis.editAccount({xpybh, khbh})
+            .then((response) => {
+                let {data: {account}} = response;
+                dispatch({type: SET_ACCOUNT, account});
                 Actions.Classes();
             })
             .catch((error) => dispatch(actions.handleApiError(error)));
@@ -89,8 +92,9 @@ export function loginSubmit(sceneKey, cbOk) {
         let {input} = getState();
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             if (!cbOk) {
-                cbOk = (user) => {
-                    if (user.nickname && user.profileImageUrl && user.gender) {
+                cbOk = (account) => {
+                    logger.debug("account before after login: ", account);
+                    if (!!account.xpybh && !!account.khbh) {
                         Actions.Classes();
                     } else {
                         Actions.AssociateXpy();
@@ -115,9 +119,9 @@ export function loginRequest({username, mobile, email, password}, cbOk) {
     return (dispatch) => {
         apis.login({username, mobile, email, password})
             .then((response) => {
-                let {data: {user}} = response;
-                logger.debug("got user: ", user);
-                dispatch(login({user, cbOk}));
+                let {data: {account}} = response;
+                logger.debug("got account: ", account);
+                dispatch(login({account, cbOk}));
             })
             .catch((error) => {
                 if (error instanceof apis.ResultError) {
@@ -132,31 +136,19 @@ export function loginRequest({username, mobile, email, password}, cbOk) {
     };
 }
 
-export function login({user, cbOk, cbFail}) {
-    return (dispatch, getState) => {
-        let {object} = getState();
-        actions.cacheUsers(object, [user])
-            .then((action) => {
-                dispatch(action);
+export function login({account, cbOk, cbFail}) {
+    return (dispatch) => {
+        dispatch(actions.registerPush());
 
-                dispatch(actions.registerPush());
-
-                dispatch({type: LOGIN, userId: user.id});
-                if (cbOk) {
-                    cbOk(user);
-                }
-            })
-            .catch((error) => {
-                dispatch(actions.handleApiError(error));
-                if (cbFail) {
-                    cbFail(error);
-                }
-            });
+        dispatch({type: SET_ACCOUNT, account});
+        if (cbOk) {
+            cbOk(account);
+        }
     };
 }
 
 export function logoutRequest() {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         apis.logout()
             .then((response) => Actions.Bootstrap({isReset: true}))
             .catch((error) => dispatch(actions.handleApiError(error)));
@@ -177,8 +169,9 @@ export function editProfileNicknameSubmit(sceneKey) {
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             apis.editAccount(nickname)
                 .then((response) => {
-                    let {data: {user}} = response;
-                    dispatch(login({user, cbOk: () => Actions.pop()}));
+                    let {data: {account}} = response;
+                    dispatch({type: SET_ACCOUNT, account});
+                    Actions.pop();
                 })
                 .catch((error) => dispatch(actions.handleApiError(error)));
         }));
@@ -190,7 +183,7 @@ export function selectCustomAvatar(sceneKey, picker) {
         if (picker.error) {
             dispatch(actions.errorFlash(picker.error));
         } else if (!picker.didCancel && !picker.customButton) {
-            dispatch(actions.saveInput(sceneKey, {profileImageUrl: picker.uri}));
+            dispatch(actions.saveInput(sceneKey, {profileimageurl: picker.uri}));
         }
     };
 }
@@ -199,23 +192,30 @@ export function editProfileAvatarSubmit(sceneKey) {
     return (dispatch, getState) => {
         let {input} = getState();
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
-            let {profileImageUrl} = input[sceneKey];
-            logger.debug("editting avatar: ", profileImageUrl);
+            let {profileimageurl} = input[sceneKey];
+            logger.debug("editting avatar: ", profileimageurl);
             let cbOk = (response) => {
-                let {data: {user}} = response;
-                dispatch(login({user, cbOk: () => Actions.pop()}));
+                let {data: {account}} = response;
+                logger.debug("dispatching account profile: ", account);
+                dispatch({
+                    type: SET_ACCOUNT,
+                    account,
+                });
+
+                Actions.pop();
             };
 
-            if (utils.isUrl(profileImageUrl)) {
+            if (utils.isUrl(profileimageurl)) {
                 Actions.pop();
                 return;
             }
 
-            ImageResizer.createResizedImage(profileImageUrl, 1080, 810, 'JPEG', 90)
+            ImageResizer.createResizedImage(profileimageurl, 1080, 810, 'JPEG', 90)
                 .then(resizedImageUri => apis.uploadFile(resizedImageUri, 'image/jpeg'))
                 .then((response) => {
                     let {data: {file}} = response;
-                    return apis.editAccount({profileImageUrl: file.url});
+                    logger.debug("change account profile: ", file);
+                    return apis.editAccount({profileimageurl: file.url});
                 })
                 .then(cbOk)
                 .catch((error) => dispatch(actions.handleApiError(error)));

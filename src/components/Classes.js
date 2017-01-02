@@ -17,10 +17,13 @@ export default class Classes extends Component {
         let {startDate, sceneKey, saveInput, submitDay, input, object} = this.props;
         let {account} = this.props;
 
-        let user = helpers.userFromCache(object, account.userId);
-        if (!user) {
+        logger.debug("account in classes: ", account);
+
+        if (!account) {
             return null;
         }
+
+
 
         return (
             <containers.Layout
@@ -38,18 +41,18 @@ export default class Classes extends Component {
                     <View style={[styles.userAvatarContainer, styles.shadow]}>
                         <Image
                             style={styles.userAvatarContainer}
-                            source={helpers.userAvatarSource(user, 'middle')}
+                            source={helpers.accountAvatarSource(account, 'middle')}
                         />
                     </View>
                     <View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
-                            <components.Text text={user.nickname} styleKind='emphaExtraBig'>
-                                {user.nickname}
+                            <components.Text text={account.nickname} styleKind='emphaExtraBig'>
+                                {account.nickname}
                             </components.Text>
                         </View>
 
                         <View style={{justifyContent: 'center', height: 50}}>
-                            <components.Text>{user.monthage || '0'}</components.Text>
+                            <components.Text>{account.monthage || '0'}</components.Text>
                         </View>
                     </View>
                 </components.Block>

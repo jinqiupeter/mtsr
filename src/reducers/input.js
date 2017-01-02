@@ -30,7 +30,7 @@ const initialState = {
         validity: false,
     },
     EditProfileAvatar: {
-        profileImageUrl: '',
+        profileimageurl: '',
         validity: false,
     },
     Classes: {

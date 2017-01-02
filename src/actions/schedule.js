@@ -84,7 +84,7 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 dispatch(action);
 
                 let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
-                let monthAge = object.users[account.userId].monthage;
+                let monthAge = account.monthage;
                 let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
 
                 dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
@@ -114,7 +114,7 @@ export function changeMonth({startingDate}) {
         let {object, account} = getState();
 
         let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
-        let monthAge = object.users[account.userId].monthage;
+        let monthAge = account.monthage;
         let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
 
         logger.debug("changing CHANGE_MONTH: ", selectableDays);

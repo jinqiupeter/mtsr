@@ -5,11 +5,10 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    if (action.type == actions.SET_ACCOUNT) {
-        let {account} = action;
-        return account;
-    } else if (action.type == actions.RESET
-        || action.type == actions.RESET_ACCOUNT) {
+    if (action.type == actions.FIND_XPY) {
+        let {xpyFound} = action;
+        return xpyFound;
+    } else if (action.type == actions.RESET) {
         return initialState;
     } else {
         return state;

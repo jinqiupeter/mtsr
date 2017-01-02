@@ -12,10 +12,9 @@ import {COLOR, GENDERS} from '../../config';
 
 export default class AssociateXpy extends Component {
     render() {
-        let {sceneKey, input, object, account, saveInput, sceneState, setSceneState, xpyFound} = this.props;
-        let {searchXpy, associateXpy} = this.props;
+        let {sceneKey, input, account, saveInput, sceneState, setSceneState, xpyFound} = this.props;
+        let {associate, searchXpy, associateXpy} = this.props;
 
-        let user = helpers.userFromCache(object, account.userId);
         logger.debug("props in AssociateXpy", this.props);
         return (
             <containers.Layout
@@ -87,38 +86,51 @@ export default class AssociateXpy extends Component {
                         textStyle={{fontSize: 16}}
                     />
 
-                    <components.TextNotice>可选信息</components.TextNotice>
+                    {associate.realname ?
+                        <View style={{
+                            flexDirection: 'row', justifyContent: 'space-around'
+                        }}>
+                        <View style={{flexDirection: 'column'}}>
+                            <components.TextNotice>{'姓名：' + associate.realname}</components.TextNotice>
+                            <components.TextNotice>{'昵称：' + associate.nickname}</components.TextNotice>
+                        </View>
+                        <View style={{flexDirection: 'column'}}>
+                            <components.TextNotice>{'月龄：' + associate.monthage}</components.TextNotice>
+                            <components.TextNotice>
+                                {'已上课时/总课时：' + associate.classleft + "/" + parseInt(associate.classleft*1 + associate.classattended)}
+                                </components.TextNotice>
+                        </View>
+                        </View> :
+                        <components.TextNotice>未找到符合条件的学员</components.TextNotice>
+                    }
+
+                    <components.TextNotice style={{marginTop: 10}}>可选信息</components.TextNotice>
                     <components.Block>
                         <components.BlockItem
                             leftText='头像'
-                            rightImage={helpers.userAvatarSource(user)}
+                            rightImage={helpers.accountAvatarSource(account)}
                             rightIcon='angle-right'
                             onPress={() => Actions.EditProfileAvatar()}
                             imageStyle={{borderRadius: 5}}
-                            containerStyle={{height: 60}}
+                            containerStyle={{height: 60, borderTopWidth: 0}}
                         />
                     </components.Block>
-                    {account.xpyFound &&
-                        <View style={{
-                            flexDirection: 'column'
-                        }}>
-                            <components.TextNotice>{'姓名：' + xpyFound.realname}</components.TextNotice>
-                            <components.TextNotice>{'昵称：' + xpyFound.nickname}</components.TextNotice>
-                            <components.TextNotice>{'月龄：' + xpyFound.monthage}</components.TextNotice>
-                            <components.TextNotice>{'总课时数：' + xpyFound.totalclasses}</components.TextNotice>
-                        </View>
-                    }
+
+                    <View style={{flexDirection: 'row'}}>
                     <components.ButtonWithBg
                         text='绑定'
-                        disabled={!account.xpyFound}
+                        disabled={!associate.realname}
+                        containerStyle={{flex: 1}}
                         onPress={() => associateXpy(sceneKey)}
                         textStyle={{fontSize: 16}}
                     />
                     <components.ButtonWithBg
                         text='跳过'
+                        containerStyle={{flex: 1}}
                         onPress={() => Actions.Classes()}
                         textStyle={{fontSize: 16}}
                     />
+                    </View>
                 </ScrollView>
             </containers.Layout>
         );

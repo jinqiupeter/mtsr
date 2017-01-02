@@ -2,7 +2,7 @@ import logger from '../logger';
 import * as actions from '../actions';
 
 const initialState = {
-    users: {},
+    account: {},
     attendedClasses: {},
     unattendedClasses: {},
     activities: {},

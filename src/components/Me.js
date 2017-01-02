@@ -21,8 +21,7 @@ export default class Me extends Component {
         } = this.props;
         let {account, logoutRequest} = this.props;
 
-        let user = helpers.userFromCache(object, account.userId);
-        if (!user) {
+        if (!account) {
             return null;
         }
 
@@ -38,7 +37,7 @@ export default class Me extends Component {
                 <ScrollView>
                     <components.Block containerStyle={{flexDirection: 'row'}}>
                         <components.Image
-                            source={helpers.userAvatarSource(user, 'middle')}
+                            source={helpers.accountAvatarSource(account, 'middle')}
                             style={styles.userAvatar}
                             containerStyle={{marginRight: 5}}
                         />
@@ -46,8 +45,8 @@ export default class Me extends Component {
                             <View
                                 style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
                                 <components.TextWithIcon
-                                    iconName={user.gender == 'm' ? 'mars' : 'venus'}
-                                    text={user.nickname}
+                                    iconName={account.gender == 'm' ? 'mars' : 'venus'}
+                                    text={account.nickname}
                                     styleKind='emphaBig'
                                 />
                                 <components.Button
@@ -72,7 +71,7 @@ export default class Me extends Component {
                                 </View>
                             </View>
                             <View style={{justifyContent: 'center', height: 50}}>
-                                <components.Text>{user.intro || '暂无签名'}</components.Text>
+                                <components.Text>{account.intro || '暂无签名'}</components.Text>
                             </View>
                         </View>
                     </components.Block>

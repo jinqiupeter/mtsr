@@ -18,10 +18,11 @@ export function imageSource(uri, size = 'small') {
     return {uri: imageUri(uri, size)};
 }
 
-export function userAvatarSource({profileImageUrl, avatarFile},
+export function accountAvatarSource({profileimageurl, avatarFile},
     size = 'small') {
-    if (profileImageUrl) {
-        return imageSource(profileImageUrl, size);
+    logger.debug("getting user avatar: ", profileimageurl, avatarFile);
+    if (profileimageurl) {
+        return imageSource(profileimageurl, size);
     } else if (avatarFile) {
         return imageSource(avatarFile.url, size);
     } else {
