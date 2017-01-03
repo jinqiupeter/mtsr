@@ -53,6 +53,7 @@ export default class ZQCApp extends Component {
                     <Scene key="TakeInput" component={components.TakeInput} />
                     <Scene key="DatePick" component={components.DatePick} />
                     <Scene key="Web" component={components.Web} />
+                    <Scene key="QRScanner" component={components.QRScanner} />
                 </Scene>
             </RouterConnected>
         );

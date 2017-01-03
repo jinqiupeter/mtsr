@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {
     StyleSheet, View, Image, Text,
-    SegmentedControlIOS, ScrollView
+    SegmentedControlIOS, ScrollView, Alert
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {COLOR} from '../config';
 import logger from '../logger';
@@ -44,11 +45,32 @@ export default class Classes extends Component {
                             <components.Text text={account.nickname} styleKind='emphaExtraBig'>
                                 {account.nickname}
                             </components.Text>
+                            <components.TextWithIcon
+                                iconName="camera"
+                                text="扫码签到"
+                                onPress={() => {
+                                    Actions.QRScanner({
+                                        title: '扫码签到',
+                                        parentSceneKey: sceneKey,
+                                        onBarCodeRead: (data) => {
+                                            Alert.alert(
+                                                '确定签到吗？',
+                                                data,
+                                                [
+                                                    {text: '取消', onPress: () => {}},
+                                                    {text: '确定', onPress: () => {}},
+                                                ],
+                                            );
+                                        }
+                                    })
+                                }}
+                            />
                         </View>
 
                         <View style={{justifyContent: 'center', height: 50}}>
                             <components.Text>{account.monthage || '0'}</components.Text>
                         </View>
+
                     </View>
                 </components.Block>
 
