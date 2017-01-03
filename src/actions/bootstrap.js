@@ -50,7 +50,7 @@ export function bootstrap() {
             },
             cbOk: () => {
                 dispatch(actions.processingTask(''));
-                login(dispatch, getState);
+                showSplashImage(dispatch, getState);
             },
             cbFail: () => {
                 dispatch(actions.processingTask(''));
@@ -148,6 +148,34 @@ export function registerPush() {
                 dispatch(actions.errorFlash(error.message));
             });
     };
+}
+
+export function showSplashImage(dispatch, getState) {
+    apis.getSplashImage()
+        .then((response) => {
+            let {data: {splashImage}} = response;
+            let img_url = splashImage.img_url;
+            let delay = 3000;
+            let duration = 1000;
+            if (!!img_url) {
+                let timer = setTimeout(() => {
+                    login(dispatch, getState);
+                }, delay);
+
+                Actions.SplashImage({img_url, delay, duration,
+                    skip: () => {
+                    login(dispatch, getState);
+                    clearTimeout(timer);
+                }});
+
+            } else {
+                login(dispatch, getState);
+            }
+
+        })
+        .catch((error) => {
+            dispatch(actions.errorFlash(error.message));
+        });
 }
 
 function login(dispatch, getState) {

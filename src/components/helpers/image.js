@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import URL from 'url';
 
 import {RES_USER_AVATARS, RES_USER_BACKGROUNDS} from '../../config';
@@ -15,7 +10,7 @@ export function imageUri(uri, size = 'small') {
 }
 
 export function imageSource(uri, size = 'small') {
-    return {uri: imageUri(uri, size)};
+    return {uri: uri};
 }
 
 export function accountAvatarSource({profileimageurl, avatarFile},

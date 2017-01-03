@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {API_ORIGIN} from '../config';
 import {getApi, postApi} from './';
 

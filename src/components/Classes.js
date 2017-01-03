@@ -47,7 +47,9 @@ export default class Classes extends Component {
                             </components.Text>
                             <components.TextWithIcon
                                 iconName="camera"
+                                iconStyle={{color: COLOR.textLightNormal}}
                                 text="扫码签到"
+                                textStyle={{color: COLOR.textLightNormal}}
                                 onPress={() => {
                                     Actions.QRScanner({
                                         title: '扫码签到',

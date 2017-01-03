@@ -35,3 +35,7 @@ export function getAppointment({limit = 10, offset = 0}) {
 export function createAppointment(appointment) {
     return postApi(`${API_ORIGIN}/appointment`, appointment)
 }
+
+export function getSplashImage(){
+    return getApi(`${API_ORIGIN}/splashImage`, {}, {timeout: 2000});
+}

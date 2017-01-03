@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import * as utils from '../utils';
 import {API_ORIGIN, CRM_ORIGIN} from '../config';
 import {getApi, postApi} from './';

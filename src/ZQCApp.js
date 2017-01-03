@@ -54,6 +54,9 @@ export default class ZQCApp extends Component {
                     <Scene key="DatePick" component={components.DatePick} />
                     <Scene key="Web" component={components.Web} />
                     <Scene key="QRScanner" component={components.QRScanner} />
+                    <Scene key="SplashImage" component={containers.SplashImage}
+                           type={ActionConst.RESET}
+                           duration={2}/>
                 </Scene>
             </RouterConnected>
         );

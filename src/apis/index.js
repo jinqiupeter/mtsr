@@ -5,7 +5,6 @@ export * from './account';
 export * from './file';
 export * from './activities';
 export * from './class';
-export * from './court';
 export * from './security';
 export * from './schedule';
 export * from './about';

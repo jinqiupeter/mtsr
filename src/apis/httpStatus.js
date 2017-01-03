@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export const HTTP_STATUS = {
   100: "Continue",
   101: "Switching Protocols",

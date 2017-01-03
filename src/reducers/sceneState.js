@@ -22,6 +22,9 @@ const initialState = {
     CreateAppointment: {
         datePickerVisible: false,
         genderPickerVisible: false,
+    },
+    SplashImage: {
+        secondsToSkip: 0,
     }
 };
 

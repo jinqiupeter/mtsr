@@ -9,7 +9,7 @@ export const IN_DEBUGGER = DEBUG && !!window.navigator.userAgent;
 export const LC_CONFIG = {
     id: 'jbNk2nNnq4bVbcQIgkjuOAOx-gzGzoHsz',
     key: '3JpiddJgElPL28yFHWMQSANL',
-}
+};
 
 export const VERSION = '1.0.2';
 
