@@ -3,13 +3,16 @@
  */
 
 import React , {Component} from 'react';
-import {StyleSheet, View, Platform, ListView, ScrollView, RefreshControl, InteractionManager} from 'react-native';
+import {StyleSheet, View, Platform, ListView, ScrollView,
+    RefreshControl, InteractionManager, SegmentedControlIOS
+} from 'react-native';
 
 import AttendedClass from './AttendedClass';
 import {TextNotice} from '../common';
 import * as helpers from '../helpers';
 import logger from '../../logger';
 import * as utils from '../../utils';
+import {COLOR} from '../../config';
 
 export default class AttendedClasses extends Component {
     componentWillMount() {
@@ -61,7 +64,9 @@ export default class AttendedClasses extends Component {
     }
 
     render () {
-        let {account, attendedClasses, network, enableLoading, disableLoading, errorFlash, getAttendedClasses} = this.props;
+        let {input, sceneKey, account, attendedClasses, network,
+            enableLoading, disableLoading, errorFlash, saveInput,
+            getAttendedClasses} = this.props;
         logger.debug("props in attended class: ", this.props);
         if (attendedClasses.length > 0) {
             return (
@@ -70,6 +75,23 @@ export default class AttendedClasses extends Component {
                     enableEmptySections={true}
                     initialListSize={5}
                     pageSize={5}
+
+                    renderHeader={() =>
+                        <View
+                            style={styles.container}
+                        >
+                            <SegmentedControlIOS
+                                values={['未上课程', '已上课程']}
+                                selectedIndex={1}
+                                onChange={(event) => saveInput('Classes',
+                                    {selectedClassType: event.nativeEvent.selectedSegmentIndex}
+                                    )}
+                                tintColor={COLOR.theme}
+                                style={styles.segmentedControl}
+                            />
+                        </View>
+                    }
+
                     renderRow={(aClass) =>
                         <AttendedClass
                             account={account}
@@ -78,6 +100,7 @@ export default class AttendedClasses extends Component {
 
                         />
                     }
+
                     renderScrollComponent={(props) =>
                         <ScrollView
                             {...props}
@@ -101,7 +124,6 @@ export default class AttendedClasses extends Component {
                     onEndReached={() => {
                         if (network.isConnected && attendedClasses.length > 0) {
                             getAttendedClasses({
-                                offset: attendedClasses.length,
                                 offset: attendedClasses.length,
                             });
                         }

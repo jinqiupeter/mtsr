@@ -3,7 +3,9 @@
  */
 
 import React , {Component} from 'react';
-import {StyleSheet, View, Platform, ListView, ScrollView, RefreshControl, InteractionManager} from 'react-native';
+import {StyleSheet, View, Platform, ListView,
+    ScrollView, RefreshControl, InteractionManager,SegmentedControlIOS
+} from 'react-native';
 
 import UnattendedClass from './UnattendedClass';
 import {TextNotice} from '../common';
@@ -16,6 +18,7 @@ import parse from 'date-fns/parse';
 import isSameDay from 'date-fns/is_same_day';
 
 import * as components from '../';
+import {COLOR} from '../../config';
 
 export default class UnattendedClasses extends Component {
     componentWillMount() {
@@ -75,14 +78,95 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        let { unattendedClasses, enableLoading, disableLoading,
+        let { input, sceneKey, unattendedClasses, saveInput, enableLoading, disableLoading,
             errorFlash, moreClass
         } = this.props;
-        return (
-            <ScrollView
-                {...this.props}
-                contentContainerStyle={{flexDirection: 'column', justifyContent: 'space-between'}}
-                refreshControl={
+
+        if (unattendedClasses.length > 0) {
+            return (
+                <ListView
+                    dataSource={this.ds}
+                    enableEmptySections={true}
+                    pageSize={5}
+                    initialListSize={5}
+
+                    renderHeader={() =>
+                        <View
+                            style={styles.container}
+                        >
+                        <SegmentedControlIOS
+                            values={['未上课程', '已上课程']}
+                            selectedIndex={0}
+                            onChange={(event) => saveInput('Classes',
+                                {selectedClassType: event.nativeEvent.selectedSegmentIndex}
+                                )}
+                            tintColor={COLOR.theme}
+                            style={styles.segmentedControl}
+                        />
+                        <View style={styles.titleContainer}>
+                                <components.Button
+                                    text='今天'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: new Date()});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                <components.Button
+                                    text='下周'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: addDays(startDate, 7)});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                <components.Button
+                                    text='下个月'
+                                    onPress={() => {
+                                        saveInput(sceneKey, {startDate: addDays(startDate, 30)});
+                                        submitDay(sceneKey);
+                                    }}
+                                    containerStyle={{margin: 5, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                {/*<components.Button*/}
+                                    {/*text='选择'*/}
+                                    {/*onPress={() => {*/}
+                                        {/*setSceneState(sceneKey, {calendarPickerVisible: true})*/}
+                                    {/*}}*/}
+                                    {/*containerStyle={{margin: 5, padding: 5}}*/}
+                                    {/*textStyle={{fontSize: 12}}*/}
+                                {/*/>*/}
+                                {/*<components.CalendarPicker*/}
+                                    {/*visible={sceneState[sceneKey].calendarPickerVisible}*/}
+                                    {/*setVisible={(visible) => setSceneState(sceneKey, {calendarPickerVisible: visible})}*/}
+                                    {/*selectedDate={input[sceneKey].startDate}*/}
+                                    {/*onValueChange={(selectedDate) => {*/}
+                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
+
+                                    {/*}}*/}
+                                    {/*submit={(selectedDate) => {*/}
+                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
+                                        {/*submitDay(sceneKey);*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            </View>
+                        </View>
+                    }
+
+                    renderRow={(day) =>
+                        <UnattendedClass
+                            day={day}
+                            errorFlash={errorFlash}
+                        />
+                    }
+
+                    renderScrollComponent={(props) =>
+                        <ScrollView
+                            {...props}
+                            refreshControl={
                             <RefreshControl
                                refreshing={this.refreshing}
                                 onRefresh={() => {
@@ -97,32 +181,47 @@ export default class UnattendedClasses extends Component {
                                 }}
                             />
                           }
-            >
-                {unattendedClasses.length > 0
-                    ? <ListView
-                        dataSource={this.ds}
-                        enableEmptySections={true}
-                        pageSize={5}
-                        initialListSize={5}
-                        renderRow={(day) =>
-                            <UnattendedClass
-                                day={day}
-                                errorFlash={errorFlash}
-                            />
-                        }
+                        />
+                    }
 
-                        onEndReached={() => {
-                            moreClass({
-                                currentLength: unattendedClasses.length,
-                                sceneKey: 'Classes'
-                            });
-                        }}
+                    onEndReached={() => {
+                        moreClass({
+                            currentLength: unattendedClasses.length,
+                            sceneKey: 'Classes'
+                        });
+                    }}
                     />
-                    : <TextNotice>
+            )} else {
+                return (
+                <ScrollView
+                    {...props}
+                    refreshControl={
+                            <RefreshControl
+                               refreshing={this.refreshing}
+                                onRefresh={() => {
+                                    disableLoading();
+                                    this.refreshing = true;
+                                    this._refresh({
+                                        cbFinish: () => {
+                                            this.refreshing = false;
+                                            enableLoading();
+                                        },
+                                    });
+                                }}
+                            />
+                          }
+                >
+                    <TextNotice>
                         小朋友还没有选课哦！
                     </TextNotice>
-                }
-            </ScrollView>
-        )
+                </ScrollView>
+                )
+            }
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLOR.backgroundLighter,
+    },
+});

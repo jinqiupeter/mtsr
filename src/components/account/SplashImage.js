@@ -28,12 +28,10 @@ export default class SplashImage extends Component {
         clearInterval(this.timerSend);
     }
 
-
     render() {
     let {img_url, delay = 3000, duration=2000, skip} = this.props;
     let {sceneKey, sceneState} = this.props;
     let {secondsToSkip} = sceneState[sceneKey];
-    logger.debug("props in SplashImage: ", img_url);
     return (
         <containers.Layout
             sceneKey={sceneKey}

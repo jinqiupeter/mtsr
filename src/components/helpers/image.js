@@ -15,7 +15,6 @@ export function imageSource(uri, size = 'small') {
 
 export function accountAvatarSource({profileimageurl, avatarFile},
     size = 'small') {
-    logger.debug("getting user avatar: ", profileimageurl, avatarFile);
     if (profileimageurl) {
         return imageSource(profileimageurl, size);
     } else if (avatarFile) {

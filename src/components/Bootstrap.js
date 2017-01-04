@@ -22,12 +22,7 @@ export default class Bootstrap extends Component {
                 hideStatusBar={true}
                 hideNavBar={true}
             >
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <components.Image
-                        source={require('zaiqiuchang/res/img/mtsr_icon_middle.png')}
-                        style={{borderRadius: 30}}
-                    />
-                </View>
+
             </containers.Layout>
         );
     }
