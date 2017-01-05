@@ -15,7 +15,7 @@ import addDays from 'date-fns/add_days'
 
 export default class Classes extends Component {
     render() {
-        let {startDate, sceneKey, saveInput, submitDay, input} = this.props;
+        let {sceneKey, input} = this.props;
         let {account} = this.props;
 
         logger.debug("account in classes: ", account);

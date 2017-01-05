@@ -78,8 +78,8 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        let { input, sceneKey, unattendedClasses, saveInput, enableLoading, disableLoading,
-            errorFlash, moreClass
+        let {unattendedClasses, saveInput, enableLoading, disableLoading,
+            errorFlash, moreClass, submitDay, startDate
         } = this.props;
 
         if (unattendedClasses.length > 0) {
@@ -107,8 +107,8 @@ export default class UnattendedClasses extends Component {
                                 <components.Button
                                     text='今天'
                                     onPress={() => {
-                                        saveInput(sceneKey, {startDate: new Date()});
-                                        submitDay(sceneKey);
+                                        saveInput('Classes', {startDate: new Date()});
+                                        submitDay('Classes');
                                     }}
                                     containerStyle={{margin: 5, padding: 5}}
                                     textStyle={{fontSize: 12}}
@@ -116,8 +116,8 @@ export default class UnattendedClasses extends Component {
                                 <components.Button
                                     text='下周'
                                     onPress={() => {
-                                        saveInput(sceneKey, {startDate: addDays(startDate, 7)});
-                                        submitDay(sceneKey);
+                                        saveInput('Classes', {startDate: addDays(startDate, 7)});
+                                        submitDay('Classes');
                                     }}
                                     containerStyle={{margin: 5, padding: 5}}
                                     textStyle={{fontSize: 12}}
@@ -125,8 +125,8 @@ export default class UnattendedClasses extends Component {
                                 <components.Button
                                     text='下个月'
                                     onPress={() => {
-                                        saveInput(sceneKey, {startDate: addDays(startDate, 30)});
-                                        submitDay(sceneKey);
+                                        saveInput('Classes', {startDate: addDays(startDate, 30)});
+                                        submitDay('Classes');
                                     }}
                                     containerStyle={{margin: 5, padding: 5}}
                                     textStyle={{fontSize: 12}}

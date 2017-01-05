@@ -64,7 +64,7 @@ export default class AttendedClasses extends Component {
     }
 
     render () {
-        let {input, sceneKey, account, attendedClasses, network,
+        let {account, attendedClasses, network,
             enableLoading, disableLoading, errorFlash, saveInput,
             getAttendedClasses} = this.props;
         logger.debug("props in attended class: ", this.props);
@@ -132,9 +132,28 @@ export default class AttendedClasses extends Component {
             )
         } else {
             return (
+                <ScrollView
+                    {...props}
+                    refreshControl={
+                            <RefreshControl
+                               refreshing={this.refreshing}
+                                onRefresh={() => {
+                                    disableLoading();
+                                    this.refreshing = true;
+                                    this._refresh({
+                                        cbFinish: () => {
+                                            this.refreshing = false;
+                                            enableLoading();
+                                        },
+                                    });
+                                }}
+                            />
+                          }
+                >
                 <TextNotice>
                     小朋友还没有上过课哦！
                 </TextNotice>
+                </ScrollView>
             )
         }
     }

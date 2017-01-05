@@ -27,6 +27,7 @@ function mapDispatchToProps(dispatch) {
         errorFlash: actions.errorFlash,
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
         setSceneState: actions.setSceneState,
+        saveInput: actions.saveInput,
         getAttendedClasses: actions.attendedClasses,
     }, dispatch);
 }

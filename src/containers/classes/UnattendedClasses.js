@@ -8,7 +8,7 @@ import * as components from '../../components';
 import * as actions from '../../actions';
 import {default as Unattended} from '../../components/classes/UnattendedClasses'
 function mapStateToProps(state) {
-    let {loading, processing, error, classes, network, input, sceneKey, object, sceneState} = state;
+    let {loading, processing, error, classes, network, input, object, sceneState} = state;
     return {
         loading,
         processing,
