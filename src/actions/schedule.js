@@ -6,7 +6,6 @@ import * as helpers from '../components/helpers';
 
 import eachDay from 'date-fns/each_day'
 import addMonths from 'date-fns/add_months';
-import addDays from 'date-fns/add_days';
 import startOfMonth from 'date-fns/start_of_month';
 import endOfMonth from 'date-fns/end_of_month';
 import differenceInCalendarMonths from 'date-fns/difference_in_calendar_months';

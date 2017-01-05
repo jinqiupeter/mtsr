@@ -9,7 +9,7 @@ import parse from 'date-fns/parse';
 import isAfter from 'date-fns/is_after';
 import eachDay from 'date-fns/each_day'
 import isSameDay from 'date-fns/is_same_day';
-import isBefore from 'date-fns/is_before';
+import addDays from 'date-fns/add_days';
 
 import * as helpers from '../components/helpers';
 
@@ -67,60 +67,44 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     };
 }
 
-function expandUnattendedClasses(packedUnattendedClasses, startDate = new Date()) {
-    let expanded =  packedUnattendedClasses.reduce((accumulated, packedUnattendedClass) => {
-        if (packedUnattendedClass.type == 1) {
-            // regular class
-            let endDate = parse(packedUnattendedClass.enddate);
-            if (isAfter(endDate, accumulated.endDate)) {
-                // extend end range
-                let newDays = eachDay(accumulated.endDate, endDate).map((v) => {
-                    return {hasClass: false, date: v, classes: []};
-                });
+function expand(packed, classLeft) {
+    let classFound = 0;
+    let cursorDate = new Date();
+    let days = [];
 
-                accumulated.days = accumulated.days.concat(newDays);
-                accumulated.endDate = endDate;
-            }
-
-            accumulated.days = accumulated.days.map((v) => {
-                if (v.date.getDay() == packedUnattendedClass.kcxq) {
-                    let classes = v.classes || [];
-                    classes.push({...packedUnattendedClass});
-                    return {hasClass: true, date: v.date, classes: classes}
-                } else {
-                    return v;
-                }
-            });
-        }
-        else if (packedUnattendedClass.type == 2) {
-            // makeup class
-            let found = false;
-            packedUnattendedClass.date = parse(packedUnattendedClass.date);
-
-            accumulated.days = accumulated.days.map((v) => {
-                if (isSameDay(v.date, packedUnattendedClass.date)) {
-                    let classes = v.classes || [];
-                    classes.push({...packedUnattendedClass});
-                    found = true;
-                    return {hasClass: true, date: v.date, classes: classes}
-                } else {
-                    return v;
-                }
-            });
-
-            if (!found) {
-                // this makeup class is not in the range of regular classes
-                accumulated.days.push({hasClass: true,
-                    date: packedUnattendedClass.date,
-                    classes: [packedUnattendedClass]})
-            }
+    let endDate = packed.reduce((lastDate, aPacked) => {
+        let classEnddate = parse(aPacked.enddate);
+        if (isAfter(classEnddate, lastDate)) {
+            lastDate = classEnddate;
         }
 
-        return accumulated;
-    }, {days: [], endDate: startDate});
+        return lastDate;
+    }, cursorDate);
 
-    return expanded.days.map((v, index) => {
-       return {...v, id:index};
+
+    while (classFound < classLeft && isAfter(endDate, cursorDate)) {
+        packed.forEach(aPacked => {
+            if ( (aPacked.type == 1 && aPacked.kcxq == cursorDate.getDay())
+            || (aPacked.type == 2 && isSameDay(cursorDate, aPacked.date))) {
+                let classes = cursorDate.classes || [];
+
+                classes.push({...aPacked});
+                classFound++;
+
+                cursorDate.classes = classes;
+            }
+        });
+
+        if (!!cursorDate.classes) {
+            days.push({hasClass: true, date: parse(cursorDate), classes: cursorDate.classes})
+        }
+        cursorDate = addDays(cursorDate, 1);
+    }
+
+    logger.debug("days found: ", days);
+
+    return days.map((v, index) => {
+        return {...v, id:index};
     });
 }
 
@@ -145,7 +129,7 @@ export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
 
 export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
-        let {object} = getState();
+        let {object, account} = getState();
         let unattendedClasses;
         apis.unattendedClasses({
             xpybh,
@@ -154,7 +138,7 @@ export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
             let {data} = response;
             let classes = data.unattendedClasses.filter((v) => {return !!v.id});
             logger.debug("got UnattendedClasses: ", classes);
-            unattendedClasses = expandUnattendedClasses(classes);
+            unattendedClasses = expand(classes, account.classleft);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
         .then((action) => {
