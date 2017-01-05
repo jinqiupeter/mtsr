@@ -67,7 +67,7 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     };
 }
 
-function expand(packed, classLeft) {
+function expand(packed, classLeft, absencesApplied) {
     let classFound = 0;
     let cursorDate = new Date();
     let days = [];
@@ -87,8 +87,12 @@ function expand(packed, classLeft) {
             if ( (aPacked.type == 1 && aPacked.kcxq == cursorDate.getDay())
             || (aPacked.type == 2 && isSameDay(cursorDate, aPacked.date))) {
                 let classes = cursorDate.classes || [];
+                let appliedAbsence = absencesApplied.find(v => {
+                    return isSameDay(cursorDate, v.date)
+                        && aPacked.kcbxxbh == v.kcbxxbh;
+                });
 
-                classes.push({...aPacked});
+                classes.push({...aPacked, appliedAbsence: !!appliedAbsence});
                 classFound++;
 
                 cursorDate.classes = classes;
@@ -127,18 +131,18 @@ export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
     }
 }
 
-export function unattendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
+export function unattendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
         let {object, account} = getState();
         let unattendedClasses;
         apis.unattendedClasses({
-            xpybh,
             offset,
         }).then((response) => {
             let {data} = response;
             let classes = data.unattendedClasses.filter((v) => {return !!v.id});
-            logger.debug("got UnattendedClasses: ", classes);
-            unattendedClasses = expand(classes, account.classleft);
+            let absencesApplied = data.absencesApplied.filter((v) => {return !!v.id});
+            logger.debug("got UnattendedClasses: ", classes, absencesApplied);
+            unattendedClasses = expand(classes, account.classleft, absencesApplied);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
         .then((action) => {
@@ -214,6 +218,32 @@ export function afterClassInstruction({kcbxxbh, skqkrq, kckssj, kcjssj, cbOk, cb
                 instruction: instruction
             });
         }).catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function updateAbsence({applyAbsence, kcbxxbh, date, cbOk, cbFail, cbFinish}) {
+    return (dispatch) => {
+
+        apis.updateAbsence({
+            applyAbsence, kcbxxbh, date
+        })
+            .then(() => {
+            if (cbOk) {
+                cbOk();
+            }
+            if (cbFinish) {
+                cbFinish();
+            }
+        })
+            .catch((error) => {
                 dispatch(actions.handleApiError(error));
                 if (cbFail) {
                     cbFail();

@@ -30,6 +30,13 @@ export default class UnattendedClasses extends Component {
             r1.hasClass != r2.hasClass
             || !isSameDay(r1.date, r2.date)
             || r1.classes.length != r2.classes.length
+            || !!r1.classes.find((r1c) => {
+                let r2aClass = r2.classes.find(r2c => {
+                    return r2c.kcbxxbh == r1c.kcbxxbh
+                        && r2c.appliedAbsence == r1c.appliedAbsence
+                });
+                return !!r2aClass;
+            })
         }).cloneWithRows(rows);
     }
 
@@ -80,7 +87,8 @@ export default class UnattendedClasses extends Component {
 
     render () {
         let {unattendedClasses, saveInput, enableLoading, disableLoading,
-            errorFlash, moreClass, submitDay, startDate
+            errorFlash, moreClass, submitDay, startDate, getUnattendedClasses,
+            updateAbsence
         } = this.props;
 
         if (unattendedClasses.length > 0) {
@@ -160,6 +168,10 @@ export default class UnattendedClasses extends Component {
                     renderRow={(day) =>
                         <UnattendedClass
                             day={day}
+                            updateAbsence={updateAbsence}
+                            cbOk={() => {
+                                getUnattendedClasses({});
+                            }}
                             errorFlash={errorFlash}
                         />
                     }

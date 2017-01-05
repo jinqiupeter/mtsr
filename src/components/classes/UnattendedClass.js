@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import isAfter from 'date-fns/is_after';
 import diffInDays from 'date-fns/difference_in_calendar_days';
+import moment from 'moment';
 
 import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
 import * as components from '../';
@@ -13,7 +14,7 @@ import * as helpers from '../helpers';
 
 export default class UnattendedClass extends Component {
     render() {
-        let {day} = this.props;
+        let {day, updateAbsence, cbOk} = this.props;
         return (
             <components.Block containerStyle={styles.container}>
                 <TextNotice
@@ -23,7 +24,16 @@ export default class UnattendedClass extends Component {
                         padding: 0,
                     }}
                 >{helpers.yearMonthDayWeekText(day.date)}</TextNotice>
-                {day.classes.map((aClass) => { return (
+                {day.classes.map((aClass) => {
+                    let absenceOnPress = () => {
+                        updateAbsence({
+                            date: moment(day.date).format("YYYY-MM-DD hh:mm:ss"),
+                            kcbxxbh: "" + aClass.kcbxxbh,
+                            applyAbsence: aClass.appliedAbsence ? "0" : "1",
+                            cbOk
+                        });
+                    };
+                    return (
                     <components.Block containerStyle={[styles.container, styles.card]} key={aClass.id} >
                         <TextNotice
                             style={{fontSize: 18, color: COLOR.textHighlight}}
@@ -41,18 +51,29 @@ export default class UnattendedClass extends Component {
                             >
                                 {'选课类型：' + (aClass.type == 1 ? 'Regular' : 'Makeup')}
                             </TextNotice>
-                            { (aClass.type ==2 && isAfter(day.date, new Date())
-                            || aClass.type ==1 && diffInDays(day.date, new Date()) >= 7)
-                                &&  <components.Button
-                                text='请假'
-                                onPress={() => Actions.EditProfile()}
-                                containerStyle={{margin: 0, padding: 5}}
-                                textStyle={{fontSize: 12}}
-                            />}
+                            {
+                                aClass.type ==2
+                                    // Makeup 课程
+                                    ? isAfter(day.date, new Date())
+                                        ? <components.Button
+                                                text={aClass.appliedAbsence ? '取消请假' : '请假'}
+                                                onPress={() => absenceOnPress()}
+                                                containerStyle={{margin: 0, padding: 5}}
+                                                textStyle={{fontSize: 12}}
+                                            />
+                                        : null
 
+                                    // regular 课程
+                                    : diffInDays(day.date, new Date()) >= 7
+                                        ? <components.Button
+                                            text={aClass.appliedAbsence ? '取消请假' : '请假'}
+                                            onPress={() => {absenceOnPress()}}
+                                            containerStyle={{margin: 0, padding: 5}}
+                                            textStyle={{fontSize: 12}}
+                                        />
+                                        : null
+                            }
                         </View>
-
-
                     </components.Block>
                     )})
                 }

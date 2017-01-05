@@ -34,6 +34,7 @@ function mapDispatchToProps(dispatch) {
         saveInput: actions.saveInput,
         submitDay: actions.changeStartDay,
         moreClass: actions.moreUnattendedClassesFromCache,
+        updateAbsence: actions.updateAbsence,
     }, dispatch);
 }
 
