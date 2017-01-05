@@ -32,6 +32,7 @@ function mapDispatchToProps(dispatch) {
         setSceneState: actions.setSceneState,
         getUnattendedClasses: actions.unattendedClasses,
         saveInput: actions.saveInput,
+        submitDay: actions.changeStartDay,
         moreClass: actions.moreUnattendedClassesFromCache,
     }, dispatch);
 }

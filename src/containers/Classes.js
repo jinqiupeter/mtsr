@@ -27,7 +27,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         saveInput: actions.saveInput,
-        submitDay: actions.changeStartDay,
         setSceneState: actions.setSceneState,
         moreClass: actions.moreUnattendedClassesFromCache,
     }, dispatch);

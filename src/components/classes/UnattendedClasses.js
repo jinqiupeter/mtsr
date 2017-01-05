@@ -16,6 +16,7 @@ import * as utils from '../../utils';
 import isAfter from 'date-fns/is_after';
 import parse from 'date-fns/parse';
 import isSameDay from 'date-fns/is_same_day';
+import addDays from 'date-fns/add_days'
 
 import * as components from '../';
 import {COLOR} from '../../config';
@@ -104,31 +105,31 @@ export default class UnattendedClasses extends Component {
                             style={styles.segmentedControl}
                         />
                         <View style={styles.titleContainer}>
-                                <components.Button
+                                <components.ButtonWithBg
                                     text='今天'
                                     onPress={() => {
                                         saveInput('Classes', {startDate: new Date()});
                                         submitDay('Classes');
                                     }}
-                                    containerStyle={{margin: 5, padding: 5}}
+                                    containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
-                                <components.Button
+                                <components.ButtonWithBg
                                     text='下周'
                                     onPress={() => {
                                         saveInput('Classes', {startDate: addDays(startDate, 7)});
                                         submitDay('Classes');
                                     }}
-                                    containerStyle={{margin: 5, padding: 5}}
+                                    containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
-                                <components.Button
+                                <components.ButtonWithBg
                                     text='下个月'
                                     onPress={() => {
                                         saveInput('Classes', {startDate: addDays(startDate, 30)});
                                         submitDay('Classes');
                                     }}
-                                    containerStyle={{margin: 5, padding: 5}}
+                                    containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
                                 {/*<components.Button*/}
@@ -194,7 +195,7 @@ export default class UnattendedClasses extends Component {
             )} else {
                 return (
                 <ScrollView
-                    {...props}
+                    {...this.props}
                     refreshControl={
                             <RefreshControl
                                refreshing={this.refreshing}
@@ -222,6 +223,17 @@ export default class UnattendedClasses extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: COLOR.backgroundLighter,
+    },
+    segmentedControl: {
+        marginTop: 10,
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    titleContainer: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         backgroundColor: COLOR.backgroundLighter,
     },
 });

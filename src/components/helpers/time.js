@@ -62,6 +62,12 @@ export function yearMonthDayWeekText(date) {
     return yearMonthDayText(date) + ' ' + weekDayText(date);
 }
 
+export function monthAgeInYears(months) {
+    let years = parseInt(months / 12);
+    let remainder = months % 12;
+    return years + '岁' + remainder + '个月';
+}
+
 export function isNeedRefresh({sceneKey, network, minInterval = 600, objectId = ''}) {
     logger.debug("network.lastRefreshTime: ", network.lastRefreshTime, objectId);
     let lastRefreshTime = network.lastRefreshTime[sceneKey] || {};

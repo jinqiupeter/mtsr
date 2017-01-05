@@ -133,7 +133,7 @@ export default class AttendedClasses extends Component {
         } else {
             return (
                 <ScrollView
-                    {...props}
+                    {...this.props}
                     refreshControl={
                             <RefreshControl
                                refreshing={this.refreshing}
@@ -160,7 +160,12 @@ export default class AttendedClasses extends Component {
 }
 
 const styles = StyleSheet.create({
-    class: {
-        marginBottom: 1,
+    container: {
+        backgroundColor: COLOR.backgroundLighter,
+    },
+    segmentedControl: {
+        marginTop: 10,
+        marginLeft: 30,
+        marginRight: 30,
     },
 });

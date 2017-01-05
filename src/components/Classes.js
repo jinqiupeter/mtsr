@@ -11,7 +11,6 @@ import * as components from './';
 import * as helpers from './helpers';
 import * as containers from '../containers';
 
-import addDays from 'date-fns/add_days'
 
 export default class Classes extends Component {
     render() {
@@ -29,48 +28,53 @@ export default class Classes extends Component {
                 currentTab={0}
             >
                 <components.Block containerStyle={{
-                    flexDirection: 'row',
                     backgroundColor: COLOR.theme,
                     paddingTop: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
                 }}>
                     <View style={[styles.userAvatarContainer, styles.shadow]}>
                         <Image
-                            style={styles.userAvatarContainer}
+                            style={styles.image}
                             source={helpers.accountAvatarSource(account, 'middle')}
                         />
                     </View>
-                    <View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
-                            <components.Text text={account.nickname} styleKind='emphaExtraBig'>
-                                {account.nickname}
-                            </components.Text>
-                            <components.TextWithIcon
-                                iconName="camera"
-                                iconStyle={{color: COLOR.textLightNormal}}
-                                text="扫码签到"
-                                textStyle={{color: COLOR.textLightNormal}}
-                                onPress={() => {
-                                    Actions.QRScanner({
-                                        title: '扫码签到',
-                                        parentSceneKey: sceneKey,
-                                        onBarCodeRead: (data) => {
-                                            Alert.alert(
-                                                '确定签到吗？',
-                                                data,
-                                                [
-                                                    {text: '取消', onPress: () => {}},
-                                                    {text: '确定', onPress: () => {}},
-                                                ],
-                                            );
-                                        }
-                                    })
-                                }}
-                            />
-                        </View>
-
-                        <View style={{justifyContent: 'center', height: 50}}>
-                            <components.Text>{account.monthage || '0'}</components.Text>
-                        </View>
+                    <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <components.Text style={{marginBottom: 10}} styleKind='emphaExtraBig'>
+                            {account.realname}
+                        </components.Text>
+                        <Text style={{color: COLOR.textLightNormal}}> {account.nickname} </Text>
+                        <Text style={{color: COLOR.textLightNormal}}>
+                            {helpers.monthAgeInYears(account.monthage) + "(" + account.monthage + '月' + ")"}
+                        </Text>
+                    </View>
+                    <View style={{marginLeft: 10, flexDirection: 'column', alignItems: 'flex-start'}}>
+                        <components.TextWithIcon
+                            containerStyle={{marginBottom: 15, marginLeft: 20}}
+                            iconName="camera"
+                            iconStyle={{color: COLOR.textLightNormal}}
+                            text="签到"
+                            textStyle={{color: COLOR.textLightNormal, fontSize: 14}}
+                            onPress={() => {
+                                        Actions.QRScanner({
+                                            title: '扫码签到',
+                                            parentSceneKey: sceneKey,
+                                            onBarCodeRead: (data) => {
+                                                Alert.alert(
+                                                    '确定签到吗？',
+                                                    data,
+                                                    [
+                                                        {text: '取消', onPress: () => {}},
+                                                        {text: '确定', onPress: () => {}},
+                                                    ],
+                                                );
+                                            }
+                                        })
+                                    }}
+                        />
+                        <Text style={{color: COLOR.textLightNormal}}> {'未上课时：' + account.classleft} </Text>
+                        <Text style={{color: COLOR.textLightNormal}}> {'已上课时：' + account.classattended} </Text>
 
                     </View>
                 </components.Block>
@@ -102,6 +106,13 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+    image: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
     },
     shadow: {
         shadowColor: COLOR.backgroundDarkLighter,
@@ -111,16 +122,6 @@ const styles = StyleSheet.create({
             height: 1,
             width: 0
         }
-    },
-    segmentedControl: {
-        marginTop: 10,
-        marginLeft: 30,
-        marginRight: 30,
-    },
-    titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: COLOR.backgroundLighter,
     },
     container: {
         backgroundColor: COLOR.backgroundLighter,
