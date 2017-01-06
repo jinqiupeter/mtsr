@@ -28,7 +28,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         saveInput: actions.saveInput,
         setSceneState: actions.setSceneState,
-        moreClass: actions.moreUnattendedClassesFromCache,
+        signInClass: actions.signInClass,
     }, dispatch);
 }
 

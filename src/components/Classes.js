@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import moment from 'moment';
+import parse from 'date-fns/parse';
 import {COLOR} from '../config';
 import logger from '../logger';
 import * as components from './';
@@ -14,7 +15,7 @@ import * as containers from '../containers';
 
 export default class Classes extends Component {
     render() {
-        let {sceneKey, input} = this.props;
+        let {sceneKey, input, signInClass} = this.props;
         let {account} = this.props;
 
         logger.debug("account in classes: ", account);
@@ -61,12 +62,23 @@ export default class Classes extends Component {
                                             title: '扫码签到',
                                             parentSceneKey: sceneKey,
                                             onBarCodeRead: (data) => {
+                                                let classInfo = JSON.parse(data);
+                                                let match = classInfo.date.match(/(\d+)-(\d+)-(\d+)/);
+                                                let date = new Date(parseInt(match[1]), parseInt(match[2]) -1, parseInt(match[3]));
+                                                logger.debug("get json object: ", classInfo);
                                                 Alert.alert(
                                                     '确定签到吗？',
-                                                    data,
+                                                    "日期：" + classInfo.date
+                                                    + "\n时间：" + classInfo.kckssj
+                                                    + "\n课程：" + classInfo.kcmc.toUpperCase(),
                                                     [
                                                         {text: '取消', onPress: () => {}},
-                                                        {text: '确定', onPress: () => {}},
+                                                        {text: '确定', onPress: () => {
+                                                            signInClass({
+                                                                kcbxxbh: classInfo.kcbxxbh,
+                                                                date: moment(date).format("YYYY-MM-DD hh:mm:ss"),
+                                                            })
+                                                        }},
                                                     ],
                                                 );
                                             }

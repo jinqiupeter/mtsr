@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {
-    StyleSheet, View, ListView, Text
+    StyleSheet, View, ListView, Text, Alert
 } from 'react-native';
 import isAfter from 'date-fns/is_after';
 import diffInDays from 'date-fns/difference_in_calendar_days';
+import isSameDay from 'date-fns/is_same_day';
 import moment from 'moment';
 
 import {COLOR, SCREEN_WIDTH, SCREEN_HEIGHT} from '../../config';
@@ -14,7 +15,7 @@ import * as helpers from '../helpers';
 
 export default class UnattendedClass extends Component {
     render() {
-        let {day, updateAbsence, cbOk} = this.props;
+        let {day, updateAbsence, signInClass, cbOkAbsence} = this.props;
         return (
             <components.Block containerStyle={styles.container}>
                 <TextNotice
@@ -30,7 +31,7 @@ export default class UnattendedClass extends Component {
                             date: moment(day.date).format("YYYY-MM-DD hh:mm:ss"),
                             kcbxxbh: "" + aClass.kcbxxbh,
                             applyAbsence: aClass.appliedAbsence ? "0" : "1",
-                            cbOk
+                            cbOkAbsence
                         });
                     };
                     return (
@@ -51,6 +52,37 @@ export default class UnattendedClass extends Component {
                             >
                                 {'选课类型：' + (aClass.type == 1 ? 'Regular' : 'Makeup')}
                             </TextNotice>
+
+                            {/*签到按钮*/}
+                            {
+                                isSameDay(day.date, new Date())
+                                &&
+                                <components.Button
+                                    text="签到"
+                                    onPress={() => {
+                                        Alert.alert(
+                                                    '确定签到吗？',
+                                                    "日期：" + moment(day.date).format("YYYY-MM-DD")
+                                                    + "\n时间：" + aClass.kckssj
+                                                    + "\n课程：" + aClass.kcjc.toUpperCase(),
+                                                    [
+                                                        {text: '取消', onPress: () => {}},
+                                                        {text: '确定', onPress: () => {
+                                                            signInClass({
+                                                                kcbxxbh: "" + aClass.kcbxxbh,
+                                                                date: moment(day.date).format("YYYY-MM-DD hh:mm:ss"),
+                                                            })
+                                                        }},
+                                                    ],
+                                                );
+                                    }}
+                                    containerStyle={{margin: 0, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+
+                            }
+
+                            {/*请假按钮*/}
                             {
                                 aClass.type ==2
                                     // Makeup 课程

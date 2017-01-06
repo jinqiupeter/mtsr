@@ -1,12 +1,13 @@
 import * as utils from '../../utils';
 import logger from '../../logger';
 import diffInWeek from 'date-fns/difference_in_calendar_weeks';
+import parse from 'date-fns/parse';
 
 export const WEEK_DAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
 export function dateText(date) {
     if (typeof date == 'string') {
-        date = new Date(date);
+        date = parse(date);
     }
     now = new Date();
     interval = (now - date) / 1000 / 60;
@@ -23,7 +24,7 @@ export function dateText(date) {
 
 export function weekDayText(date) {
     if (typeof date == 'string') {
-        date = new Date(date);
+        date = parse(date);
     }
 
     let str = WEEK_DAYS[date.getDay()];
@@ -41,7 +42,7 @@ export function weekDayText(date) {
 
 export function dayTimeText(date) {
     if (typeof date == 'string') {
-        date = new Date(date);
+        date = parse(date);
     }
     let hour = date.getHours();
     let minute = date.getMinutes();
@@ -50,7 +51,7 @@ export function dayTimeText(date) {
 
 export function yearMonthDayText(date) {
     if (typeof date == 'string') {
-        date = new Date(date);
+        date = parse(date);
     }
     let year = date.getFullYear();
     let month = 1 + date.getMonth();

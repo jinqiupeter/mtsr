@@ -55,6 +55,8 @@ export default class SplashImage extends Component {
                     onPress={skip}
                     containerStyle={{
                         margin: 0,
+                        marginBottom: 10,
+                        marginRight: 10,
                         padding: 5,
                         backgroundColor: 'rgba(0,0,0,0)'}}
                     textStyle={{fontSize: 12}}

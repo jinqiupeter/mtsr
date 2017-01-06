@@ -10,7 +10,7 @@ export function postInfos(ids) {
 }
 
 export function attendedClasses({limit = 10, offset = 0}) {
-    return getApi(`${API_ORIGIN}/attendedClasses`, {xpybh, limit, offset});
+    return getApi(`${API_ORIGIN}/attendedClasses`, {limit, offset});
 }
 
 export function unattendedClasses({limit=10, offset=0}) {
@@ -25,3 +25,6 @@ export function updateAbsence({applyAbsence, kcbxxbh, date}) {
     return postApi(`${API_ORIGIN}/updateAbsence`, {applyAbsence, kcbxxbh, date});
 }
 
+export function signInClass({kcbxxbh, date}) {
+    return postApi(`${API_ORIGIN}/signInClass`, {kcbxxbh, date});
+}

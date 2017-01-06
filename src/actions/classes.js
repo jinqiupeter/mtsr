@@ -27,12 +27,11 @@ export function resetClass() {
     };
 }
 
-export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
+export function attendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
         let {object} = getState();
         let attendedClasses;
         apis.attendedClasses({
-            xpybh,
             offset,
         }).then((response) => {
             let {data} = response;
@@ -67,7 +66,7 @@ export function attendedClasses({xpybh, offset = 0, cbOk, cbFail, cbFinish}) {
     };
 }
 
-function expand(packed, classLeft, absencesApplied) {
+function expand(packed, classLeft, absencesApplied, signedInClasses) {
     let classFound = 0;
     let cursorDate = new Date();
     let days = [];
@@ -86,6 +85,16 @@ function expand(packed, classLeft, absencesApplied) {
         packed.forEach(aPacked => {
             if ( (aPacked.type == 1 && aPacked.kcxq == cursorDate.getDay())
             || (aPacked.type == 2 && isSameDay(cursorDate, aPacked.date))) {
+
+                // exclude classes that are already signed in
+                let signedIn = signedInClasses.find(v => {
+                    return isSameDay(cursorDate, v.date)
+                        && aPacked.kcbxxbh == v.kcbxxbh;
+                });
+                if (!!signedIn) {
+                    return;
+                }
+
                 let classes = cursorDate.classes || [];
                 let appliedAbsence = absencesApplied.find(v => {
                     return isSameDay(cursorDate, v.date)
@@ -141,8 +150,9 @@ export function unattendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
             let {data} = response;
             let classes = data.unattendedClasses.filter((v) => {return !!v.id});
             let absencesApplied = data.absencesApplied.filter((v) => {return !!v.id});
-            logger.debug("got UnattendedClasses: ", classes, absencesApplied);
-            unattendedClasses = expand(classes, account.classleft, absencesApplied);
+            let signedInClasses = data.signedInClasses.filter((v) => {return !!v.id});
+            logger.debug("got UnattendedClasses: ", classes, absencesApplied, signedInClasses);
+            unattendedClasses = expand(classes, account.classleft, absencesApplied, signedInClasses);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
         .then((action) => {
@@ -243,6 +253,44 @@ export function updateAbsence({applyAbsence, kcbxxbh, date, cbOk, cbFail, cbFini
                 cbFinish();
             }
         })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function signInClass({kcbxxbh, date, cbOk, cbFail, cbFinish}) {
+    return (dispatch, getState) => {
+        let {account} = getState();
+        apis.signInClass({
+            kcbxxbh, date
+        })
+            .then((response) => {
+                let {data: {classCount}} = response;
+
+                dispatch({
+                    type: actions.SET_ACCOUNT,
+                    account: {
+                        ...account,
+                        classattended: classCount.ysks,
+                        classleft: classCount.syks,
+                    }
+                });
+                dispatch(actions.unattendedClasses({}));
+                dispatch(actions.attendedClasses({}));
+                if (cbOk) {
+                    cbOk();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            })
             .catch((error) => {
                 dispatch(actions.handleApiError(error));
                 if (cbFail) {
