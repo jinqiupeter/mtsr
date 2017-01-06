@@ -127,7 +127,7 @@ export default class AssociateXpy extends Component {
                     <components.ButtonWithBg
                         text='跳过'
                         containerStyle={{flex: 1}}
-                        onPress={() => Actions.Classes()}
+                        onPress={() => Actions.Classes({type: 'reset'})}
                         textStyle={{fontSize: 16}}
                     />
                     </View>

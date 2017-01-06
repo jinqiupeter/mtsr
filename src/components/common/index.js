@@ -47,3 +47,4 @@ export {default as TakeInput} from './TakeInput';
 export {default as Web} from './Web';
 export {default as Notification} from './Notification';
 export {default as QRScanner} from './QRScanner';
+export {default as NoXpyAssociated} from './NoXpyAssociated';

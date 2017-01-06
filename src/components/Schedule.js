@@ -25,7 +25,11 @@ export default class Schedule extends Component {
     _refresh({props, cbFinish}={}) {
         props = props || this.props;
         let {sceneKey, setSceneLastRefreshTime} = props;
-        let {input, getSelectable} = props;
+        let {input, account, getSelectable} = props;
+
+        if (!account.khbh || !account.xpybh) {
+            return;
+        }
 
         setSceneLastRefreshTime({sceneKey});
 
@@ -42,38 +46,48 @@ export default class Schedule extends Component {
     }
 
     render() {
-        let {input, sceneKey, loading, processing, error,
+        let {input, sceneKey, account,
             saveInput} = this.props;
 
-        return (
-            <containers.Layout
-                sceneKey={sceneKey}
-                hideNavBar={false}
-                hideTabBar={false}
-                statusBarBgColor={COLOR.theme}
-                currentTab={1}
-                renderBackButton={() => null}
-                renderTitle={() => components.NavBarTitle({title: '选课'})}
-            >
-                <ScrollView>
-                <SegmentedControlIOS
-                    values={['Regular选课', 'Makeup选课']}
-                    selectedIndex={input[sceneKey].selectedScheduleType}
-                    onChange={(event) => saveInput(sceneKey,
-                        {selectedScheduleType: event.nativeEvent.selectedSegmentIndex}
-                        )}
-                    tintColor={COLOR.theme}
-                    style={segmentStyle.segmentedControl}
+        if (!account.khbh || !account.xpybh) {
+            return (
+                <components.NoXpyAssociated
+                    sceneKey={sceneKey}
+                    currentTab={1}
+                    title={'选课'}
                 />
+            )
+        } else {
+            return (
+                <containers.Layout
+                    sceneKey={sceneKey}
+                    hideNavBar={false}
+                    hideTabBar={false}
+                    statusBarBgColor={COLOR.theme}
+                    currentTab={1}
+                    renderBackButton={() => null}
+                    renderTitle={() => components.NavBarTitle({title: '选课'})}
+                >
+                    <ScrollView>
+                    <SegmentedControlIOS
+                        values={['Regular选课', 'Makeup选课']}
+                        selectedIndex={input[sceneKey].selectedScheduleType}
+                        onChange={(event) => saveInput(sceneKey,
+                            {selectedScheduleType: event.nativeEvent.selectedSegmentIndex}
+                            )}
+                        tintColor={COLOR.theme}
+                        style={segmentStyle.segmentedControl}
+                    />
 
-                {input[sceneKey].selectedScheduleType == 0 ?
-                    <containers.Regular/>
-                    :
-                    <containers.Makeup/>
-                }
-                </ScrollView>
-            </containers.Layout>
-        );
+                    {input[sceneKey].selectedScheduleType == 0 ?
+                        <containers.Regular/>
+                        :
+                        <containers.Makeup/>
+                    }
+                    </ScrollView>
+                </containers.Layout>
+            );
+        }
     }
 }
 

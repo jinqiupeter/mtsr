@@ -22,39 +22,11 @@ export default class Classes extends Component {
 
         if (!account.khbh || !account.xpybh) {
             return (
-                <containers.Layout
+                <components.NoXpyAssociated
                     sceneKey={sceneKey}
-                    hideNavBar={true}
-                    hideTabBar={false}
-                    statusBarBgColor={COLOR.theme}
                     currentTab={0}
-                >
-                    <components.Block containerStyle={{
-                        backgroundColor: COLOR.theme,
-                        paddingTop: 20,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center'
-                    }}>
-                        <View style={[styles.userAvatarContainer, styles.shadow]}>
-                            <Image
-                                style={styles.image}
-                                source={helpers.accountAvatarSource(account, 'middle')}
-                            />
-                        </View>
-
-                    </components.Block>
-                    <View>
-                        <components.TextNotice>
-                            您还没有绑定学员
-                        </components.TextNotice>
-                        <components.ButtonWithBg
-                            text='立即绑定'
-                            onPress={() => Actions.AssociateXpy()}
-                            textStyle={{fontSize: 16}}
-                        />
-                    </View>
-                </containers.Layout>
+                    title={'进度'}
+                />
             )
         } else {
 

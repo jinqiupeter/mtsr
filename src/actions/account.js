@@ -81,7 +81,7 @@ export function associateXpy(sceneKey) {
             .then((response) => {
                 let {data: {account}} = response;
                 dispatch({type: SET_ACCOUNT, account});
-                Actions.Classes();
+                Actions.Classes({type: 'reset'});
             })
             .catch((error) => dispatch(actions.handleApiError(error)));
     };
