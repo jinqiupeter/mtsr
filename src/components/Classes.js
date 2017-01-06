@@ -70,7 +70,7 @@ export default class Classes extends Component {
                         backgroundColor: COLOR.theme,
                         paddingTop: 20,
                         flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
                         <View style={[styles.userAvatarContainer, styles.shadow]}>
@@ -92,7 +92,7 @@ export default class Classes extends Component {
                         </View>
                         <View style={{marginLeft: 10, flexDirection: 'column', alignItems: 'flex-start'}}>
                             <components.TextWithIcon
-                                containerStyle={{marginBottom: 15, marginLeft: 20}}
+                                containerStyle={{marginBottom: 15}}
                                 iconName="camera"
                                 iconStyle={{color: COLOR.textLightNormal}}
                                 text="签到"
@@ -125,8 +125,8 @@ export default class Classes extends Component {
                                     })
                                 }}
                             />
-                            <Text style={{color: COLOR.textLightNormal}}> {'未上课时：' + account.classleft} </Text>
-                            <Text style={{color: COLOR.textLightNormal}}> {'已上课时：' + account.classattended} </Text>
+                            <Text style={{color: COLOR.textLightNormal}}> {'未上：' + account.classleft} </Text>
+                            <Text style={{color: COLOR.textLightNormal}}> {'已上：' + account.classattended} </Text>
 
                         </View>
 

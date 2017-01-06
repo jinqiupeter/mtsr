@@ -96,8 +96,6 @@ export default class AttendedClasses extends Component {
                         <AttendedClass
                             account={account}
                             aClass={aClass}
-                            errorFlash={errorFlash}
-
                         />
                     }
 
@@ -162,6 +160,8 @@ export default class AttendedClasses extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLOR.backgroundLighter,
+        marginBottom: 10,
+        paddingBottom: 10,
     },
     segmentedControl: {
         marginTop: 10,

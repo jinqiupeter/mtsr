@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, Platform, View, Text, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';

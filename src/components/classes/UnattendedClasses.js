@@ -237,6 +237,7 @@ export default class UnattendedClasses extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLOR.backgroundLighter,
+        marginBottom: 10,
     },
     segmentedControl: {
         marginTop: 10,
