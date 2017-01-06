@@ -29,13 +29,24 @@ export function resetClass() {
 
 export function attendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
     return (dispatch, getState) => {
-        let {object} = getState();
+        let {object, account} = getState();
         let attendedClasses;
         apis.attendedClasses({
             offset,
         }).then((response) => {
             let {data} = response;
             attendedClasses = data.attendedClasses.filter((v) => {return !!v.id});
+            let htxx = data.htxx;
+
+            dispatch({
+                type: actions.SET_ACCOUNT,
+                account: {
+                    ...account,
+                    classattended: htxx.ysks,
+                    classleft: htxx.syks,
+                }
+            });
+
             logger.debug("got AttendedClasses: ", attendedClasses);
             return actions.cacheAttendedClasses(object, attendedClasses);
         })
@@ -72,13 +83,15 @@ function expand(packed, classLeft, absencesApplied, signedInClasses) {
     let days = [];
 
     let endDate = packed.reduce((lastDate, aPacked) => {
-        let classEnddate = parse(aPacked.enddate);
+        let classEnddate = parse(aPacked.enddate || aPacked.date);
         if (isAfter(classEnddate, lastDate)) {
             lastDate = classEnddate;
         }
 
         return lastDate;
     }, cursorDate);
+
+    logger.debug("got endDate: ", endDate);
 
 
     while (classFound < classLeft && isAfter(endDate, cursorDate)) {
@@ -151,8 +164,19 @@ export function unattendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
             let classes = data.unattendedClasses.filter((v) => {return !!v.id});
             let absencesApplied = data.absencesApplied.filter((v) => {return !!v.id});
             let signedInClasses = data.signedInClasses.filter((v) => {return !!v.id});
-            logger.debug("got UnattendedClasses: ", classes, absencesApplied, signedInClasses);
-            unattendedClasses = expand(classes, account.classleft, absencesApplied, signedInClasses);
+            let htxx = data.htxx;
+
+            dispatch({
+                type: actions.SET_ACCOUNT,
+                account: {
+                    ...account,
+                    classattended: htxx.ysks,
+                    classleft: htxx.syks,
+                }
+            });
+
+            logger.debug("got UnattendedClasses: ", classes, absencesApplied, signedInClasses, htxx);
+            unattendedClasses = expand(classes, htxx.syks, absencesApplied, signedInClasses);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
         .then((action) => {
@@ -239,15 +263,15 @@ export function afterClassInstruction({kcbxxbh, skqkrq, kckssj, kcjssj, cbOk, cb
     };
 }
 
-export function updateAbsence({applyAbsence, kcbxxbh, date, cbOk, cbFail, cbFinish}) {
+export function updateAbsence({applyAbsence, kcbxxbh, date, cbOkAbsence, cbFail, cbFinish}) {
     return (dispatch) => {
 
         apis.updateAbsence({
             applyAbsence, kcbxxbh, date
         })
             .then(() => {
-            if (cbOk) {
-                cbOk();
+            if (cbOkAbsence) {
+                cbOkAbsence();
             }
             if (cbFinish) {
                 cbFinish();
@@ -266,22 +290,11 @@ export function updateAbsence({applyAbsence, kcbxxbh, date, cbOk, cbFail, cbFini
 }
 
 export function signInClass({kcbxxbh, date, cbOk, cbFail, cbFinish}) {
-    return (dispatch, getState) => {
-        let {account} = getState();
+    return (dispatch) => {
         apis.signInClass({
             kcbxxbh, date
         })
-            .then((response) => {
-                let {data: {classCount}} = response;
-
-                dispatch({
-                    type: actions.SET_ACCOUNT,
-                    account: {
-                        ...account,
-                        classattended: classCount.ysks,
-                        classleft: classCount.syks,
-                    }
-                });
+            .then(() => {
                 dispatch(actions.unattendedClasses({}));
                 dispatch(actions.attendedClasses({}));
                 if (cbOk) {

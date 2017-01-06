@@ -35,16 +35,15 @@ export default class UnattendedClass extends Component {
                         });
                     };
                     return (
-                    <components.Block containerStyle={[styles.container, styles.card]} key={aClass.id} >
+                    <components.Block containerStyle={[styles.container, styles.card,]} key={aClass.id} >
                         <TextNotice
                             style={{fontSize: 18, color: COLOR.textHighlight}}
                         >
                             {'课程：' + aClass.kcjc.toUpperCase()}
                         </TextNotice>
                         <View  style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <TextNotice>{'开始时间：' + aClass.kckssj}</TextNotice>
-                            <TextNotice>{'结束时间：' + aClass.kcjssj}</TextNotice>
-                            <TextNotice>{'教室：' + aClass.kcjss}</TextNotice>
+                            <TextNotice >{'开始时间：' + aClass.kckssj}</TextNotice>
+                            <TextNotice style={{flex: 1}}>{'教室：' + aClass.kcjss}</TextNotice>
                         </View>
                         <View  style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                             <TextNotice

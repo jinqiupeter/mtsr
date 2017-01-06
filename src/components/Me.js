@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet, View,Alert, ScrollView, RefreshControl,
+    StyleSheet, View,Alert, ScrollView, RefreshControl,Text
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
@@ -11,15 +11,11 @@ import * as components from './';
 import * as helpers from './helpers';
 
 export default class Me extends Component {
-    _refresh() {
-
-    }
-
     render() {
         let {
-            sceneKey, object, clearCache
+            sceneKey, clearCache
         } = this.props;
-        let {account, logoutRequest} = this.props;
+        let {account, logoutRequest, disassociateXpy} = this.props;
 
         if (!account) {
             return null;
@@ -35,45 +31,56 @@ export default class Me extends Component {
                 refresh={() => this._refresh()}
             >
                 <ScrollView>
-                    <components.Block containerStyle={{flexDirection: 'row'}}>
+                    <components.Block containerStyle={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
                         <components.Image
                             source={helpers.accountAvatarSource(account, 'middle')}
                             style={styles.userAvatar}
                             containerStyle={{marginRight: 5}}
+                            onPress={() => Actions.EditProfileAvatar()}
                         />
-                        <View style={{flex: 1}}>
+                        {(!account.xpybh || !account.khbh) ?
+                            <components.Button
+                                text='绑定学员'
+                                onPress={() => {
+                                    Actions.AssociateXpy();
+                                }}
+                                containerStyle={{flex: 1, margin: 0, padding: 5}}
+                                textStyle={{fontSize: 12}}
+                            />
+                            :
                             <View
-                                style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
+                                style={{flex: 1, flexDirection: 'row',  justifyContent: 'space-between', alignItems: 'center'}}
+                            >
+                                <components.Text>已绑定学员：</components.Text>
                                 <components.TextWithIcon
                                     iconName={account.gender == 'm' ? 'mars' : 'venus'}
-                                    text={account.nickname}
+                                    text={account.realname}
                                     styleKind='emphaBig'
+                                    containerStyle={{flex: 1}}
                                 />
+                                <components.Text style={{flex: 1}}>{account.nickname}</components.Text>
+                                <components.Text
+                                    style={{flex: 1}}>{helpers.monthAgeInYears(account.monthage)}</components.Text>
                                 <components.Button
-                                    text='编辑资料'
-                                    onPress={() => Actions.EditProfile()}
-                                    containerStyle={{margin: 0, padding: 5}}
+                                    text='解除绑定'
+                                    onPress={() => {
+                                        Alert.alert(
+                                            '确定解除绑定吗？',
+                                            "",
+                                            [
+                                                {text: '取消', onPress: () => {}},
+                                                {text: '确定', onPress: () => {
+                                                    disassociateXpy();
+                                                    Actions.AssociateXpy();
+                                                }},
+                                            ],
+                                        );
+                                    }}
+                                    containerStyle={{flex: 1, margin: 0, padding: 5}}
                                     textStyle={{fontSize: 12}}
                                 />
                             </View>
-                            <View
-                                style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 25}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <components.TextWithIcon
-                                        iconName='thumbs-o-up'
-
-                                        containerStyle={{marginRight: 5}}
-                                    />
-                                    <components.TextWithIcon
-                                        iconName='plus-square-o'
-
-                                    />
-                                </View>
-                            </View>
-                            <View style={{justifyContent: 'center', height: 50}}>
-                                <components.Text>{account.intro || '暂无签名'}</components.Text>
-                            </View>
-                        </View>
+                        }
                     </components.Block>
                     <components.Block containerStyle={{marginTop: 10}}>
                         <components.BlockItem
@@ -188,6 +195,6 @@ const styles = StyleSheet.create({
     userAvatar: {
         width: 100,
         height: 100,
-        borderRadius: 10,
+        borderRadius: 50,
     },
 });

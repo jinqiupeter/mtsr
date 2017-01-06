@@ -20,78 +20,30 @@ export default class Classes extends Component {
 
         logger.debug("account in classes: ", account);
 
-        return (
-            <containers.Layout
-                sceneKey={sceneKey}
-                hideNavBar={true}
-                hideTabBar={false}
-                statusBarBgColor={COLOR.theme}
-                currentTab={0}
-            >
-                <components.Block containerStyle={{
-                    backgroundColor: COLOR.theme,
-                    paddingTop: 20,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
-                }}>
-                    <View style={[styles.userAvatarContainer, styles.shadow]}>
-                        <Image
-                            style={styles.image}
-                            source={helpers.accountAvatarSource(account, 'middle')}
-                        />
-                    </View>
-                    <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                        <components.Text style={{marginBottom: 10}} styleKind='emphaExtraBig'>
-                            {account.realname}
-                        </components.Text>
-                        <Text style={{color: COLOR.textLightNormal}}> {account.nickname} </Text>
-                        <Text style={{color: COLOR.textLightNormal}}>
-                            {helpers.monthAgeInYears(account.monthage) + "(" + account.monthage + '月' + ")"}
-                        </Text>
-                    </View>
-                    <View style={{marginLeft: 10, flexDirection: 'column', alignItems: 'flex-start'}}>
-                        <components.TextWithIcon
-                            containerStyle={{marginBottom: 15, marginLeft: 20}}
-                            iconName="camera"
-                            iconStyle={{color: COLOR.textLightNormal}}
-                            text="签到"
-                            textStyle={{color: COLOR.textLightNormal, fontSize: 14}}
-                            onPress={() => {
-                                        Actions.QRScanner({
-                                            title: '扫码签到',
-                                            parentSceneKey: sceneKey,
-                                            onBarCodeRead: (data) => {
-                                                let classInfo = JSON.parse(data);
-                                                let match = classInfo.date.match(/(\d+)-(\d+)-(\d+)/);
-                                                let date = new Date(parseInt(match[1]), parseInt(match[2]) -1, parseInt(match[3]));
-                                                logger.debug("get json object: ", classInfo);
-                                                Alert.alert(
-                                                    '确定签到吗？',
-                                                    "日期：" + classInfo.date
-                                                    + "\n时间：" + classInfo.kckssj
-                                                    + "\n课程：" + classInfo.kcmc.toUpperCase(),
-                                                    [
-                                                        {text: '取消', onPress: () => {}},
-                                                        {text: '确定', onPress: () => {
-                                                            signInClass({
-                                                                kcbxxbh: classInfo.kcbxxbh,
-                                                                date: moment(date).format("YYYY-MM-DD hh:mm:ss"),
-                                                            })
-                                                        }},
-                                                    ],
-                                                );
-                                            }
-                                        })
-                                    }}
-                        />
-                        <Text style={{color: COLOR.textLightNormal}}> {'未上课时：' + account.classleft} </Text>
-                        <Text style={{color: COLOR.textLightNormal}}> {'已上课时：' + account.classattended} </Text>
+        if (!account.khbh || !account.xpybh) {
+            return (
+                <containers.Layout
+                    sceneKey={sceneKey}
+                    hideNavBar={true}
+                    hideTabBar={false}
+                    statusBarBgColor={COLOR.theme}
+                    currentTab={0}
+                >
+                    <components.Block containerStyle={{
+                        backgroundColor: COLOR.theme,
+                        paddingTop: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
+                    }}>
+                        <View style={[styles.userAvatarContainer, styles.shadow]}>
+                            <Image
+                                style={styles.image}
+                                source={helpers.accountAvatarSource(account, 'middle')}
+                            />
+                        </View>
 
-                    </View>
-                </components.Block>
-
-                {(!account.xpybh || !account.khbh) &&
+                    </components.Block>
                     <View>
                         <components.TextNotice>
                             您还没有绑定学员
@@ -102,14 +54,93 @@ export default class Classes extends Component {
                             textStyle={{fontSize: 16}}
                         />
                     </View>
-                || input[sceneKey].selectedClassType == 1
-                    ?
-                    <containers.AttendedClasses/>
-                    :
-                    <containers.UnattendedClasses/>
-                }
-            </containers.Layout>
-        );
+                </containers.Layout>
+            )
+        } else {
+
+            return (
+                <containers.Layout
+                    sceneKey={sceneKey}
+                    hideNavBar={true}
+                    hideTabBar={false}
+                    statusBarBgColor={COLOR.theme}
+                    currentTab={0}
+                >
+                    <components.Block containerStyle={{
+                        backgroundColor: COLOR.theme,
+                        paddingTop: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
+                    }}>
+                        <View style={[styles.userAvatarContainer, styles.shadow]}>
+                            <Image
+                                style={styles.image}
+                                source={helpers.accountAvatarSource(account, 'middle')}
+                            />
+                        </View>
+
+
+                        <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                            <components.Text style={{marginBottom: 10}} styleKind='emphaExtraBig'>
+                                {account.realname}
+                            </components.Text>
+                            <Text style={{color: COLOR.textLightNormal}}> {account.nickname} </Text>
+                            <Text style={{color: COLOR.textLightNormal}}>
+                                {helpers.monthAgeInYears(account.monthage) + "(" + account.monthage + '月' + ")"}
+                            </Text>
+                        </View>
+                        <View style={{marginLeft: 10, flexDirection: 'column', alignItems: 'flex-start'}}>
+                            <components.TextWithIcon
+                                containerStyle={{marginBottom: 15, marginLeft: 20}}
+                                iconName="camera"
+                                iconStyle={{color: COLOR.textLightNormal}}
+                                text="签到"
+                                textStyle={{color: COLOR.textLightNormal, fontSize: 14}}
+                                onPress={() => {
+                                    Actions.QRScanner({
+                                        title: '扫码签到',
+                                        parentSceneKey: sceneKey,
+                                        onBarCodeRead: (data) => {
+                                            let classInfo = JSON.parse(data);
+                                            let match = classInfo.date.match(/(\d+)-(\d+)-(\d+)/);
+                                            let date = new Date(parseInt(match[1]), parseInt(match[2]) -1, parseInt(match[3]));
+                                            logger.debug("get json object: ", classInfo);
+                                            Alert.alert(
+                                                '确定签到吗？',
+                                                "日期：" + classInfo.date
+                                                + "\n时间：" + classInfo.kckssj
+                                                + "\n课程：" + classInfo.kcmc.toUpperCase(),
+                                                [
+                                                    {text: '取消', onPress: () => {}},
+                                                    {text: '确定', onPress: () => {
+                                                        signInClass({
+                                                            kcbxxbh: classInfo.kcbxxbh,
+                                                            date: moment(date).format("YYYY-MM-DD hh:mm:ss"),
+                                                        })
+                                                    }},
+                                                ],
+                                            );
+                                        }
+                                    })
+                                }}
+                            />
+                            <Text style={{color: COLOR.textLightNormal}}> {'未上课时：' + account.classleft} </Text>
+                            <Text style={{color: COLOR.textLightNormal}}> {'已上课时：' + account.classattended} </Text>
+
+                        </View>
+
+                    </components.Block>
+
+                    {input[sceneKey].selectedClassType == 1
+                        ?
+                        <containers.AttendedClasses/>
+                        :
+                        <containers.UnattendedClasses/>
+                    }
+                </containers.Layout>
+            );
+        }
     }
 }
 

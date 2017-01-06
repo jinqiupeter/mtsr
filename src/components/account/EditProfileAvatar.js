@@ -16,7 +16,7 @@ export default class EditProfileAvatar extends Component {
   }
 
   render() {
-    let {sceneKey, input, saveInput} = this.props;
+    let {sceneKey, account} = this.props;
     let {selectCustomAvatar, submit} = this.props;
     return (
       <containers.Layout
@@ -28,21 +28,8 @@ export default class EditProfileAvatar extends Component {
         })}
       >
         <ScrollView>
-          <components.Image source={helpers.accountAvatarSource(input[sceneKey], 'middle')} style={styles.avatar} />
-          <components.TextNotice>从内置里选取</components.TextNotice>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', padding: 5}}>
-            {Array.from(
-              RES_USER_AVATARS.entries(),
-              ([k, v]) => <components.Image
-                key={k}
-                source={v}
-                onPress={() => saveInput(sceneKey, {avatarType: 'builtin', avatarName: k})}
-                containerStyle={{margin: 5}}
-                style={styles.avatarBuiltin}
-              />
-            )}
-          </View>
-          <components.TextNotice>从相册里选取</components.TextNotice>
+          <components.Image source={helpers.accountAvatarSource(account, 'middle')} style={styles.avatar} />
+           <components.TextNotice>从相册里选取</components.TextNotice>
           <components.ButtonWithBg
             text='打开相册'
             onPress={() => {

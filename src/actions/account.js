@@ -87,6 +87,17 @@ export function associateXpy(sceneKey) {
     };
 }
 
+export function disassociateXpy() {
+    return (dispatch) => {
+        apis.editAccount({xpybh: "0", khbh: "0"})
+            .then((response) => {
+                let {data: {account}} = response;
+                dispatch({type: SET_ACCOUNT, account});
+            })
+            .catch((error) => dispatch(actions.handleApiError(error)));
+    };
+}
+
 export function loginSubmit(sceneKey, cbOk) {
     return (dispatch, getState) => {
         let {input} = getState();

@@ -34,6 +34,7 @@ function mapDispatchToProps(dispatch) {
         errorFlash: actions.errorFlash,
         logoutRequest: actions.logoutRequest,
         clearCache: actions.clearCache,
+        disassociateXpy: actions.disassociateXpy,
     }, dispatch);
 }
 
