@@ -29,7 +29,6 @@ function mapDispatchToProps(dispatch) {
         saveInput: actions.saveInput,
         submitDay: actions.changeStartDay,
         setSceneState: actions.setSceneState,
-        getSelectable: actions.selectableClasses,
         changeMonth: actions.changeMonth,
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
     }, dispatch);

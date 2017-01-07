@@ -45,7 +45,7 @@ export default class Referral extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, object, referralIds,
+        let {sceneKey, loading, object, referralIds,
             disableLoading, enableLoading} = this.props;
 
         return (

@@ -7,11 +7,14 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions';
 import {default as Regular} from '../../components/schedule/Regular';
 function mapStateToProps(state) {
-    let {input, error, network, object, schedule} = state;
+    let {input, error, loading, network, object, schedule, account} = state;
     return {
         error,
         network,
         object,
+        account,
+        input,
+        loading,
         selectedDate: input['Schedule'].selectedDate,
         packedSelectableClasses: schedule.packedSelectableClasses,
     };
@@ -25,6 +28,7 @@ function mapDispatchToProps(dispatch) {
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
         setSceneState: actions.setSceneState,
         saveInput: actions.saveInput,
+        getSelectable: actions.selectableClasses,
     }, dispatch);
 }
 

@@ -35,7 +35,7 @@ export default class AttendedClass extends Component {
                     <View style={{flex: 1}}>
                             <components.TextNotice style={{
                                 fontSize: 18,
-                                color: COLOR.theme,
+                                color: COLOR.textHighlight,
                                 textAlign: 'center',
                                 paddingBottom: 0,
                             }}

@@ -3,7 +3,8 @@
  */
 
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, SegmentedControlIOS,
+    ScrollView, InteractionManager, RefreshControl} from 'react-native';
 import Calendar from 'react-native-calendar';
 import {Actions} from 'react-native-router-flux';
 import isSameDay from 'date-fns/is_same_day';
@@ -14,10 +15,50 @@ import * as components from '../';
 import {COLOR, customDayHeadings, customMonthNames} from '../../config';
 import {TextNotice} from '../common';
 import logger from '../../logger';
+import * as utils from '../../utils';
 
 export default class Makeup extends Component {
+    componentWillMount() {
+        this.refreshing = false;
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            let {network} = this.props;
+            let sceneKey = 'Schedule';
+            if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
+                this._refresh();
+            }
+        });
+    }
+
+    _refresh({props, cbFinish}={}) {
+        props = props || this.props;
+        let {setSceneLastRefreshTime} = props;
+        let {input, account, getSelectable} = props;
+        let sceneKey = 'Schedule';
+
+        if (!account.khbh || !account.xpybh) {
+            return;
+        }
+
+        setSceneLastRefreshTime({sceneKey});
+
+        let finished = 0;
+        let startingDate = input[sceneKey].selectedDate;
+        getSelectable({
+            startingDate,
+            cbFinish: () => finished++,
+        });
+        utils.waitingFor({
+            condition: () => finished == 1,
+            cbFinish,
+        });
+    }
+
     render() {
-        let {selectedDate, eventDates, changeMonth, saveInput} = this.props;
+        let {selectedDate, eventDates,
+            changeMonth, saveInput, disableLoading, enableLoading} = this.props;
         selectedDate = selectedDate || new Date();
         let sceneKey = 'Schedule';
         logger.debug("Props in Makeup render: ", this.props);
@@ -31,7 +72,43 @@ export default class Makeup extends Component {
             );
         };
         return (
-            <View style={{flex: 1, paddingTop: 20, backgroundColor: COLOR.backgroundNormal}}>
+            <ScrollView
+                style={{
+                    flex: 1,
+                    backgroundColor: COLOR.backgroundNormal
+                }}
+                refreshControl={
+                    <RefreshControl
+                       refreshing={this.refreshing}
+                        onRefresh={() => {
+                            disableLoading();
+                            this.refreshing = true;
+                            this._refresh({
+                                cbFinish: () => {
+                                    logger.debug("setting refreshing to false")
+                                    this.refreshing = false;
+                                    enableLoading();
+                                },
+                            });
+                        }}
+                    />
+                 }
+            >
+
+                <View
+                    style={styles.container}
+                >
+                    <SegmentedControlIOS
+                        values={['Regular选课', 'Makeup选课']}
+                        selectedIndex={1}
+                        onChange={(event) => saveInput('Schedule',
+                                {selectedScheduleType: event.nativeEvent.selectedSegmentIndex}
+                                )}
+                        tintColor={COLOR.theme}
+                        style={styles.segmentedControl}
+                    />
+                </View>
+
                 <Calendar
                     scrollEnabled={true}              // False disables swiping. Default: False
                     startDate={selectedDate}
@@ -64,10 +141,29 @@ export default class Makeup extends Component {
                     textStyle={{fontSize: 16}}
                     containerStyle={{marginTop: 20}}
                 />
-            </View>
+            </ScrollView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLOR.backgroundLighter,
+        marginBottom: 10,
+    },
+    segmentedControl: {
+        marginTop: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 10,
+    },
+    titleContainer: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: COLOR.backgroundLighter,
+    },
+});
 
 const calendarStyle = StyleSheet.create({
     day: {

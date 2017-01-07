@@ -92,7 +92,9 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 if (cbOk) {
                     cbOk();
                 }
+
                 if (cbFinish) {
+                    logger.debug("calling cbFinish in action");
                     cbFinish();
                 }
             })
