@@ -24,7 +24,7 @@ export function errorInput(scene, error) {
   };
 }
 
-export function errorFlash(error, duration=2000) {
+export function errorFlash(error, duration=3000) {
   return (dispatch, getState) => {
     dispatch({
       type: ERROR_FLASH,

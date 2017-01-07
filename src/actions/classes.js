@@ -108,6 +108,11 @@ function expand(packed, classLeft, absencesApplied, signedInClasses) {
                     return;
                 }
 
+                // app选Regular课程的开始日期如果是用app选的，则startdate会自动后推一个星期
+                if (aPacked.type == 1 && isAfter(aPacked.startdate, cursorDate)) {
+                    return;
+                }
+
                 let classes = cursorDate.classes || [];
                 let appliedAbsence = absencesApplied.find(v => {
                     return isSameDay(cursorDate, v.date)

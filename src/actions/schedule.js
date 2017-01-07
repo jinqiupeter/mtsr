@@ -84,8 +84,10 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 dispatch(action);
 
                 let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
+                logger.debug("packedSelectableClasses from cache: ", packedSelectableClasses);
                 let monthAge = account.monthage;
                 let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
+                logger.debug("selectableDays after expand: ", selectableDays);
 
                 dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
                 dispatch({type: SET_SELECTABLE, selectableDays});
@@ -140,6 +142,22 @@ export function getClassDescription({kcbxxbh, cbFinish}) {
                 if (cbFail) {
                     cbFail();
                 }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function selectRegular({kcbxxbh, cbFinish}) {
+    return (dispatch) => {
+        apis.selectRegular({kcbxxbh})
+            .then(() => {
+                dispatch(selectableClasses({startingDate: new Date()}));
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+
                 if (cbFinish) {
                     cbFinish();
                 }

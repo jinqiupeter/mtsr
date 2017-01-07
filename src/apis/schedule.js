@@ -9,4 +9,8 @@ export function classDescription(info) {
     return getApi(`${API_ORIGIN}/classDescription`, info);
 }
 
+export function selectRegular(info) {
+    return postApi(`${API_ORIGIN}/selectRegular`, info,  {timeout: 10 * 1000});
+}
+
 

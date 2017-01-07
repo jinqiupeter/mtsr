@@ -29,6 +29,7 @@ function mapDispatchToProps(dispatch) {
         setSceneState: actions.setSceneState,
         saveInput: actions.saveInput,
         getSelectable: actions.selectableClasses,
+        selectRegular: actions.selectRegular,
     }, dispatch);
 }
 

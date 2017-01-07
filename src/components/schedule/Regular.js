@@ -55,7 +55,7 @@ export default class Regular extends Component {
 
     render() {
         let {disableLoading, enableLoading,
-            saveInput} = this.props;
+            saveInput, selectRegular} = this.props;
 
         logger.debug("props in Regular: ", this.props);
 
@@ -67,6 +67,8 @@ export default class Regular extends Component {
             accumulator[v.kcxq] = (accumulator[v.kcxq] || []).concat([v]);
             return accumulator;
         }, {});
+
+        logger.debug("got reduced: ", reduced);
 
         let rows = Object.keys(reduced).map((v) => {
             return {kcxq: v, classes: reduced[v]};
@@ -203,7 +205,7 @@ export default class Regular extends Component {
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     <components.Button
                                         text={'选定'}
-                                        onPress={() => {absenceOnPress()}}
+                                        onPress={() => {selectRegular({kcbxxbh: "" + aClass.kcbxxbh})}}
                                         containerStyle={{margin: 10, padding: 5}}
                                         textStyle={{fontSize: 12}}
                                     />
