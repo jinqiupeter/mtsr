@@ -35,6 +35,7 @@ function mapDispatchToProps(dispatch) {
         logoutRequest: actions.logoutRequest,
         clearCache: actions.clearCache,
         disassociateXpy: actions.disassociateXpy,
+        editProfileAvatarSubmit: actions.editProfileAvatarSubmit,
     }, dispatch);
 }
 

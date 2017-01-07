@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
+import ImagePicker from 'react-native-image-picker';
 
 import * as containers from '../../containers';
 import * as components from '../';
@@ -10,10 +11,11 @@ import logger from '../../logger';
 import * as helpers from '../helpers';
 import {COLOR, GENDERS} from '../../config';
 
+
 export default class AssociateXpy extends Component {
     render() {
         let {sceneKey, input, account, saveInput, sceneState, setSceneState, xpyFound} = this.props;
-        let {associate, searchXpy, associateXpy} = this.props;
+        let {associate, searchXpy, associateXpy, editProfileAvatarSubmit} = this.props;
 
         logger.debug("props in AssociateXpy", this.props);
         return (
@@ -110,7 +112,21 @@ export default class AssociateXpy extends Component {
                             leftText='头像'
                             rightImage={helpers.accountAvatarSource(account)}
                             rightIcon='angle-right'
-                            onPress={() => Actions.EditProfileAvatar()}
+                            onPress={() => {
+                                ImagePicker.showImagePicker(
+                                {
+                                  title: '设置头像',
+                                  takePhotoButtonTitle: '拍照',
+                                  chooseFromLibraryButtonTitle: '相册',
+                                  cancelButtonTitle: '取消',
+                                  mediaType: 'photo',
+                                  allowsEditing: true,
+                                  noData: true,
+                                  storageOptions: {},
+                                },
+                                (picker) => editProfileAvatarSubmit({picker}),
+                              );
+                            }}
                             imageStyle={{borderRadius: 5}}
                             containerStyle={{height: 60, borderTopWidth: 0}}
                         />

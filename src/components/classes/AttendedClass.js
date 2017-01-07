@@ -63,7 +63,13 @@ export default class AttendedClass extends Component {
                         </View>
 
                     </View>
-                    <Icon name="angle-right" style={{paddingHorizontal: 2,width: 20,}}/>
+                    <Icon name="angle-right"
+                          style={{
+                            marginLeft: 5,
+                            fontSize: 16,
+                            color: COLOR.textNormal,
+                            paddingHorizontal: 2,
+                            width: 20,}}/>
                 </View>
             </components.Block>
         );

@@ -29,10 +29,6 @@ const initialState = {
         nickname: '',
         validity: false,
     },
-    EditProfileAvatar: {
-        profileimageurl: '',
-        validity: false,
-    },
     Classes: {
         selectedClassType: 0,
         startDate: new Date(),

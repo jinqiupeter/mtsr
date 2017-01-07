@@ -199,38 +199,36 @@ export function selectCustomAvatar(sceneKey, picker) {
     };
 }
 
-export function editProfileAvatarSubmit(sceneKey) {
-    return (dispatch, getState) => {
-        let {input} = getState();
-        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
-            let {profileimageurl} = input[sceneKey];
-            logger.debug("editting avatar: ", profileimageurl);
-            let cbOk = (response) => {
-                let {data: {account}} = response;
-                logger.debug("dispatching account profile: ", account);
-                dispatch({
-                    type: SET_ACCOUNT,
-                    account,
-                });
+export function editProfileAvatarSubmit({picker}) {
+    return (dispatch) => {
+        logger.debug("picker in edit profile: ", picker);
+        if (picker.didCancel || picker.customButton) {
+            return;
+        }
 
-                Actions.pop();
-            };
+        let profileimageurl = picker.uri;
+        let cbOk = (response) => {
+            let {data: {account}} = response;
+            dispatch({
+                type: SET_ACCOUNT,
+                account,
+            });
+        };
 
-            if (utils.isUrl(profileimageurl)) {
-                Actions.pop();
-                return;
-            }
+        if (utils.isUrl(profileimageurl)) {
+            return;
+        }
 
-            ImageResizer.createResizedImage(profileimageurl, 1080, 810, 'JPEG', 90)
-                .then(resizedImageUri => apis.uploadFile(resizedImageUri, 'image/jpeg'))
-                .then((response) => {
-                    let {data: {file}} = response;
-                    logger.debug("change account profile: ", file);
-                    return apis.editAccount({profileimageurl: file.url});
-                })
-                .then(cbOk)
-                .catch((error) => dispatch(actions.handleApiError(error)));
-        }));
+        ImageResizer.createResizedImage(profileimageurl, 1080, 810, 'JPEG', 90)
+            .then(resizedImageUri => apis.uploadFile(resizedImageUri, 'image/jpeg'))
+            .then((response) => {
+                let {data: {file}} = response;
+                logger.debug("change account profile: ", file);
+                return apis.editAccount({profileimageurl: file.url});
+            })
+            .then(cbOk)
+            .catch((error) => dispatch(actions.handleApiError(error)));
+
     };
 }
 

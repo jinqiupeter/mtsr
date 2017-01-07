@@ -24,6 +24,7 @@ function mapDispatchToProps(dispatch) {
         setSceneState: actions.setSceneState,
         searchXpy: actions.searchXpy,
         associateXpy: actions.associateXpy,
+        editProfileAvatarSubmit: actions.editProfileAvatarSubmit,
     }, dispatch);
 }
 

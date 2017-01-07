@@ -3,6 +3,7 @@ import {
     StyleSheet, View,Alert, ScrollView, RefreshControl,Text
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import ImagePicker from 'react-native-image-picker';
 
 import {COLOR} from '../config';
 
@@ -13,7 +14,7 @@ import * as helpers from './helpers';
 export default class Me extends Component {
     render() {
         let {
-            sceneKey, clearCache
+            sceneKey, clearCache, editProfileAvatarSubmit
         } = this.props;
         let {account, logoutRequest, disassociateXpy} = this.props;
 
@@ -36,7 +37,21 @@ export default class Me extends Component {
                             source={helpers.accountAvatarSource(account, 'middle')}
                             style={styles.userAvatar}
                             containerStyle={{marginRight: 5}}
-                            onPress={() => Actions.EditProfileAvatar()}
+                            onPress={() => {
+                                ImagePicker.showImagePicker(
+                                {
+                                  title: '设置头像',
+                                  takePhotoButtonTitle: '拍照',
+                                  chooseFromLibraryButtonTitle: '相册',
+                                  cancelButtonTitle: '取消',
+                                  mediaType: 'photo',
+                                  allowsEditing: true,
+                                  noData: true,
+                                  storageOptions: {},
+                                },
+                                (picker) => editProfileAvatarSubmit({picker}),
+                              );
+                            }}
                         />
                         {(!account.xpybh || !account.khbh) ?
                             <components.Button
@@ -193,8 +208,8 @@ export default class Me extends Component {
 
 const styles = StyleSheet.create({
     userAvatar: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 120,
+        height: 120,
+        borderRadius: 60,
     },
 });

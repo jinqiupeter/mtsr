@@ -6,7 +6,6 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "@exponent/react-native-action-sheet": "^0.2.3",
     "coordtransform": "^2.0.2",
     "date-fns": "^1.11.2",
     "leancloud-installation": "^1.0.0",

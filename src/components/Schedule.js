@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet, ScrollView, Text,
-    SegmentedControlIOS, InteractionManager
+    StyleSheet, ScrollView, Text, View,
+    SegmentedControlIOS, InteractionManager, Platform
 } from 'react-native';
 
 import {COLOR} from '../config';
@@ -69,15 +69,15 @@ export default class Schedule extends Component {
                     renderTitle={() => components.NavBarTitle({title: '选课'})}
                 >
                     <ScrollView>
-                    <SegmentedControlIOS
-                        values={['Regular选课', 'Makeup选课']}
-                        selectedIndex={input[sceneKey].selectedScheduleType}
-                        onChange={(event) => saveInput(sceneKey,
-                            {selectedScheduleType: event.nativeEvent.selectedSegmentIndex}
-                            )}
-                        tintColor={COLOR.theme}
-                        style={segmentStyle.segmentedControl}
-                    />
+                        <SegmentedControlIOS
+                            values={['Regular选课', 'Makeup选课']}
+                            selectedIndex={input[sceneKey].selectedScheduleType}
+                            onChange={(event) => saveInput(sceneKey,
+                                        {selectedScheduleType: event.nativeEvent.selectedSegmentIndex}
+                                        )}
+                            tintColor={COLOR.theme}
+                            style={segmentStyle.segmentedControl}
+                        />
 
                     {input[sceneKey].selectedScheduleType == 0 ?
                         <containers.Regular/>
@@ -97,6 +97,29 @@ const segmentStyle = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         marginBottom: 10,
+    },
+});
+
+const styles = StyleSheet.create({
+    container: {
+        ...Platform.select({
+            ios: {
+                marginTop: 14,
+                height: 50,
+            },
+            android: {
+                marginTop: 20,
+                height: 34,
+            },
+        }),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLOR.textLightNormal,
     },
 });
 

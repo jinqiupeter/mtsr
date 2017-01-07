@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, Platform, View, Text, StatusBar} from 'react-native';
 import logger from '../../logger';
