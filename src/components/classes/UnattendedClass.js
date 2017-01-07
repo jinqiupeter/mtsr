@@ -15,7 +15,7 @@ import * as helpers from '../helpers';
 
 export default class UnattendedClass extends Component {
     render() {
-        let {day, updateAbsence, signInClass, cbOkAbsence} = this.props;
+        let {day, updateAbsence, signInClass, cbOkAbsence, deselectRegular} = this.props;
         return (
             <components.Block containerStyle={styles.container}>
                 <TextNotice
@@ -99,6 +99,42 @@ export default class UnattendedClass extends Component {
                                         ? <components.Button
                                             text={aClass.appliedAbsence ? '取消请假' : '请假'}
                                             onPress={() => {absenceOnPress()}}
+                                            containerStyle={{margin: 0, padding: 5}}
+                                            textStyle={{fontSize: 12}}
+                                        />
+                                        : null
+                            }
+
+                            {/*取消选课按钮*/}
+                            {
+                                aClass.type ==2
+                                    // Makeup 课程
+                                    ? isAfter(day.date, new Date())
+                                        ? <components.Button
+                                            text={'取消选课'}
+                                            onPress={() => absenceOnPress()}
+                                            containerStyle={{margin: 0, padding: 5}}
+                                            textStyle={{fontSize: 12}}
+                                        />
+                                        : null
+
+                                    // regular 课程
+                                    : diffInDays(day.date, new Date()) >= 7
+                                        ? <components.Button
+                                            text={'取消选课'}
+                                            onPress={() => {
+                                                Alert.alert(
+                                                    '确定取消选课吗？',
+                                                    "本课程是Regular课程，这样做会取消所有同时段的课程",
+                                                    [
+                                                        {text: '取消', onPress: () => {}},
+                                                        {text: '确定', onPress: () => {
+                                                            deselectRegular({xkxxbh: "" + aClass.xkxxbh})
+                                                        }},
+                                                    ],
+                                                );
+
+                                            }}
                                             containerStyle={{margin: 0, padding: 5}}
                                             textStyle={{fontSize: 12}}
                                         />

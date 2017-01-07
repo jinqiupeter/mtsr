@@ -36,6 +36,7 @@ function mapDispatchToProps(dispatch) {
         moreClass: actions.moreUnattendedClassesFromCache,
         updateAbsence: actions.updateAbsence,
         signInClass: actions.signInClass,
+        deselectRegular: actions.deselectRegular,
     }, dispatch);
 }
 

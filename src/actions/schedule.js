@@ -75,21 +75,13 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
         apis.selectableClasses({})
             .then((response) => {
                 let {data} = response;
-                let classes = data.selectableClasses.filter((v) => {return !!v.id});
-                logger.debug("got selectables: ", classes);
-                return actions.cacheSelectableClasses(object, classes);
-            })
-            .then((action) => {
-                let {object} = getState();
-                dispatch(action);
-
-                let packedSelectableClasses = Object.values(helpers.packedSelectablesFromCache(object));
-                logger.debug("packedSelectableClasses from cache: ", packedSelectableClasses);
-                let monthAge = account.monthage;
-                let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
-                logger.debug("selectableDays after expand: ", selectableDays);
+                let packedSelectableClasses = data.selectableClasses.filter((v) => {return !!v.id});
+                logger.debug("got packedSelectableClasses: ", packedSelectableClasses);
 
                 dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
+
+                let monthAge = account.monthage;
+                let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
                 dispatch({type: SET_SELECTABLE, selectableDays});
 
                 if (cbOk) {
@@ -97,9 +89,9 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 }
 
                 if (cbFinish) {
-                    logger.debug("calling cbFinish in action");
                     cbFinish();
                 }
+
             })
             .catch((error) => {
                 dispatch(actions.handleApiError(error));
@@ -158,6 +150,21 @@ export function selectRegular({kcbxxbh, cbFinish}) {
             .catch((error) => {
                 dispatch(actions.handleApiError(error));
 
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function deselectRegular({xkxxbh, cbFinish}) {
+    return (dispatch) => {
+        apis.deselectRegular({xkxxbh})
+            .then(() => {
+                dispatch(actions.unattendedClasses({}));
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
                 if (cbFinish) {
                     cbFinish();
                 }

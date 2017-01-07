@@ -126,17 +126,19 @@ export default class Regular extends Component {
                     </components.TextNotice>
                 </View>
 
-                {daysWithClasses.map((day) =>
+                {daysWithClasses.map((day, index) =>
                     <components.Block
                         key={day.kcxq}
                         containerStyle={{
-                            marginLeft: 10,
+                            marginLeft: 8,
                             marginRight: 20,
                             marginTop: 5,
                             padding: 0,
                             paddingBottom: 5,
                             borderBottomWidth: 1,
                             borderColor: COLOR.linePrompt,
+                            borderRadius: 8,
+                            backgroundColor: (index %2 == 0) ? COLOR.linePrompt : COLOR.backgroundDarker,
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center'
@@ -145,7 +147,7 @@ export default class Regular extends Component {
                         <TextNotice style={{
                             flex: 1,
                             fontSize: 14,
-                            paddingLeft: 0,
+                            paddingLeft: 2,
                             color: COLOR.theme,}}>
                             {helpers.WEEK_DAYS[day.kcxq]}
                         </TextNotice>
