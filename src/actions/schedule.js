@@ -129,11 +129,11 @@ export function getClassDescription({kcbxxbh, cbFinish}) {
         apis.classDescription({kcbxxbh})
             .then((response) => {
                 let {data} = response;
-                let classInfo = data.classDescription;
+                let classInfo = data.classInfo;
                 logger.debug("got classInfo: ", classInfo);
 
                 dispatch({type: SET_CLASS_DESC,
-                    classDescription: classInfo.classDescription});
+                    classDescription: classInfo.classdescription});
             })
             .catch((error) => {
                 dispatch(actions.handleApiError(error));

@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {View, StyleSheet, ListView, SegmentedControlIOS,
     ScrollView, Text, RefreshControl, InteractionManager} from 'react-native';
 
+import {Actions} from 'react-native-router-flux';
+
 import * as helpers from '../helpers';
 import * as components from '../';
 import {COLOR} from '../../config';
@@ -118,7 +120,7 @@ export default class Regular extends Component {
 
                 <View style={{borderBottomWidth: 1, borderColor: COLOR.linePrompt}}>
                     <components.TextNotice >
-                        以下是适合学员学龄的课程：
+                        以Regular方式选定的课程会在该课程适合的月龄内为学员自动排课，如果您不确定是否喜欢该课程，建议以Makeup方式选课。以下是适合学员学龄的Regular课程：
                     </components.TextNotice>
                 </View>
 
@@ -207,7 +209,7 @@ export default class Regular extends Component {
                                     />
                                     <components.Button
                                         text={'详情'}
-                                        onPress={() => {absenceOnPress()}}
+                                        onPress={() => Actions.ClassDescription({kcbxxbh: aClass.kcbxxbh})}
                                         containerStyle={{margin: 0, padding: 5, }}
                                         textStyle={{fontSize: 12}}
                                     />
