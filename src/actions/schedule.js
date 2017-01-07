@@ -16,6 +16,7 @@ export const RESET_SELECTABLE = 'reset_selectable';
 export const SET_SELECTABLE = 'set_selectable';
 export const SET_PACKED_SELECTABLE = "set_packed_selectable";
 export const CHANGE_MONTH = "change_month";
+export const SET_CLASS_DESC = 'set_class_desc';
 
 export function resetSelectable() {
     return {
@@ -121,4 +122,27 @@ export function changeMonth({startingDate}) {
         logger.debug("changing CHANGE_MONTH: ", selectableDays);
         dispatch({type: CHANGE_MONTH, selectableDays});
     }
+}
+
+export function getClassDescription({kcbxxbh, cbFinish}) {
+    return (dispatch) => {
+        apis.classDescription({kcbxxbh})
+            .then((response) => {
+                let {data} = response;
+                let classInfo = data.classDescription;
+                logger.debug("got classInfo: ", classInfo);
+
+                dispatch({type: SET_CLASS_DESC,
+                    classDescription: classInfo.classDescription});
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
 }

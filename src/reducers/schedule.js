@@ -4,6 +4,7 @@ import * as actions from '../actions';
 const initialState = {
     selectableDays: [],
     packedSelectableClasses: [],
+    classDescription: '',
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +25,12 @@ export default (state = initialState, action) => {
         return {
             ...state,
             selectableDays: selectableDays,
+        };
+    } else if (action.type == actions.SET_CLASS_DESC) {
+        let {classDescription} = action;
+        return {
+            ...state,
+            classDescription,
         };
     } else if (action.type == actions.RESET || action.type == actions.RESET_SELECTABLE) {
         return initialState;

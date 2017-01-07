@@ -48,6 +48,7 @@ export default class ZQCApp extends Component {
                     <Scene key="AfterClassInstruction" component={containers.AfterClassInstruction}/>
                     <Scene key="ActivityPoster" component={containers.ActivityPoster}/>
                     <Scene key="SelectClass" component={containers.SelectClass}/>
+                    <Scene key="ClassDescription" component={containers.ClassDescription} />
 
                     <Scene key="TakeInput" component={components.TakeInput} />
                     <Scene key="DatePick" component={components.DatePick} />

@@ -188,7 +188,7 @@ export default class Regular extends Component {
                                         { aClass.kckssj + '-' + aClass.kcjssj }
                                     </components.TextNotice >
                                     <components.TextNotice style={{flex: 1, fontSize: 14, color: COLOR.textHighlight}}>
-                                        {aClass.kcmc}
+                                        {aClass.kcmc.toUpperCase()}
                                     </components.TextNotice>
                                     <components.TextNotice style={{flex: 1.5}}>
                                         {'月龄: ' + aClass.kcksyl + '-' + aClass.kcjsyl}
@@ -202,7 +202,7 @@ export default class Regular extends Component {
                                     <components.Button
                                         text={'选定'}
                                         onPress={() => {absenceOnPress()}}
-                                        containerStyle={{margin: 5, padding: 5}}
+                                        containerStyle={{margin: 10, padding: 5}}
                                         textStyle={{fontSize: 12}}
                                     />
                                     <components.Button

@@ -4,3 +4,4 @@
 export {default as SelectClass} from './SelectClass';
 export {default as Makeup} from './Makeup';
 export {default as Regular} from './Regular';
+export {default as ClassDescription} from './ClassDescription';
