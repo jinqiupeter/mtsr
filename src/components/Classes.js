@@ -42,7 +42,7 @@ export default class Classes extends Component {
                         backgroundColor: COLOR.theme,
                         paddingTop: 20,
                         flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        justifyContent: 'space-around',
                         alignItems: 'center'
                     }}>
                         <View style={[styles.userAvatarContainer, styles.shadow]}>
@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginLeft: 20,
-        marginRight: 20,
     },
     image: {
         width: 100,

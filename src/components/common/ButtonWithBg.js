@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
@@ -15,7 +10,7 @@ export default ({text, disabled=false, onPress, containerStyle, textStyle}) => {
   let children = <Text style={[styles.text, (disabled ? styles.textDisable : null), textStyle]}>{text}</Text>;
   if (onPress) {
     return (
-      <TouchableOpacity onPress={onPress} style={[styles.container, (disabled ? styles.containerDisable : null), containerStyle]}>
+      <TouchableOpacity disabled={disabled} onPress={onPress} style={[styles.container, (disabled ? styles.containerDisable : null), containerStyle]}>
         {children}
       </TouchableOpacity>
     );

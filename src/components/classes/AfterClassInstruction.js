@@ -5,19 +5,29 @@
 import React, {Component, PropTypes} from 'react';
 import {
     StyleSheet, View, WebView, InteractionManager
+    , RefreshControl,ScrollView
 } from 'react-native';
-import * as helpers from '../helpers';
+
+import {COLOR} from '../../config';
 import * as utils from '../../utils';
+import * as helpers from '../helpers';
 import {TextNotice} from '../common';
 import * as containers from '../../containers';
 import * as components from '../';
 import logger from '../../logger';
 
 export default class AfterClassInstruction extends Component {
+    componentWillMount() {
+        this.refreshing = false;
+    }
+
     componentDidMount() {
-        //InteractionManager.runAfterInteractions(() => {
-            this._refresh();
-        //});
+        InteractionManager.runAfterInteractions(() => {
+            let {network, sceneKey} = this.props;
+            if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
+                this._refresh();
+            }
+        });
     }
 
     _refresh({props, cbFinish}={}) {
@@ -41,7 +51,7 @@ export default class AfterClassInstruction extends Component {
     }
 
     render() {
-        let {sceneKey, loading, instruction} = this.props;
+        let {sceneKey, loading, instruction, disableLoading, enableLoading} = this.props;
         return (
             <containers.Layout
                 sceneKey={sceneKey}
@@ -54,9 +64,34 @@ export default class AfterClassInstruction extends Component {
                 >
                 </WebView>
                     :
-                <TextNotice>
-                    {loading.loadingCount > 0 ? "加载中" : '老师还没有发布课后指南哦！'}
-                </TextNotice>
+                <ScrollView
+                    style={{
+                    flex: 1,
+                    backgroundColor: COLOR.backgroundLighter,
+                }}
+
+                    {...this.props}
+                    refreshControl={
+                    <RefreshControl
+                       refreshing={this.refreshing}
+                        onRefresh={() => {
+                            disableLoading();
+                            this.refreshing = true;
+                            this._refresh({
+                                cbFinish: () => {
+                                    logger.debug("setting refreshing to false")
+                                    this.refreshing = false;
+                                    enableLoading();
+                                },
+                            });
+                        }}
+                    />
+                 }
+                >
+                    <TextNotice>
+                        {loading.loadingCount > 0 ? "加载中" : '老师还没有发布课后指南哦！'}
+                    </TextNotice>
+                </ScrollView>
                 }
             </containers.Layout>
         );

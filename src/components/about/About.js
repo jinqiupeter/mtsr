@@ -44,10 +44,10 @@ export default class About extends Component {
 
 const styles = StyleSheet.create({
   logo: {
-    alignSelf: 'center', 
-    marginVertical: 50, 
-    width: 100,
-    height: 100,
+    alignSelf: 'center',
+    marginVertical: 50,
+    width: 150,
+    height: 150,
     borderRadius: 10,
   },
 });

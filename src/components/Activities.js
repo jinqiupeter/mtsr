@@ -20,6 +20,13 @@ export default class Activities extends Component {
         this.ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) =>
             r1.id != r2.id
+            || r1.ondate != r2.ondate
+            || r1.starttime != r2.starttime
+            || r1.endtime != r2.endtime
+            || r1.participantscount != r2.participantscount
+            || r1.attendstatus != r2.attendstatus
+            || r1.costsclass != r2.costsclass
+            || r1.maxparticipants != r2.maxparticipants
         }).cloneWithRows(rows);
     }
 
@@ -67,8 +74,8 @@ export default class Activities extends Component {
     }
 
     render() {
-        let { network, activities, sceneKey, loading, processing, error,
-            enableLoading, disableLoading, errorFlash, getActivities
+        let { network, activities, sceneKey,
+            enableLoading, disableLoading, updateAttendStatus, getActivities
         } = this.props;
         logger.debug("props in activities render: ", this.props);
 
@@ -83,6 +90,9 @@ export default class Activities extends Component {
                     renderBackButton={() => null}
                     renderTitle={() => components.NavBarTitle({title: '活动'})}
                 >
+                    <components.TextNotice>
+                        蒙特梭利为会员精心准备了丰富多彩的活动。为了保证活动质量，每次活动都有最大人数限制，先报名先得，快来参加吧！
+                    </components.TextNotice>
                     <ListView
                         contentContainerStyle={{flexDirection: 'column',
                             justifyContent: 'space-between',
@@ -94,8 +104,7 @@ export default class Activities extends Component {
                         renderRow={(activity) =>
                             <Activity
                                 activity={activity}
-                                errorFlash={errorFlash}
-
+                                updateAttendStatus={updateAttendStatus}
                             />
                         }
                         renderScrollComponent={(props) =>

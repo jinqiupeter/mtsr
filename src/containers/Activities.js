@@ -30,6 +30,7 @@ function mapDispatchToProps(dispatch) {
         disableLoading: actions.disableLoading,
         setSceneLastRefreshTime: actions.setSceneLastRefreshTime,
         getActivities: actions.getActivities,
+        updateAttendStatus: actions.updateAttendStatus,
     }, dispatch);
 }
 

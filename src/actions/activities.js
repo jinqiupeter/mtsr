@@ -59,3 +59,20 @@ export function getActivities({offset = 0, cbOk, cbFail, cbFinish}) {
             });
     };
 }
+
+export function updateAttendStatus({activityId, targetStatus, cbFinish}) {
+    return (dispatch) => {
+        apis.updateAttendStatus({activityId, targetStatus})
+            .then(() => {
+                dispatch(getActivities({}));
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
