@@ -112,7 +112,7 @@ export default class Activity extends Component {
                         }
                         <components.Button
                             text={'详情'}
-                            onPress={() => Actions.ClassDescription({kcbxxbh: aClass.kcbxxbh})}
+                            onPress={() => Actions.ActivityPoster({activityId: activity.id})}
                             containerStyle={{margin: 0, padding: 5, }}
                             textStyle={{fontSize: 12}}
                         />

@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {Actions} from 'react-native-router-flux';
 
 import logger from '../logger';
@@ -13,6 +8,7 @@ import * as actions from './';
 export const RESET_ACTIVITIES = 'reset_user';
 export const SET_ACTIVITIES = 'set_activities';
 export const APPEND_ACTIVITIES = 'append_activities';
+export const SET_ACTIVITY_DESC = 'set_activity_desc';
 
 export function resetActivities() {
     return {
@@ -75,4 +71,28 @@ export function updateAttendStatus({activityId, targetStatus, cbFinish}) {
             });
     };
 }
+
+export function getActivityDescription({activityId, cbFail, cbFinish}) {
+    return (dispatch) => {
+        apis.activityDescription({activityId})
+            .then((response) => {
+                let {data} = response;
+                let activityInfo = data.activityInfo;
+                logger.debug("got activityInfo: ", activityInfo);
+
+                dispatch({type: SET_ACTIVITY_DESC,
+                    activityDescription: activityInfo.description});
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFail) {
+                    cbFail();
+                }
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
 

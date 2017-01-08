@@ -11,3 +11,7 @@ export function getActivities({offset = 0, limit = 10}) {
 export function updateAttendStatus(info) {
     return  postApi(`${API_ORIGIN}/updateActivityAttendStatus`, info);
 }
+
+export function activityDescription(info) {
+    return getApi(`${API_ORIGIN}/activityDescription`, info);
+}
