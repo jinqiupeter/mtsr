@@ -5,7 +5,8 @@ import * as actions from './';
 import * as helpers from '../components/helpers';
 
 import eachDay from 'date-fns/each_day'
-import addMonths from 'date-fns/add_months';
+import isSameDay from 'date-fns/is_same_day';
+import addDays from 'date-fns/add_days'
 import startOfMonth from 'date-fns/start_of_month';
 import endOfMonth from 'date-fns/end_of_month';
 import differenceInCalendarMonths from 'date-fns/difference_in_calendar_months';
@@ -24,12 +25,12 @@ export function resetSelectable() {
     };
 }
 
-function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingDate = new Date()) {
-    logger.debug("expanding selectables since ", startingDate);
+function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingDate = new Date(), daysWithUnattendedClasses = []) {
+    logger.debug("expanding selectables since ", startingDate, daysWithUnattendedClasses);
     let today = new Date();
     let start = startOfMonth(startingDate);
     if (isThisMonth(startingDate)) {
-        start = today;
+        start = addDays(today, 1);
     } else if (isBefore(startingDate, startOfMonth(today))) {
         return [];
     }
@@ -60,13 +61,31 @@ function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingD
         return accumulated;
     }, days);
 
-    expanded = expanded.filter((v) => {
+    return expanded.filter((v) => {
         return v.hasClass == true;
-    });
+    })
+        .map((day, index) => {
+            // exclude selected makeup classes
+            day.classes = day.classes.filter(aClass => {
+                let dayWithUnattendedClasses = daysWithUnattendedClasses.find(aDay => {
+                    return isSameDay(day.date, aDay.date);
+                });
 
-    return expanded.map((v, index) => {
-        return {...v, id:index};
-    });
+                if (!dayWithUnattendedClasses) {
+                    return true;
+                }
+
+
+                return !dayWithUnattendedClasses.classes.find(unattendedClass => {
+                    return unattendedClass.type == 2 && aClass.kcbxxbh == unattendedClass.kcbxxbh
+                });
+            });
+
+            return {...day, id:index};
+    })
+        .filter(v => {
+            return v.classes.length > 0;
+        });
 }
 
 export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
@@ -81,7 +100,8 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
                 dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
 
                 let monthAge = account.monthage;
-                let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
+                let selectableDays = expandSelectableClasses(packedSelectableClasses,
+                    monthAge, startingDate, Object.values(object.unattendedClasses));
                 dispatch({type: SET_SELECTABLE, selectableDays});
 
                 if (cbOk) {
@@ -160,6 +180,54 @@ export function selectRegular({kcbxxbh, cbFinish}) {
 export function deselectRegular({xkxxbh, cbFinish}) {
     return (dispatch) => {
         apis.deselectRegular({xkxxbh})
+            .then(() => {
+                dispatch(actions.unattendedClasses({}));
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+
+export function selectMakeup({kcbxxbh, date, cbFinish}) {
+    return (dispatch) => {
+        apis.selectMakeup({kcbxxbh, date})
+            .then(() => {
+                let unattendedPromise = new Promise((resolve, reject) => {
+                    dispatch(actions.unattendedClasses({
+                        cbFinish: () => {resolve();},
+                        cbFail: () => {reject()},
+                    }));
+                });
+
+                unattendedPromise.then(() => {
+                    dispatch(selectableClasses({startingDate: new Date()}));
+                })
+                    .catch((error) => {
+                        dispatch(actions.handleApiError(error));
+
+                        if (cbFinish) {
+                            cbFinish();
+                        }
+                    });
+            })
+            .catch((error) => {
+                dispatch(actions.handleApiError(error));
+
+                if (cbFinish) {
+                    cbFinish();
+                }
+            });
+    };
+}
+
+export function deselectMakeup({skqkbh, date, cbFinish}) {
+    return (dispatch) => {
+        apis.deselectMakeup({skqkbh, date})
             .then(() => {
                 dispatch(actions.unattendedClasses({}));
             })

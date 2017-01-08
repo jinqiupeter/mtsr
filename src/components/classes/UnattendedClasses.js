@@ -88,7 +88,7 @@ export default class UnattendedClasses extends Component {
     render () {
         let {unattendedClasses, saveInput, enableLoading, disableLoading,
             errorFlash, moreClass, submitDay, startDate, getUnattendedClasses,
-            updateAbsence, signInClass, deselectRegular
+            updateAbsence, signInClass, deselectRegular, deselectMakeup
         } = this.props;
 
         if (unattendedClasses.length > 0) {
@@ -171,6 +171,7 @@ export default class UnattendedClasses extends Component {
                             updateAbsence={updateAbsence}
                             signInClass={signInClass}
                             deselectRegular={deselectRegular}
+                            deselectMakeup={deselectMakeup}
                             cbOkAbsence={() => {
                                 getUnattendedClasses({});
                             }}

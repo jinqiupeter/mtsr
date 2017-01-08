@@ -37,6 +37,7 @@ function mapDispatchToProps(dispatch) {
         updateAbsence: actions.updateAbsence,
         signInClass: actions.signInClass,
         deselectRegular: actions.deselectRegular,
+        deselectMakeup: actions.deselectMakeup,
     }, dispatch);
 }
 

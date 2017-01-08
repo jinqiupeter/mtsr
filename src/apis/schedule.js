@@ -17,4 +17,10 @@ export function deselectRegular(info) {
     return postApi(`${API_ORIGIN}/deselectRegular`, info,  {timeout: 10 * 1000});
 }
 
+export function selectMakeup(info) {
+    return postApi(`${API_ORIGIN}/selectMakeup`, info,  {timeout: 20 * 1000});
+}
 
+export function deselectMakeup(info) {
+    return postApi(`${API_ORIGIN}/deselectMakeup`, info,  {timeout: 10 * 1000});
+}

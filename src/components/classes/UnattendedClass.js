@@ -15,7 +15,7 @@ import * as helpers from '../helpers';
 
 export default class UnattendedClass extends Component {
     render() {
-        let {day, updateAbsence, signInClass, cbOkAbsence, deselectRegular} = this.props;
+        let {day, updateAbsence, signInClass, cbOkAbsence, deselectRegular,deselectMakeup} = this.props;
         return (
             <components.Block containerStyle={styles.container}>
                 <TextNotice
@@ -52,6 +52,7 @@ export default class UnattendedClass extends Component {
                                 {'选课类型：' + (aClass.type == 1 ? 'Regular' : 'Makeup')}
                             </TextNotice>
 
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {/*签到按钮*/}
                             {
                                 isSameDay(day.date, new Date())
@@ -75,7 +76,7 @@ export default class UnattendedClass extends Component {
                                                     ],
                                                 );
                                     }}
-                                    containerStyle={{margin: 0, padding: 5}}
+                                    containerStyle={{margin: 0, padding: 5, marginRight: 10}}
                                     textStyle={{fontSize: 12}}
                                 />
 
@@ -89,7 +90,7 @@ export default class UnattendedClass extends Component {
                                         ? <components.Button
                                                 text={aClass.appliedAbsence ? '取消请假' : '请假'}
                                                 onPress={() => absenceOnPress()}
-                                                containerStyle={{margin: 0, padding: 5}}
+                                                containerStyle={{margin: 0, padding: 5, marginRight: 10}}
                                                 textStyle={{fontSize: 12}}
                                             />
                                         : null
@@ -99,7 +100,7 @@ export default class UnattendedClass extends Component {
                                         ? <components.Button
                                             text={aClass.appliedAbsence ? '取消请假' : '请假'}
                                             onPress={() => {absenceOnPress()}}
-                                            containerStyle={{margin: 0, padding: 5}}
+                                            containerStyle={{margin: 0, padding: 5, marginRight: 10}}
                                             textStyle={{fontSize: 12}}
                                         />
                                         : null
@@ -112,7 +113,20 @@ export default class UnattendedClass extends Component {
                                     ? isAfter(day.date, new Date())
                                         ? <components.Button
                                             text={'取消选课'}
-                                            onPress={() => absenceOnPress()}
+                                            onPress={() => {
+                                                Alert.alert(
+                                                    '取消Makeup选课？',
+                                                    "",
+                                                    [
+                                                        {text: '取消', onPress: () => {}},
+                                                        {text: '确定', onPress: () => {
+                                                            deselectMakeup({
+                                                                skqkbh: "" + aClass.skqkbh,
+                                                                date: moment(aClass.date).format("YYYY-MM-DD"),})
+                                                        }},
+                                                    ],
+                                                );
+                                            }}
                                             containerStyle={{margin: 0, padding: 5}}
                                             textStyle={{fontSize: 12}}
                                         />
@@ -140,6 +154,7 @@ export default class UnattendedClass extends Component {
                                         />
                                         : null
                             }
+                            </View>
                         </View>
                     </components.Block>
                     )})

@@ -9,6 +9,7 @@ import Calendar from 'react-native-calendar';
 import {Actions} from 'react-native-router-flux';
 import isSameDay from 'date-fns/is_same_day';
 import addMonths from 'date-fns/add_months';
+import moment from 'moment';
 
 import * as helpers from '../helpers';
 import * as components from '../';
@@ -58,10 +59,11 @@ export default class Makeup extends Component {
 
     render() {
         let {selectedDate, eventDates,
-            changeMonth, saveInput, disableLoading, enableLoading} = this.props;
+            changeMonth, saveInput, disableLoading, enableLoading, selectMakeup} = this.props;
         selectedDate = selectedDate || new Date();
         let sceneKey = 'Schedule';
         logger.debug("Props in Makeup render: ", this.props);
+
         let showMonth = (delta) => {
             let targetDate = addMonths(selectedDate, delta);
             saveInput(sceneKey,
@@ -71,6 +73,11 @@ export default class Makeup extends Component {
                 }
             );
         };
+
+        let day = eventDates.find((v) => {
+            return isSameDay(v.date, selectedDate);
+        }) || {classes: []};
+
         return (
             <ScrollView
                 style={{
@@ -132,15 +139,78 @@ export default class Makeup extends Component {
                     customStyle={calendarStyle} // Customize any pre-defined styles
                     weekStart={0} // Day on which week starts 0 - Sunday, 1 - Monday, 2 - Tuesday, etc, Default: 1
                 />
-                <TextNotice>已选日期: {helpers.yearMonthDayWeekText(selectedDate)}</TextNotice>
-                <components.ButtonWithBg
-                    text='查看详情'
-                    onPress={() => Actions.SelectClass({selectable: eventDates.find((v) => {
-                            return isSameDay(v.date, selectedDate);
-                        }) || {date: selectedDate, hasClass: false}})}
-                    textStyle={{fontSize: 16}}
-                    containerStyle={{marginTop: 20}}
-                />
+                <TextNotice style={{marginTop: 10, paddingBottom: 0, color: COLOR.theme}}>
+                    已选日期: {helpers.yearMonthDayWeekText(selectedDate)
+                    + (day.classes.length > 0 ? ', 当天可选课程: ' : ', 当天没有可选课程')}
+                </TextNotice>
+                {day.classes.sort((a, b) => {
+                    // sort by kckssj, from morning to afternoon
+                    let matchA = a.kckssj.match(/(\d+):(\d+)/);
+                    let matchB = b.kckssj.match(/(\d+):(\d+)/);
+
+                    if (matchA[1] > matchB[1]) {
+                        return 1;
+                    } else if (matchA[1] == matchB) {
+                        // compare minutes if hours are equal
+                        return matchA[2] > matchB[2]
+                            ?   1
+                            : matchA[2] == matchB[2]
+                                ?  0
+                                :  -1;
+                    } else {
+                        return -1;
+                    }
+                }).map(aClass =>
+                    <components.Block
+                        key={aClass.id}
+                        containerStyle={[
+                                    {flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    margin:5,
+                                    },
+                                    styles.card
+                                ]}
+                    >
+                        <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    paddingBottom: 0,
+                                }}>
+                            <components.TextNotice style={{flex: 1.5}}>
+                                { aClass.kckssj + '-' + aClass.kcjssj }
+                            </components.TextNotice >
+                            <components.TextNotice style={{flex: 1, fontSize: 14, color: COLOR.textHighlight}}>
+                                {aClass.kcmc.toUpperCase()}
+                            </components.TextNotice>
+                            <components.TextNotice style={{flex: 1.5}}>
+                                {'月龄: ' + aClass.kcksyl + '-' + aClass.kcjsyl}
+                            </components.TextNotice>
+                        </View>
+                        <View style={{paddingTop: 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
+                            <components.TextNotice >
+                                {'教室: ' + aClass.kcjss}
+                            </components.TextNotice>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <components.Button
+                                    text={'选定'}
+                                    onPress={() => {selectMakeup({
+                                        kcbxxbh: "" + aClass.kcbxxbh,
+                                        date: moment(day.date).format("YYYY-MM-DD"),
+                                    })}}
+                                    containerStyle={{margin: 10, padding: 5}}
+                                    textStyle={{fontSize: 12}}
+                                />
+                                <components.Button
+                                    text={'详情'}
+                                    onPress={() => Actions.ClassDescription({kcbxxbh: aClass.kcbxxbh})}
+                                    containerStyle={{margin: 0, padding: 5, }}
+                                    textStyle={{fontSize: 12}}
+                                />
+                            </View>
+                        </View>
+
+                    </components.Block>
+                )}
             </ScrollView>
         )
     }
@@ -163,6 +233,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         backgroundColor: COLOR.backgroundLighter,
     },
+    card: {
+        borderRadius: 8,
+        shadowColor: COLOR.backgroundDarkLighter,
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 0
+        }
+    },
 });
 
 const calendarStyle = StyleSheet.create({
@@ -171,10 +251,10 @@ const calendarStyle = StyleSheet.create({
         textAlign: 'center'
     },
     calendarControls: {
-        backgroundColor: COLOR.backgroundNormal,
+        backgroundColor: COLOR.backgroundLighter,
     },
     calendarHeading: {
-        backgroundColor: COLOR.backgroundNormal,
+        backgroundColor: COLOR.backgroundLighter,
     },
     controlButtonText: {
         color: COLOR.theme,

@@ -30,6 +30,7 @@ function mapDispatchToProps(dispatch) {
         changeMonth: actions.changeMonth,
         saveInput: actions.saveInput,
         getSelectable: actions.selectableClasses,
+        selectMakeup: actions.selectMakeup,
     }, dispatch);
 }
 
