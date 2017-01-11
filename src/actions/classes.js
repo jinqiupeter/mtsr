@@ -139,10 +139,12 @@ function expand(packed, classLeft, absencesApplied, signedInClasses) {
     });
 }
 
-export function moreUnattendedClassesFromCache({currentLength = 0, sceneKey}) {
+export function moreUnattendedClassesFromCache({currentLength = 0}) {
     return (dispatch, getState) => {
-        let {object, input} = getState();
-        let startDate = input[sceneKey].startDate;
+        let {object, classes} = getState();
+
+        logger.debug("input and classes in moreUnattendedClassesFromCache: ", object, classes);
+        let startDate = classes.startDate;
         let startIndex = Object.values(object.unattendedClasses).findIndex((v) => {
             return isSameDay(v.date, startDate) || isAfter(v.date, startDate);
         });
@@ -217,16 +219,24 @@ export function changeStartDayAction(startDate) {
     };
 }
 
-export function changeStartDay(sceneKey, changeTo) {
+export function changeStartDay(changeTo) {
     return (dispatch, getState) => {
-        let {input} = getState();
-        dispatch(actions.setSceneState(sceneKey, {calendarPickerVisible: false}));
+        let {classes, object} = getState();
 
-        dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
-            let startDate = changeTo ? changeTo : input[sceneKey].startDate;
-            dispatch(changeStartDayAction(startDate));
-            dispatch(moreUnattendedClassesFromCache({sceneKey}));
-        }));
+        let startDate = changeTo ? changeTo : classes.startDate;
+
+        let unattendedClasses = Object.values(object.unattendedClasses);
+        let lastClassDay = unattendedClasses[unattendedClasses.length - 1];
+        logger.debug("lastClassDay: ", lastClassDay);
+        if (!!lastClassDay
+            && lastClassDay.date
+            && isAfter(startDate, lastClassDay.date)) {
+            startDate = lastClassDay.date;
+        }
+        logger.debug("startDate: ", startDate);
+
+        dispatch(changeStartDayAction(startDate));
+        dispatch(moreUnattendedClassesFromCache({}));
     };
 }
 

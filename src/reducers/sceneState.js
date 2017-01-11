@@ -12,9 +12,6 @@ const initialState = {
     EditProfile: {
         genderPickerVisible: false,
     },
-    Classes: {
-        calendarPickerVisible: false
-    },
     CreateReferral: {
         datePickerVisible: false,
         genderPickerVisible: false,

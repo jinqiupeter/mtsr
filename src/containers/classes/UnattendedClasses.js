@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
         setSceneState: actions.setSceneState,
         getUnattendedClasses: actions.unattendedClasses,
         saveInput: actions.saveInput,
-        submitDay: actions.changeStartDay,
+        changeStartDay: actions.changeStartDay,
         moreClass: actions.moreUnattendedClassesFromCache,
         updateAbsence: actions.updateAbsence,
         signInClass: actions.signInClass,

@@ -86,10 +86,14 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        let {unattendedClasses, saveInput, enableLoading, disableLoading,
-            errorFlash, moreClass, submitDay, startDate, getUnattendedClasses,
+        let {object, unattendedClasses, saveInput, enableLoading, disableLoading,
+            errorFlash, moreClass, changeStartDay, startDate, getUnattendedClasses,
             updateAbsence, signInClass, deselectRegular, deselectMakeup
         } = this.props;
+
+        let lastDayId = unattendedClasses[unattendedClasses.length -1];
+        let lastDay = helpers.unattendClassFromCache(object, lastDayId);
+        logger.debug("lastday and startDate: ", lastDay, startDate);
 
         if (unattendedClasses.length > 0) {
             return (
@@ -116,51 +120,29 @@ export default class UnattendedClasses extends Component {
                                 <components.ButtonWithBg
                                     text='今天'
                                     onPress={() => {
-                                        saveInput('Classes', {startDate: new Date()});
-                                        submitDay('Classes');
+                                        changeStartDay(new Date());
                                     }}
                                     containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
                                 <components.ButtonWithBg
                                     text='下周'
+                                    disabled={isAfter(addDays(startDate, 7), lastDay.date)}
                                     onPress={() => {
-                                        saveInput('Classes', {startDate: addDays(startDate, 7)});
-                                        submitDay('Classes');
+                                        changeStartDay(addDays(startDate, 7));
                                     }}
                                     containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
                                 <components.ButtonWithBg
                                     text='下个月'
+                                    disabled={isAfter(addDays(startDate, 30), lastDay.date)}
                                     onPress={() => {
-                                        saveInput('Classes', {startDate: addDays(startDate, 30)});
-                                        submitDay('Classes');
+                                        changeStartDay(addDays(startDate, 30));
                                     }}
                                     containerStyle={{flex: 1}}
                                     textStyle={{fontSize: 12}}
                                 />
-                                {/*<components.Button*/}
-                                    {/*text='选择'*/}
-                                    {/*onPress={() => {*/}
-                                        {/*setSceneState(sceneKey, {calendarPickerVisible: true})*/}
-                                    {/*}}*/}
-                                    {/*containerStyle={{margin: 5, padding: 5}}*/}
-                                    {/*textStyle={{fontSize: 12}}*/}
-                                {/*/>*/}
-                                {/*<components.CalendarPicker*/}
-                                    {/*visible={sceneState[sceneKey].calendarPickerVisible}*/}
-                                    {/*setVisible={(visible) => setSceneState(sceneKey, {calendarPickerVisible: visible})}*/}
-                                    {/*selectedDate={input[sceneKey].startDate}*/}
-                                    {/*onValueChange={(selectedDate) => {*/}
-                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
-
-                                    {/*}}*/}
-                                    {/*submit={(selectedDate) => {*/}
-                                        {/*saveInput(sceneKey, {startDate: selectedDate});*/}
-                                        {/*submitDay(sceneKey);*/}
-                                    {/*}}*/}
-                                {/*/>*/}
                             </View>
                         </View>
                     }
