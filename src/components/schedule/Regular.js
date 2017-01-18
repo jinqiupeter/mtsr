@@ -121,7 +121,7 @@ export default class Regular extends Component {
                 </View>
 
                 <View style={{borderBottomWidth: 1, borderColor: COLOR.linePrompt}}>
-                    <components.TextNotice >
+                    <components.TextNotice numberOfLines={4}>
                         以Regular方式选定的课程会在该课程适合的月龄内为学员自动排课，如果您不确定是否喜欢该课程，建议以Makeup方式选课。以下是适合学员学龄的Regular课程：
                     </components.TextNotice>
                 </View>
@@ -131,7 +131,7 @@ export default class Regular extends Component {
                         key={day.kcxq}
                         containerStyle={{
                             marginLeft: 8,
-                            marginRight: 20,
+                            marginRight: 8,
                             marginTop: 5,
                             padding: 0,
                             paddingBottom: 5,
@@ -181,6 +181,7 @@ export default class Regular extends Component {
                                     justifyContent: 'space-between',
                                     marginBottom:4,
                                     marginTop:4,
+                                    marginRight: 4,
                                     },
                                     styles.card
                                 ]}

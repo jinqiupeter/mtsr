@@ -66,14 +66,16 @@ export default class Me extends Component {
                             <View
                                 style={{flex: 1, flexDirection: 'row',  justifyContent: 'space-between', alignItems: 'center'}}
                             >
-                                <components.Text>已绑定学员：</components.Text>
+
                                 <components.TextWithIcon
                                     iconName={account.gender == 'm' ? 'mars' : 'venus'}
                                     text={account.realname}
+                                    textStyle={{textAlign: 'center'}}
                                     styleKind='emphaBig'
                                     containerStyle={{flex: 1}}
+                                    style={{textAlign: 'center',}}
                                 />
-                                <components.Text style={{flex: 1}}>{account.nickname}</components.Text>
+                                <components.Text style={{flex: 1, textAlign: 'center'}}>{account.nickname}</components.Text>
                                 <components.Text
                                     style={{flex: 1}}>{helpers.monthAgeInYears(account.monthage)}</components.Text>
                                 <components.Button

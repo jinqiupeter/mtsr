@@ -100,6 +100,9 @@ export default class Activities extends Component {
                     renderBackButton={() => null}
                     renderTitle={() => components.NavBarTitle({title: '活动'})}
                 >
+                    <components.TextNotice>
+                        蒙特梭利为会员精心准备了丰富多彩的活动，为了保证活动质量，每次活动都有人数限制，先报名先得，快来参加吧！
+                    </components.TextNotice>
                     {activities.length > 0
                         ?
                         <ListView

@@ -84,75 +84,48 @@ export default class UnattendedClass extends Component {
 
                             {/*请假按钮*/}
                             {
-                                aClass.type ==2
-                                    // Makeup 课程
-                                    ? isAfter(day.date, new Date())
-                                        ? <components.Button
-                                                text={aClass.appliedAbsence ? '取消请假' : '请假'}
-                                                onPress={() => absenceOnPress()}
-                                                containerStyle={{margin: 0, padding: 5, marginRight: 10}}
-                                                textStyle={{fontSize: 12}}
-                                            />
-                                        : null
-
-                                    // regular 课程
-                                    : diffInDays(day.date, new Date()) >= 7
-                                        ? <components.Button
-                                            text={aClass.appliedAbsence ? '取消请假' : '请假'}
-                                            onPress={() => {absenceOnPress()}}
-                                            containerStyle={{margin: 0, padding: 5, marginRight: 10}}
-                                            textStyle={{fontSize: 12}}
-                                        />
-                                        : null
+                                diffInDays(day.date, new Date()) >= 1
+                                    ? <components.Button
+                                        text={aClass.appliedAbsence ? '取消请假' : '请假'}
+                                        onPress={() => {absenceOnPress()}}
+                                        containerStyle={{margin: 0, padding: 5, marginRight: 10}}
+                                        textStyle={{fontSize: 12}}
+                                    />
+                                    : null
                             }
 
                             {/*取消选课按钮*/}
                             {
-                                aClass.type ==2
-                                    // Makeup 课程
-                                    ? isAfter(day.date, new Date())
-                                        ? <components.Button
-                                            text={'取消选课'}
-                                            onPress={() => {
-                                                Alert.alert(
-                                                    '取消Makeup选课？',
-                                                    "",
-                                                    [
-                                                        {text: '取消', onPress: () => {}},
-                                                        {text: '确定', onPress: () => {
-                                                            deselectMakeup({
-                                                                skqkbh: "" + aClass.skqkbh,
-                                                                date: moment(aClass.date).format("YYYY-MM-DD"),})
-                                                        }},
-                                                    ],
-                                                );
-                                            }}
-                                            containerStyle={{margin: 0, padding: 5}}
-                                            textStyle={{fontSize: 12}}
-                                        />
-                                        : null
-
-                                    // regular 课程
-                                    : diffInDays(day.date, new Date()) >= 7
-                                        ? <components.Button
-                                            text={'取消选课'}
-                                            onPress={() => {
-                                                Alert.alert(
-                                                    '确定取消选课吗？',
-                                                    "本课程是Regular课程，这样做会取消所有同时段的课程",
-                                                    [
-                                                        {text: '取消', onPress: () => {}},
-                                                        {text: '确定', onPress: () => {
+                                diffInDays(day.date, new Date()) >= 1
+                                    ? <components.Button
+                                        text={'取消选课'}
+                                        onPress={() => {
+                                            Alert.alert(
+                                                '确定取消选课吗？',
+                                                aClass.type == 1
+                                                ?
+                                                    "本课程是Regular课程，这样做会取消所有同时段的课程"
+                                                : "",
+                                                [
+                                                    {text: '取消', onPress: () => {}},
+                                                    {text: '确定', onPress: () => {
+                                                        if (aClass.type == 1) {
                                                             deselectRegular({xkxxbh: "" + aClass.xkxxbh})
-                                                        }},
-                                                    ],
-                                                );
+                                                        } else {
+                                                            deselectMakeup({
+                                                            skqkbh: "" + aClass.skqkbh,
+                                                            date: moment(aClass.date).format("YYYY-MM-DD"),})
+                                                        }
 
-                                            }}
-                                            containerStyle={{margin: 0, padding: 5}}
-                                            textStyle={{fontSize: 12}}
-                                        />
-                                        : null
+                                                    }},
+                                                ],
+                                            );
+
+                                        }}
+                                        containerStyle={{margin: 0, padding: 5}}
+                                        textStyle={{fontSize: 12}}
+                                    />
+                                    : null
                             }
                             </View>
                         </View>

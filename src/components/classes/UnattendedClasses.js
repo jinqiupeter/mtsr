@@ -86,16 +86,17 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
+        logger.debug("props in unattendedClasses: ", this.props);
         let {object, unattendedClasses, saveInput, enableLoading, disableLoading,
             errorFlash, moreClass, changeStartDay, startDate, getUnattendedClasses,
             updateAbsence, signInClass, deselectRegular, deselectMakeup
         } = this.props;
 
-        let lastDayId = unattendedClasses[unattendedClasses.length -1];
-        let lastDay = helpers.unattendClassFromCache(object, lastDayId);
-        logger.debug("lastday and startDate: ", lastDay, startDate);
-
         if (unattendedClasses.length > 0) {
+            let lastDayId = unattendedClasses[unattendedClasses.length -1];
+            let lastDay = helpers.unattendClassFromCache(object, lastDayId);
+            logger.debug("lastday and startDate: ", lastDay, startDate);
+
             return (
                 <ListView
                     dataSource={this.ds}
