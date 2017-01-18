@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export const RESET_LOADING = 'reset_loading';
 export const LOADING_START = 'loading_start';
 export const LOADING_END = 'loading_end';

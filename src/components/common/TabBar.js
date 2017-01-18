@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';

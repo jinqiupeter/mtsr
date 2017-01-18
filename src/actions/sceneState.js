@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import logger from '../logger';
 
 export const RESET_SCENE_STATE = 'reset_scene_state';

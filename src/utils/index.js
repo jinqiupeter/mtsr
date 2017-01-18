@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export * from './validate';
 export * from './path';
 export * from './net';

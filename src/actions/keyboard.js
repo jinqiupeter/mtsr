@@ -1,12 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
-import logger from '../logger';
-import * as utils from '../utils';
-import * as actions from './';
-
 export const RESET_KEYBOARD = 'reset_keyboard';
 export const SET_KEYBOARD = 'set_keyboard';
 

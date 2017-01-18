@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import React from 'react';
 import {StyleSheet, View, Text, Picker, Modal, TouchableOpacity} from 'react-native';
 

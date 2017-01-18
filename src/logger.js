@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {DEBUG} from './config';
 
 export class Logger {

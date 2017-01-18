@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {ActionConst} from 'react-native-router-flux';
 
 import * as actions from '../actions';

@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import geolib from 'geolib';
 
 export function distanceText(local, remote) {

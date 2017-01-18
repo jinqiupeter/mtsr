@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export function fetchUrl(input, opts) {
   return new Promise((resolve, reject) => {
     setTimeout(reject, opts.timeout);

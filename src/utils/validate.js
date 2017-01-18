@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import valid from 'validate.js';
 
 export function validate(attributes, constraints) {

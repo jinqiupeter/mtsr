@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 

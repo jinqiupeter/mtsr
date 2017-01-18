@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 import logger from '../logger';
 import * as utils from '../utils';
 import * as actions from './';

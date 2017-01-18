@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export const RESET_PROCESSING = 'reset_processing';
 export const PROCESSING_TASK = 'processing_task';
 

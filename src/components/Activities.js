@@ -49,8 +49,10 @@ export default class Activities extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            let {sceneKey, network} = this.props;
-            if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
+            let {sceneKey, network, account} = this.props;
+            if (network.isConnected
+                && helpers.isNeedRefresh({sceneKey, network})
+                && account.khbh && account.xpybh) {
                 this._refresh();
             }
         });
@@ -74,12 +76,20 @@ export default class Activities extends Component {
     }
 
     render() {
-        let { network, activities, sceneKey,
+        let { account, network, activities, sceneKey,
             enableLoading, disableLoading, updateAttendStatus, getActivities
         } = this.props;
         logger.debug("props in activities render: ", this.props);
 
-        if (activities.length > 0) {
+        if (!account.khbh || !account.xpybh) {
+            return (
+                <components.NoXpyAssociated
+                    sceneKey={sceneKey}
+                    currentTab={2}
+                    title={'活动'}
+                />
+            )
+        } else {
             return (
                 <containers.Layout
                     sceneKey={sceneKey}
@@ -90,24 +100,23 @@ export default class Activities extends Component {
                     renderBackButton={() => null}
                     renderTitle={() => components.NavBarTitle({title: '活动'})}
                 >
-                    <components.TextNotice>
-                        蒙特梭利为会员精心准备了丰富多彩的活动。为了保证活动质量，每次活动都有最大人数限制，先报名先得，快来参加吧！
-                    </components.TextNotice>
-                    <ListView
-                        contentContainerStyle={{flexDirection: 'column',
+                    {activities.length > 0
+                        ?
+                        <ListView
+                            contentContainerStyle={{flexDirection: 'column',
                             justifyContent: 'space-between',
                             padding: 5}}
-                        dataSource={this.ds}
-                        enableEmptySections={true}
-                        pageSize={5}
-                        initialListSize={5}
-                        renderRow={(activity) =>
+                            dataSource={this.ds}
+                            enableEmptySections={true}
+                            pageSize={5}
+                            initialListSize={5}
+                            renderRow={(activity) =>
                             <Activity
                                 activity={activity}
                                 updateAttendStatus={updateAttendStatus}
                             />
                         }
-                        renderScrollComponent={(props) =>
+                            renderScrollComponent={(props) =>
                             <ScrollView
                                 {...props}
                                 refreshControl={
@@ -127,21 +136,39 @@ export default class Activities extends Component {
                               }
                             />
                         }
-                        onEndReached={() => {
+                            onEndReached={() => {
                             if (network.isConnected && activities.length > 0) {
                                 getActivities({
                                     offset: activities.length,
                                 });
                             }
                         }}
-                    />
+                        />
+                        :
+                        <ScrollView
+                            {...this.props}
+                            refreshControl={
+                                <RefreshControl
+                                   refreshing={this.refreshing}
+                                    onRefresh={() => {
+                                        disableLoading();
+                                        this.refreshing = true;
+                                        this._refresh({
+                                            cbFinish: () => {
+                                                this.refreshing = false;
+                                                enableLoading();
+                                            },
+                                        });
+                                    }}
+                                />
+                              }
+                        >
+                        <components.TextNotice>
+                            还没有活动！
+                        </components.TextNotice>
+                        </ScrollView>
+                    }
                 </containers.Layout>
-            )
-        } else {
-            return (
-                <TextNotice>
-                    现在没有活动！
-                </TextNotice>
             )
         }
     }

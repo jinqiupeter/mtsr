@@ -1,7 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
 import {Platform, Dimensions} from 'react-native';
 
 export const DEBUG = __DEV__;

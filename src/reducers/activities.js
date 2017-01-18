@@ -1,7 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
 import * as actions from '../actions';
 
 const initialState = {

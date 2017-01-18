@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }

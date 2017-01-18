@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export {default as Bootstrap} from './Bootstrap';
 export {default as Classes} from './Classes';
 export {default as Schedule} from './Schedule';

@@ -1,8 +1,3 @@
-/**
- * 在球场
- * zaiqiuchang.com
- */
-
 export {default as Layout} from './Layout';
 
 export {default as ErrorInput} from './ErrorInput';
