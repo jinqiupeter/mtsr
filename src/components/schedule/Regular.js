@@ -57,8 +57,6 @@ export default class Regular extends Component {
         let {disableLoading, enableLoading,
             saveInput, selectRegular} = this.props;
 
-        logger.debug("props in Regular: ", this.props);
-
         let {packedSelectableClasses} = this.props;
 
         let reduced = packedSelectableClasses.sort((a, b) => {
@@ -68,15 +66,11 @@ export default class Regular extends Component {
             return accumulator;
         }, {});
 
-        logger.debug("got reduced: ", reduced);
-
         let rows = Object.keys(reduced).map((v) => {
             return {kcxq: v, classes: reduced[v]};
         });
 
         let daysWithClasses = Object.values(rows);
-
-        logger.debug("got daysWithClasses: ", daysWithClasses, this.refreshing);
 
         return (
             <ScrollView
@@ -99,7 +93,6 @@ export default class Regular extends Component {
                             this.refreshing = true;
                             this._refresh({
                                 cbFinish: () => {
-                                    logger.debug("setting refreshing to false")
                                     this.refreshing = false;
                                     enableLoading();
                                 },

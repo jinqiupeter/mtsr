@@ -52,14 +52,12 @@ export async function fetchApi(request, timeout=5000) {
     try {
         store.dispatch(loadingStart());
 
-        logger.debug(request.url);
         let response = await fetch(request, {timeout});
         if (!response.ok) {
             throw new HttpError(response.status, HTTP_STATUS[response.status]);
         }
 
         responseJson = await response.json();
-        logger.debug("in fetchApi, responseJson", responseJson);
         let {code, message, data} = responseJson;
         if (code != 0) {
             throw new ResultError(code, message, data);

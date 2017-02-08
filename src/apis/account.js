@@ -28,7 +28,6 @@ export function searchXpy(condition) {
 }
 
 export function changePassword(update) {
-    logger.debug("changePassword: ", update);
     return postApi(`${API_ORIGIN}/account/password`, update);
 }
 

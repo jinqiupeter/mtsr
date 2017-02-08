@@ -19,7 +19,6 @@ import * as helpers from '../helpers';
 export default class Activity extends Component {
     render() {
         let {activity, updateAttendStatus} = this.props;
-        logger.debug("rendering activity: ", activity);
         let buttonText = "";
         let targetStatus = "-1";
         let buttonDisabled = false;
@@ -103,7 +102,7 @@ export default class Activity extends Component {
                                         text={buttonText}
                                         disabled={buttonDisabled}
                                         onPress={() => {
-                                            updateAttendStatus({activityId: activity.id, targetStatus});
+                                            updateAttendStatus({activityId: "" + activity.id, targetStatus});
                                         }}
                                         containerStyle={{margin: 10, padding: 5}}
                                         textStyle={{fontSize: 12}}

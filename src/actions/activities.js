@@ -28,7 +28,6 @@ export function getActivities({offset = 0, cbOk, cbFail, cbFinish}) {
                 return actions.cacheActivities(object, activities);
             })
             .then((action) => {
-                logger.debug("activities cached: ", action, offset);
                 dispatch(action);
                 let activityIds = activities.map((v) => v.id);
                 if (offset == 0) {
@@ -78,7 +77,6 @@ export function getActivityDescription({activityId, cbFail, cbFinish}) {
             .then((response) => {
                 let {data} = response;
                 let activityInfo = data.activityInfo;
-                logger.debug("got activityInfo: ", activityInfo);
 
                 dispatch({type: SET_ACTIVITY_DESC,
                     activityDescription: activityInfo.description});

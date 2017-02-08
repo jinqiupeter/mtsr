@@ -89,8 +89,6 @@ export function bootstrap() {
 
 export function registerPush() {
     return (dispatch, getState) => {
-        logger.debug("adding event listener: .......",);
-
         // Subscribe to register event of PushNotificationIOS.
         PushNotificationIOS.addEventListener('register', (deviceToken) => {
             let {account} = getState();
@@ -102,10 +100,8 @@ export function registerPush() {
             let installation = LcInstallation(AV);
 
             // create a new Installation in leancloud
-            logger.debug("saving deviceToken: ", deviceToken);
             installation.getCurrent()
                 .then(aInstall => {
-                    logger.debug("saving ainstallation: ", aInstall);
                     aInstall.save({
                         deviceToken: deviceToken
                     })
@@ -127,7 +123,6 @@ export function registerPush() {
         });
 
         PushNotificationIOS.addEventListener('registrationError', (error) => {
-            logger.debug("failed to register push: ", error);
             Alert.alert(
                 '启用推送失败',
                 `Error (${error.code}): ${error.message}`,
@@ -155,7 +150,7 @@ export function showSplashImage(dispatch, getState) {
         .then((response) => {
             let {data: {splashImage}} = response;
             let img_url = splashImage.img_url;
-            let delay = 3000;
+            let delay = 5000;
             let duration = 1000;
             if (!!img_url) {
                 let timer = setTimeout(() => {
@@ -197,7 +192,6 @@ function login(dispatch, getState) {
     let username = account.username;
     apis.isLoggedin({username: username})
         .then((response) => {
-            logger.debug("isLoggedIn response: ", response);
             let {data: {account}} = response;
             if (account) {
                 dispatch(actions.login({

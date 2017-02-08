@@ -62,7 +62,6 @@ export default class Makeup extends Component {
             changeMonth, saveInput, disableLoading, enableLoading, selectMakeup} = this.props;
         selectedDate = selectedDate || new Date();
         let sceneKey = 'Schedule';
-        logger.debug("Props in Makeup render: ", this.props);
 
         let showMonth = (delta) => {
             let targetDate = addMonths(selectedDate, delta);
@@ -92,7 +91,6 @@ export default class Makeup extends Component {
                             this.refreshing = true;
                             this._refresh({
                                 cbFinish: () => {
-                                    logger.debug("setting refreshing to false")
                                     this.refreshing = false;
                                     enableLoading();
                                 },

@@ -4,10 +4,8 @@ import * as actions from './';
 
 export function sendVerifyCode({mobile, cbOk}) {
     return (dispatch) => {
-        logger.debug("sending sms code to ", mobile);
         apis.sendVerifyCode({mobile})
             .then((response) => {
-                logger.debug("sms code sent to ", mobile);
                 if (cbOk) {
                     cbOk();
                 }

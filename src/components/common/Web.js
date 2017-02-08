@@ -12,7 +12,6 @@ import logger from '../../logger';
 export default class Web extends Component {
     render() {
         let {sceneKey, stackHtml, uri, title} = this.props;
-        logger.debug("props in Web: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}

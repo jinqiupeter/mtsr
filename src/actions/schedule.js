@@ -26,7 +26,6 @@ export function resetSelectable() {
 }
 
 function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingDate = new Date(), daysWithUnattendedClasses = []) {
-    logger.debug("expanding selectables since ", startingDate, daysWithUnattendedClasses);
     let today = new Date();
     let start = startOfMonth(startingDate);
     if (isThisMonth(startingDate)) {
@@ -39,7 +38,6 @@ function expandSelectableClasses(packedSelectableClasses, xpyMonthAge, startingD
     let days = eachDay(start, end).map((v) => {
         return {hasClass: false, date: v, classes: []};
     });
-    logger.debug("days ", days);
 
     let minDiff = differenceInCalendarMonths(startingDate, new Date);
     let expanded = packedSelectableClasses.reduce((accumulated, packedSelectableClass) => {
@@ -95,7 +93,6 @@ export function selectableClasses({startingDate, cbOk, cbFail, cbFinish}) {
             .then((response) => {
                 let {data} = response;
                 let packedSelectableClasses = data.selectableClasses.filter((v) => {return !!v.id});
-                logger.debug("got packedSelectableClasses: ", packedSelectableClasses);
 
                 dispatch({type: SET_PACKED_SELECTABLE, packedSelectableClasses});
 
@@ -133,7 +130,6 @@ export function changeMonth({startingDate}) {
         let monthAge = account.monthage;
         let selectableDays = expandSelectableClasses(packedSelectableClasses, monthAge, startingDate);
 
-        logger.debug("changing CHANGE_MONTH: ", selectableDays);
         dispatch({type: CHANGE_MONTH, selectableDays});
     }
 }
@@ -144,7 +140,6 @@ export function getClassDescription({kcbxxbh, cbFinish}) {
             .then((response) => {
                 let {data} = response;
                 let classInfo = data.classInfo;
-                logger.debug("got classInfo: ", classInfo);
 
                 dispatch({type: SET_CLASS_DESC,
                     classDescription: classInfo.classdescription});

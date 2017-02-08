@@ -47,7 +47,6 @@ export function registerVerifySubmit(sceneKey) {
         let {input} = getState();
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {mobile, password, code} = input[sceneKey];
-            logger.debug("verifying ", mobile, password, code);
             apis.register({mobile, password, code})
                 .then(() => {
                     dispatch(actions.loginRequest(
@@ -104,7 +103,6 @@ export function loginSubmit(sceneKey, cbOk) {
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             if (!cbOk) {
                 cbOk = (account) => {
-                    logger.debug("account before after login: ", account);
                     if (!!account.xpybh && !!account.khbh) {
                         Actions.Classes();
                     } else {
@@ -131,7 +129,6 @@ export function loginRequest({username, mobile, email, password}, cbOk) {
         apis.login({username, mobile, email, password})
             .then((response) => {
                 let {data: {account}} = response;
-                logger.debug("got account: ", account);
                 dispatch(login({account, cbOk}));
             })
             .catch((error) => {
@@ -201,7 +198,6 @@ export function selectCustomAvatar(sceneKey, picker) {
 
 export function editProfileAvatarSubmit({picker}) {
     return (dispatch) => {
-        logger.debug("picker in edit profile: ", picker);
         if (picker.didCancel || picker.customButton) {
             return;
         }
@@ -223,7 +219,6 @@ export function editProfileAvatarSubmit({picker}) {
             .then(resizedImageUri => apis.uploadFile(resizedImageUri, 'image/jpeg'))
             .then((response) => {
                 let {data: {file}} = response;
-                logger.debug("change account profile: ", file);
                 return apis.editAccount({profileimageurl: file.url});
             })
             .then(cbOk)
@@ -236,7 +231,6 @@ export function searchXpy(sceneKey) {
     return (dispatch, getState) => {
         let {input} = getState();
         dispatch(actions.setSceneState(sceneKey, {genderPickerVisible: false}));
-        logger.debug("input in searchXpy: ", input, sceneKey);
         dispatch(actions.validateInput(sceneKey, input[sceneKey], () => {
             let {realname, dateOfBirth, gender} = input[sceneKey];
             apis.searchXpy({realname, dateOfBirth, gender})

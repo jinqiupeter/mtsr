@@ -70,7 +70,6 @@ export function monthAgeInYears(months) {
 }
 
 export function isNeedRefresh({sceneKey, network, minInterval = 600, objectId = ''}) {
-    logger.debug("network.lastRefreshTime: ", network.lastRefreshTime, objectId);
     let lastRefreshTime = network.lastRefreshTime[sceneKey] || {};
     return (!lastRefreshTime[objectId] || (new Date() - new Date(lastRefreshTime[objectId]) > minInterval * 1000));
 }

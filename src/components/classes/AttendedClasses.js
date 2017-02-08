@@ -40,7 +40,6 @@ export default class AttendedClasses extends Component {
         InteractionManager.runAfterInteractions(() => {
             let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
-                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });
@@ -65,9 +64,8 @@ export default class AttendedClasses extends Component {
 
     render () {
         let {account, attendedClasses, network,
-            enableLoading, disableLoading, errorFlash, saveInput,
+            enableLoading, disableLoading, saveInput,
             getAttendedClasses} = this.props;
-        logger.debug("props in attended class: ", this.props);
         if (attendedClasses.length > 0) {
             return (
                 <ListView
@@ -75,22 +73,6 @@ export default class AttendedClasses extends Component {
                     enableEmptySections={true}
                     initialListSize={5}
                     pageSize={5}
-
-                    renderHeader={() =>
-                        <View
-                            style={styles.container}
-                        >
-                            <SegmentedControlIOS
-                                values={['未上课程', '已上课程']}
-                                selectedIndex={1}
-                                onChange={(event) => saveInput('Classes',
-                                    {selectedClassType: event.nativeEvent.selectedSegmentIndex}
-                                    )}
-                                tintColor={COLOR.theme}
-                                style={styles.segmentedControl}
-                            />
-                        </View>
-                    }
 
                     renderRow={(aClass) =>
                         <AttendedClass

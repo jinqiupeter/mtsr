@@ -47,7 +47,6 @@ export function attendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
                 }
             });
 
-            logger.debug("got AttendedClasses: ", attendedClasses);
             return actions.cacheAttendedClasses(object, attendedClasses);
         })
             .then((action) => {
@@ -91,9 +90,6 @@ function expand(packed, classLeft, absencesApplied, signedInClasses) {
         return lastDate;
     }, cursorDate);
 
-    logger.debug("got endDate: ", endDate);
-
-
     while (classFound < classLeft && isAfter(endDate, cursorDate)) {
         packed.forEach(aPacked => {
             if ( (aPacked.type == 1 && aPacked.kcxq == cursorDate.getDay())
@@ -132,8 +128,6 @@ function expand(packed, classLeft, absencesApplied, signedInClasses) {
         cursorDate = addDays(cursorDate, 1);
     }
 
-    logger.debug("days found: ", days);
-
     return days.map((v, index) => {
         return {...v, id:index};
     });
@@ -143,7 +137,6 @@ export function moreUnattendedClassesFromCache({currentLength = 0}) {
     return (dispatch, getState) => {
         let {object, classes} = getState();
 
-        logger.debug("input and classes in moreUnattendedClassesFromCache: ", object, classes);
         let startDate = classes.startDate;
         let startIndex = Object.values(object.unattendedClasses).findIndex((v) => {
             return isSameDay(v.date, startDate) || isAfter(v.date, startDate);
@@ -182,7 +175,6 @@ export function unattendedClasses({offset = 0, cbOk, cbFail, cbFinish}) {
                 }
             });
 
-            logger.debug("got UnattendedClasses: ", classes, absencesApplied, signedInClasses, htxx);
             unattendedClasses = expand(classes, htxx.syks, absencesApplied, signedInClasses);
             return actions.cacheUnattendedClasses(object, unattendedClasses);
         })
@@ -227,14 +219,11 @@ export function changeStartDay(changeTo) {
 
         let unattendedClasses = Object.values(object.unattendedClasses);
         let lastClassDay = unattendedClasses[unattendedClasses.length - 1];
-        logger.debug("lastClassDay: ", lastClassDay);
         if (!!lastClassDay
             && lastClassDay.date
             && isAfter(startDate, lastClassDay.date)) {
             startDate = lastClassDay.date;
         }
-        logger.debug("startDate: ", startDate);
-
         dispatch(changeStartDayAction(startDate));
         dispatch(moreUnattendedClassesFromCache({}));
     };
@@ -253,8 +242,6 @@ export function afterClassInstruction({kcbxxbh, skqkrq, kckssj, kcjssj, cbOk, cb
             let {data} = response;
             instruction = data.instruction;
             instruction.hasInstruction = !!instruction.id;
-            logger.debug("got instruction: ", instruction);
-
             if (cbOk) {
                 cbOk();
             }

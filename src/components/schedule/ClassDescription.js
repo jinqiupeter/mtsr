@@ -44,8 +44,7 @@ export default class ClassDescription extends Component {
     }
 
     render() {
-        logger.debug("props in ClassDescription: ", this.props);
-        let {sceneKey, loading, kcbxxbh, classDescription, enableLoading, disableLoading} = this.props;
+        let {sceneKey, loading, classDescription, enableLoading, disableLoading} = this.props;
         return (
             <containers.Layout
                 sceneKey={sceneKey}
@@ -72,7 +71,6 @@ export default class ClassDescription extends Component {
                                 this.refreshing = true;
                                 this._refresh({
                                     cbFinish: () => {
-                                        logger.debug("setting refreshing to false")
                                         this.refreshing = false;
                                         enableLoading();
                                     },

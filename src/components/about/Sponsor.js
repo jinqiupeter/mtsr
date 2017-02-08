@@ -49,7 +49,6 @@ export default class Sponsor extends Component {
         let {sceneKey, loading, processing, error, object, sponsorIds,
             disableLoading, enableLoading} = this.props;
 
-        logger.debug("props in Sponsor: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}

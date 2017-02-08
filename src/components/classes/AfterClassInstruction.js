@@ -34,7 +34,6 @@ export default class AfterClassInstruction extends Component {
         props = props || this.props;
         let {sceneKey} = props;
         let {getAfterClassInstruction, kcbxxbh, skqkrq, kckssj, kcjssj} = props;
-        logger.debug("props in after class instruction: ", props);
 
         let finished = 0;
         getAfterClassInstruction({
@@ -79,7 +78,6 @@ export default class AfterClassInstruction extends Component {
                             this.refreshing = true;
                             this._refresh({
                                 cbFinish: () => {
-                                    logger.debug("setting refreshing to false")
                                     this.refreshing = false;
                                     enableLoading();
                                 },

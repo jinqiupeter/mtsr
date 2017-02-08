@@ -17,7 +17,6 @@ export default class CreateReferral extends Component {
         let {sceneKey, loading, processing, error, input,
             saveInput, createReferral, sceneState, cbOk, setSceneState} = this.props;
 
-        logger.debug("props in createReferral: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}

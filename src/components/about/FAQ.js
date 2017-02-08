@@ -33,7 +33,6 @@ export default class FAQ extends Component {
         let rows = faqIds
             .map((v) => helpers.faqFromCache(object, v))
             .filter((v) => v!=null);
-        logger.debug("shows faqs: ", rows);
         return rows;
     }
 
@@ -46,7 +45,6 @@ export default class FAQ extends Component {
         InteractionManager.runAfterInteractions(() => {
             let {network, sceneKey} = this.props;
             if (network.isConnected && helpers.isNeedRefresh({sceneKey, network})) {
-                logger.debug("refreshing ", sceneKey);
                 this._refresh();
             }
         });
@@ -73,7 +71,6 @@ export default class FAQ extends Component {
         let {network, sceneKey, loading, processing, error, faqIds,
             disableLoading, enableLoading, getFaq} = this.props;
 
-        logger.debug("props in FAQ: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}
@@ -95,7 +92,7 @@ export default class FAQ extends Component {
                                 </Text>
                             </View>
 
-                            <TextNotice>{'回答: ' + faq.answer}</TextNotice>
+                            <TextNotice numberOfLines={50}>{'回答: ' + faq.answer}</TextNotice>
                             </components.Block>
                         }
                         renderScrollComponent={(props) =>

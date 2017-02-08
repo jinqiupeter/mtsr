@@ -52,14 +52,12 @@ export function getFqa({offset = 0, limit = 10, cbOk, cbFail, cbFinish}) {
             .then((response) => {
                 let {data} = response;
                 faqs = data.faq.filter((v) => {return !!v.id});
-                logger.debug("got faqs: ", faqs);
                 return actions.cacheFaqs(object, faqs);
             })
             .then((action) => {
                 dispatch(action);
 
                 let faqIds = faqs.map((v) => v.id);
-                logger.debug("dispatching FAQIDS: ", faqIds);
                 if (offset == 0) {
                     dispatch({type: SET_FAQ, faqIds});
                 } else {
@@ -93,14 +91,12 @@ export function getFeedback({xpybh, offset = 0, limit = 10, cbOk, cbFail, cbFini
             .then((response) => {
                 let {data} = response;
                 feedbacks = data.feedback.filter((v) => {return !!v.id});
-                logger.debug("got feedbacks: ", feedbacks);
                 return actions.cacheFeedbacks(object, feedbacks);
             })
             .then((action) => {
                 dispatch(action);
 
                 let feedbackIds = feedbacks.map((v) => v.id);
-                logger.debug("dispatching FeedbackIds: ", feedbackIds);
                 if (offset == 0) {
                     dispatch({type: SET_FEEDBACK, feedbackIds});
                 } else {
@@ -163,14 +159,12 @@ export function getReferral({xpybh, offset = 0, limit = 10, cbOk, cbFail, cbFini
             .then((response) => {
                 let {data} = response;
                 referrals = data.referral.filter((v) => {return !!v.id});
-                logger.debug("got referrals: ", referrals);
                 return actions.cacheReferrals(object, referrals);
             })
             .then((action) => {
                 dispatch(action);
 
                 let referralIds = referrals.map((v) => v.id);
-                logger.debug("dispatching referralIds: ", referralIds);
                 if (offset == 0) {
                     dispatch({type: SET_REFERRAL, referralIds});
                 } else {
@@ -238,14 +232,12 @@ export function getSponsor({offset = 0, limit = 10, cbOk, cbFail, cbFinish}) {
             .then((response) => {
                 let {data} = response;
                 sponsors = data.sponsor.filter((v) => {return !!v.id});
-                logger.debug("got sponsors: ", sponsors);
                 return actions.cacheSponsors(object, sponsors);
             })
             .then((action) => {
                 dispatch(action);
 
                 let sponsorIds = sponsors.map((v) => v.id);
-                logger.debug("dispatching sponsorIds: ", sponsorIds);
                 if (offset == 0) {
                     dispatch({type: SET_SPONSOR, sponsorIds});
                 } else {
@@ -279,14 +271,12 @@ export function getAppointment({xpybh, offset = 0, limit = 10, cbOk, cbFail, cbF
             .then((response) => {
                 let {data} = response;
                 appointments = data.appointment.filter((v) => {return !!v.id});
-                logger.debug("got appointments: ", appointments);
                 return actions.cacheAppointments(object, appointments);
             })
             .then((action) => {
                 dispatch(action);
 
                 let appointmentIds = appointments.map((v) => v.id);
-                logger.debug("dispatching appointmentIds: ", appointmentIds);
                 if (offset == 0) {
                     dispatch({type: SET_APPOINTMENT, appointmentIds});
                 } else {

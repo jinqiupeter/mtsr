@@ -44,7 +44,6 @@ export default class ActivityPoster extends Component {
     }
 
     render() {
-        logger.debug("props in ActivityPoster: ", this.props);
         let {sceneKey, loading, activityDescription, enableLoading, disableLoading} = this.props;
         return (
             <containers.Layout

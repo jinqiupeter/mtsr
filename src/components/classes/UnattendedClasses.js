@@ -86,7 +86,6 @@ export default class UnattendedClasses extends Component {
     }
 
     render () {
-        logger.debug("props in unattendedClasses: ", this.props);
         let {object, unattendedClasses, saveInput, enableLoading, disableLoading,
             errorFlash, moreClass, changeStartDay, startDate, getUnattendedClasses,
             updateAbsence, signInClass, deselectRegular, deselectMakeup
@@ -95,7 +94,6 @@ export default class UnattendedClasses extends Component {
         if (unattendedClasses.length > 0) {
             let lastDayId = unattendedClasses[unattendedClasses.length -1];
             let lastDay = helpers.unattendClassFromCache(object, lastDayId);
-            logger.debug("lastday and startDate: ", lastDay, startDate);
 
             return (
                 <ListView
@@ -108,15 +106,7 @@ export default class UnattendedClasses extends Component {
                         <View
                             style={styles.container}
                         >
-                        <SegmentedControlIOS
-                            values={['未上课程', '已上课程']}
-                            selectedIndex={0}
-                            onChange={(event) => saveInput('Classes',
-                                {selectedClassType: event.nativeEvent.selectedSegmentIndex}
-                                )}
-                            tintColor={COLOR.theme}
-                            style={styles.segmentedControl}
-                        />
+
                         <View style={styles.titleContainer}>
                                 <components.ButtonWithBg
                                     text='今天'
@@ -223,11 +213,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLOR.backgroundLighter,
         marginBottom: 10,
-    },
-    segmentedControl: {
-        marginTop: 10,
-        marginLeft: 30,
-        marginRight: 30,
     },
     titleContainer: {
         flex:1,

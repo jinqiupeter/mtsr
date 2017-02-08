@@ -32,7 +32,6 @@ export default class Activities extends Component {
 
     _getRowsActivities(props) {
         props = props || this.props;
-        logger.debug("props in _getRowsActivities: ", props);
         let {object} = props;
         let Ids = props.activities;
         let rows = Ids
@@ -79,8 +78,6 @@ export default class Activities extends Component {
         let { account, network, activities, sceneKey,
             enableLoading, disableLoading, updateAttendStatus, getActivities
         } = this.props;
-        logger.debug("props in activities render: ", this.props);
-
         if (!account.khbh || !account.xpybh) {
             return (
                 <components.NoXpyAssociated

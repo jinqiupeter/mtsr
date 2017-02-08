@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet, View, Image, Text, ScrollView, Alert
+    StyleSheet, View, Image, Text, ScrollView, Alert, SegmentedControlIOS
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,10 +15,8 @@ import * as containers from '../containers';
 
 export default class Classes extends Component {
     render() {
-        let {sceneKey, input, signInClass} = this.props;
+        let {sceneKey, input, signInClass, saveInput} = this.props;
         let {account} = this.props;
-
-        logger.debug("account in classes: ", account);
 
         if (!account.khbh || !account.xpybh) {
             return (
@@ -77,7 +75,7 @@ export default class Classes extends Component {
                                             let classInfo = JSON.parse(data);
                                             let match = classInfo.date.match(/(\d+)-(\d+)-(\d+)/);
                                             let date = new Date(parseInt(match[1]), parseInt(match[2]) -1, parseInt(match[3]));
-                                            logger.debug("get json object: ", classInfo);
+
                                             Alert.alert(
                                                 '确定签到吗？',
                                                 "日期：" + classInfo.date
@@ -103,6 +101,16 @@ export default class Classes extends Component {
                         </View>
 
                     </components.Block>
+
+					<SegmentedControlIOS
+						values={['未上课程', '已上课程']}
+						selectedIndex={input[sceneKey].selectedClassType}
+						onChange={(event) => saveInput(sceneKey,
+                                {selectedClassType: event.nativeEvent.selectedSegmentIndex}
+                                )}
+						tintColor={COLOR.theme}
+						style={styles.segmentedControl}
+					/>
 
                     {input[sceneKey].selectedClassType == 1
                         ?
@@ -139,4 +147,11 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLOR.backgroundLighter,
     },
+
+	segmentedControl: {
+		marginTop: 10,
+		marginLeft: 30,
+		marginRight: 30,
+		marginBottom: 10,
+	},
 });

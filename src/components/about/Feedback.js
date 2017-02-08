@@ -71,7 +71,6 @@ export default class Feedback extends Component {
         let {network, sceneKey, loading, feedbackIds,
             disableLoading, enableLoading, getFeedback} = this.props;
 
-        logger.debug("props in Feedback: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}

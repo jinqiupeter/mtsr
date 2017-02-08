@@ -17,7 +17,6 @@ export default class CreateAppointment extends Component {
         let {sceneKey, loading, processing, error, input,
             saveInput, createAppointment, sceneState, cbOk, setSceneState} = this.props;
 
-        logger.debug("props in CreateAppointment: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}

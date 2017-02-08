@@ -14,10 +14,9 @@ import {COLOR, GENDERS} from '../../config';
 
 export default class AssociateXpy extends Component {
     render() {
-        let {sceneKey, input, account, saveInput, sceneState, setSceneState, xpyFound} = this.props;
+        let {sceneKey, input, account, saveInput, sceneState, setSceneState} = this.props;
         let {associate, searchXpy, associateXpy, editProfileAvatarSubmit} = this.props;
 
-        logger.debug("props in AssociateXpy", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}
@@ -66,7 +65,6 @@ export default class AssociateXpy extends Component {
                                     minDate="2000-05-01"
                                     maxDate="2026-06-01"
                                     onDateChange={(date) => {
-                                        logger.debug("saving date: ", date);
                                         saveInput(sceneKey, {dateOfBirth: moment(date).format("YYYY-MM-DD")});
                                     }}
                                 />

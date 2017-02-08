@@ -45,10 +45,9 @@ export default class Appointment extends Component {
     }
 
     render() {
-        let {sceneKey, loading, processing, error, object, appointmentIds,
+        let {sceneKey, loading, object, appointmentIds,
             disableLoading, enableLoading} = this.props;
 
-        logger.debug("props in Appointments: ", this.props);
         return (
             <containers.Layout
                 sceneKey={sceneKey}
